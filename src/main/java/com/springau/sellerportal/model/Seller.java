@@ -1,5 +1,7 @@
 package com.springau.sellerportal.model;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,8 @@ public class Seller {
 	private Contact contact;
 	
 	private String applicationStatus;
+	
+	
 	
 
 }

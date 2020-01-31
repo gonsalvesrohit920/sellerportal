@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springau.sellerportal.model.LoginData;
+
 @RestController
 @RequestMapping("/seller")
 public class SellerController {
@@ -15,7 +17,7 @@ public class SellerController {
 	}
 	
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
-	public Boolean loginSeller(Model model) {
+	public Boolean loginSeller(LoginData loginData) {
 		return true;
 	}
 

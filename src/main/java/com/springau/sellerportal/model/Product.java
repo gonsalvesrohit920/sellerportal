@@ -15,6 +15,6 @@ public class Product {
 	private int sId;
 	private int category;
 	private int quantity;
-	private int price;
+	private int price;	
 	
 }

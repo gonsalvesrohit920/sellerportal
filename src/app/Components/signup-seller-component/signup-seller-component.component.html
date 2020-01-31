@@ -1,0 +1,10 @@
+<div style="text-align: center;" >
+    <form [formGroup]="RegisterForm" (ngSubmit)="onSubmit()" style="padding-bottom: 3%;" class="box">
+            <h2>Sign up</h2>       
+              <input type="text" placeholder="Email" [(ngModel)]="Email" formControlName="email"><br>
+              <input type="password"  placeholder="Password" [(ngModel)]="password" formControlName="password"> <br>
+              <input type="password"  placeholder="Confirm Password" [(ngModel)]="confirm_password" formControlName="confirm_password"> <br> 
+              <input type="password"  placeholder="Password" [(ngModel)]="password" formControlName="password"> <br>                   
+              <button style="margin-top: 3%;" type="submit" class="button">Sign Up</button>               
+     </form> 
+    </div>

@@ -14,7 +14,7 @@ public class Contact {
 	private String phoneNo;
 	private String street;
 	private String city;
-	private String pincode;
+	private int pincode;
 	
 
 }

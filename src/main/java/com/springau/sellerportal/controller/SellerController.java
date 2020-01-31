@@ -1,6 +1,7 @@
 package com.springau.sellerportal.controller;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ public class SellerController {
 	}
 	
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
-	public Boolean loginSeller(LoginData loginData) {
+	public Boolean loginSeller(@RequestBody LoginData loginData) {
 		return true;
 	}
 

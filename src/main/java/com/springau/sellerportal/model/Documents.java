@@ -7,14 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Contact {
+@NoArgsConstructor
+public class Documents {
 	
-	private String phoneNo;
-	private String street;
-	private String city;
-	private String pincode;
-	
-
+	private String panNo;
+	private String gstInNo;
+	private byte[] panImage;
+	private byte[] gstInImage;
 }

@@ -15,12 +15,10 @@ public class Seller {
 	private String name;
 	private String email;
 	private String password;
-	private String phoneNo;
 	
 	private Contact contact;
 	
-	
-	private String application_status;
+	private String applicationStatus;
 	
 
 }

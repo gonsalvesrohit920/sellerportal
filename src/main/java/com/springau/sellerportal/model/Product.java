@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Contact {
+public class Product {
 	
-	private String phoneNo;
-	private String street;
-	private String city;
-	private String pincode;
+	private int pId; 
+	private int sId;
+	private int category;
+	private int quantity;
+	private int price;
 	
-
 }

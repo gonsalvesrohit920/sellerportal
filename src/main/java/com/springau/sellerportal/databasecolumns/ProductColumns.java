@@ -12,7 +12,7 @@ public class ProductColumns {
 	public static final String PRICE = "price";
 	
 	
-	public ProductColumns() {
+	private ProductColumns() {
 		
 	}
 }

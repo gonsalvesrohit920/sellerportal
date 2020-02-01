@@ -44,4 +44,22 @@ public class SellerDAOImpl implements SellerDAO {
 		}
 	}
 
+	@Override
+	public Seller saveSeller(Seller seller) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Seller getSellerDetails(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Seller updateSeller(int sellerId, Seller seller) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

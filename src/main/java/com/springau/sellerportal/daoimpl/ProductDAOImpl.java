@@ -16,6 +16,10 @@ import com.springau.sellerportal.queries.ProductQueries;
 import com.springau.sellerportal.rowmapper.ProductMapper;
 
 
+/**
+ * @author Rohit Gonsalves
+ *	Database interfacing for Products
+ */
 @Repository
 public class ProductDAOImpl implements ProductDAO{
 	
@@ -28,18 +32,26 @@ public class ProductDAOImpl implements ProductDAO{
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	/**
+	 * Gets the all products.
+	 *
+	 * @return the all products
+	 */
 	@Override
-	public List<Product> getAllProducts() {
-
-		List<Product> product = jdbcTemplate.query(ProductQueries.ALL_PRODUCTS, new ProductMapper());
+	public List<Product> getAllProducts() { 
 		
-		/*List<Product> products = new ArrayList<>();
-		for(Map row : rows) {
-			
-		}
-		*/
-		
-		return product;
+		return jdbcTemplate.query(ProductQueries.ALL_PRODUCTS, new ProductMapper());
+	}
+	
+	/**
+	 * Gets the all products for a particular seller.
+	 * @author Rohit Gonsalves
+	 * @param sellerId the seller id
+	 * @return the all seller products
+	 */
+	@Override
+	public List<Product> getAllSellerProducts(int sellerId){
+		return jdbcTemplate.query(ProductQueries.ALL_PRODUCTS,new Object[] { sellerId }, new ProductMapper());
 	}
 
 	@Override
@@ -62,6 +74,7 @@ public class ProductDAOImpl implements ProductDAO{
 
 	@Override
 	public Map<String, String> getProductAttributes(int productId) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

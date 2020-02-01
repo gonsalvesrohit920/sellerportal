@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductImage {
 	
+	private int imageId;
 	private int productId;
 	private String imageType;
 	private byte[] productImageData;

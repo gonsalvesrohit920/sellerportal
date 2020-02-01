@@ -6,11 +6,11 @@ public class ProductQueries {
 	
 	public static final String PRODUCT_BY_ID = "select * from \"Product\" where p_id=?";
 	
-	public static final String PRODUCT_BY_SELLER = "SELECT p_id, p_name, p_description, category, quantity, price\r\n" + 
+	public static final String PRODUCT_BY_SELLER = "SELECT p_id, p_name, p_description, category, quantity, price" + 
 			"	FROM public.\"Product\" where s_id=?;";
 	
-	public static final String STORE_PRODUCT = "INSERT INTO \"Product\"(\r\n" + 
-					"	 s_id, p_name, p_description, category, quantity, price)\r\n" + 
+	public static final String STORE_PRODUCT = "INSERT INTO \"Product\"(" + 
+					"	 s_id, p_name, p_description, category, quantity, price)" + 
 					"	VALUES (?, ?, ?, ?, ?, ?);";
 	
 	private ProductQueries() {

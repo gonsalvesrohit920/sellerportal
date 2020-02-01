@@ -8,6 +8,7 @@ import com.springau.sellerportal.model.ProductImage;
 
 public interface ProductDAO {
 	public List<Product> getAllProducts();
+	public List<Product> getAllSellerProducts(int sellerId);
 	public List<Product> saveProduct(Product product);
 	public List<Product> updateProduct(Product product);
 	public List<Product> deleteProduct(int productId);

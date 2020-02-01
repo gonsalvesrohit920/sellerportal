@@ -50,9 +50,8 @@ public class SellerController {
 	 */
 	@PostMapping(path = "/login")
 	public Seller loginSeller(@RequestBody LoginData loginData) {
-		Seller seller = sellerService.validateLogin(loginData);
-		System.out.println(seller.toString());
-		return seller;
+
+		return sellerService.validateLogin(loginData);
 	}
 	
 	/**

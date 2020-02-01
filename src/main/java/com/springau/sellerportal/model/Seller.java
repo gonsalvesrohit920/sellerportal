@@ -27,7 +27,7 @@ public class Seller {
 	private boolean isValid = true;
 	private boolean exists = true;
 	
-	
+	private Documents documents;
 	
 
 }

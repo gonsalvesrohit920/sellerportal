@@ -7,6 +7,10 @@ import com.springau.sellerportal.dao.SellerDAO;
 import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Seller;
 
+/**
+ * @author Rohit Gonsalves
+ *	Seller Service Implements Business logic for seller
+ */
 @Service
 public class SellerService {
 	
@@ -28,6 +32,23 @@ public class SellerService {
 			seller.setValid(false);
 		}
 		
+		return seller;
+		
+	}
+	
+	
+	/**
+	 * Save seller.
+	 * Save the Given Seller Data to the database
+	 * @param seller the Complete Seller Data
+	 * @return the seller
+	 */
+	public Seller saveSeller(Seller seller) {
+		
+		int sellerId = dao.saveSeller(seller);
+		seller.setId(sellerId);
+		seller.getDocuments().setSellerId(sellerId);
+		dao.saveSellerDocuments(seller.getDocuments());
 		return seller;
 		
 	}

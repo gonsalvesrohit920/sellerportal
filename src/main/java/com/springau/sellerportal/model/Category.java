@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @author Rohit Gonsalves
+ * Category POJO
+ */
 @Getter
 @Setter
 @NoArgsConstructor

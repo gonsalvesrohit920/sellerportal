@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @author Rohit Gonsalves
+ * Contains the Answers for the category specific questions
+ */
 @Getter
 @Setter
 @NoArgsConstructor

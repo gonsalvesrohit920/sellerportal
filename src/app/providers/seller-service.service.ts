@@ -6,14 +6,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SellerServiceService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  loginUsername(email,password){
-    let userobject = {
-      username:email,
-      password:password
+  loginUsername(email, password) {
+    const userobject = {
+      username: email,
+      password
 
-    }
-     return this.http.post('sellerportal/seller/login',userobject)
+    };
+    return this.http.post('sellerportal/seller/login', userobject);
   }
 }

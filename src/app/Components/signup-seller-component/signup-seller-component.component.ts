@@ -11,7 +11,7 @@ export class SignupSellerComponentComponent implements OnInit {
 
   ngOnInit() {
   }
-  onSubmit(){
-    
+  onSubmit() {
+
   }
 }

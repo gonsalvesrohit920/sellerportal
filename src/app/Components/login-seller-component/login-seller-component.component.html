@@ -1,9 +1,19 @@
-<div style="text-align: center;" >
-    <form [formGroup]="RegisterForm"  (ngSubmit)="onLogin('product')" style="padding-bottom: 3%;" class="box">
+<div style="text-align: center;" class="container">
+    <form [formGroup]="RegisterForm" class="form-input"  (ngSubmit)="onLogin('product')" style="padding-bottom: 3%;" class="box">
             <h2>Login</h2>       
-              <input type="text" placeholder="Email" [(ngModel)]="Email" formControlName="email"><br>
-              <input type="password"  placeholder="Password" [(ngModel)]="password" formControlName="password"> <br>                       
-             <button style="margin-top: 3%;" type="submit" class="button">Login</button>               
+            <mat-form-field>
+              <input matInput class="form-input-field" type="email" placeholder="Email" [(ngModel)]="Email" formControlName="email">
+            </mat-form-field>
+
+            <br>
+        <mat-form-field>
+              <input matInput type="password"  placeholder="Password" [(ngModel)]="password" formControlName="password"> 
+        </mat-form-field>                    
+        <br> 
+        <h2>{{ errorMessage }}</h2>
+        <br>           
+             <button mat-raised-button class="form-input-field" color="primary" style="margin-top: 3%;" type="submit" class="button">Login</button>               
      </form> 
-     <button style="margin-top: 3%;" class="button"><a style="margin-top: 3%;" href="/signup">Sign Up</a></button>   
+     
+     <button mat-raised-button color="accent" style="margin-top: 3%;" class="button"><a style="margin-top: 3%;" href="/signup">Sign Up</a></button>   
     </div>

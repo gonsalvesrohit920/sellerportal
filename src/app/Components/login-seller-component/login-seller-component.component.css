@@ -1,0 +1,15 @@
+.form-input{
+    min-width: 200px;
+    max-width: 500px;
+    
+}
+
+.form-input-field{
+    min-width: 100px;
+    max-width: 300px;
+    width: 100%;
+}
+
+.container{
+    width : 100%
+}

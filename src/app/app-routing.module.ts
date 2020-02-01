@@ -6,9 +6,10 @@ import { ProductComponentComponent } from './Components/product-component/produc
 
 
 const routes: Routes = [
-  {path:"signup",component:SignupSellerComponentComponent},
-  {path:"product",component:ProductComponentComponent},
-  {path:"",component:LoginSellerComponentComponent}  
+  {path: 'signup', component: SignupSellerComponentComponent},
+  {path: 'product', component: ProductComponentComponent},
+  {path: '', component: LoginSellerComponentComponent},
+  {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 
 @NgModule({

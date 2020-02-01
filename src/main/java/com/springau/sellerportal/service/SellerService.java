@@ -20,11 +20,15 @@ public class SellerService {
 	 * @param login the loginData
 	 * @return true, if successful
 	 */
-	public boolean validateLogin(LoginData login) {
+	public Seller validateLogin(LoginData login) {
 			
 		Seller seller = dao.getSellerByEmail(login.getUsername());
 		
-		return (seller.getEmail().equals(login.getUsername()) && seller.getPassword().equals(login.getPassword()));
+		if(seller.isExists() && !(seller.getEmail().equals(login.getUsername()) && seller.getPassword().equals(login.getPassword()))) {
+			seller.setValid(false);
+		}
+		
+		return seller;
 		
 	}
 

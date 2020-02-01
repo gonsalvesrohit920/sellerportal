@@ -22,6 +22,9 @@ public class Seller {
 	
 	private String applicationStatus;
 	
+	private boolean isValid = true;
+	private boolean exists = true;
+	
 	
 	
 

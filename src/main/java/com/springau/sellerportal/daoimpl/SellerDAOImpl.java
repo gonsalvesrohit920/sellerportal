@@ -1,4 +1,4 @@
-package com.springau.sellerportal.dao;
+package com.springau.sellerportal.daoimpl;
 
 import javax.sql.DataSource;
 
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.springau.sellerportal.dao.SellerDAO;
 import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.rowmapper.SellerMapper;
 
@@ -37,7 +38,9 @@ public class SellerDAOImpl implements SellerDAO {
 			}
 		}
 		catch (Exception e) {
-			throw e;
+			Seller seller = new Seller();
+			seller.setExists(false);
+			return seller;
 		}
 	}
 

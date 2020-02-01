@@ -12,6 +12,7 @@ import lombok.Setter;
 public class ProductImage {
 	
 	private int productId;
+	private String imageType;
 	private byte[] productImageData;
 	
 }

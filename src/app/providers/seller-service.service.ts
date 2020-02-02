@@ -11,6 +11,11 @@ export class SellerServiceService {
   private USER_PASSWORD = 'sellerPassword';
   private APPLICATION_STATUS = 'applicationStatus';
 
+  userobject = {
+    username: '',
+    password: ''
+  };
+
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
 
@@ -19,12 +24,9 @@ export class SellerServiceService {
 
 
   loginUsername(email, password) {
-    const userobject = {
-      username: email,
-      password
-
-    };
-    return this.http.post('sellerportal/seller/login', userobject);
+    this.userobject.username = email;
+    this.userobject.password = password;
+    return this.http.post('sellerportal/seller/login', this.userobject);
   }
 
 

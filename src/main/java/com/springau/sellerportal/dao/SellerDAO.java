@@ -3,6 +3,10 @@ package com.springau.sellerportal.dao;
 import com.springau.sellerportal.model.Documents;
 import com.springau.sellerportal.model.Seller;
 
+/**
+ * @author Rohit Gonsalves
+ * Seller Interface with Database
+ */
 public interface SellerDAO {
 	
 	Seller getSellerByEmail(String email);

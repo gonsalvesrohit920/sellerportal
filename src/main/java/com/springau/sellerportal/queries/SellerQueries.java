@@ -1,5 +1,10 @@
 package com.springau.sellerportal.queries;
 
+/**
+ * The Class SellerQueries for queries on seller tabler. 
+ *
+ * @author Rohit Gonsalves
+ */
 public class SellerQueries {
 	
 	public static final String GET_COMPLETE_SELLER_DATA_BYEMAIL = "SELECT d.s_id,s.s_name, s.email, s.s_password, s.phone_no,+"

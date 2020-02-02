@@ -16,10 +16,9 @@ import com.springau.sellerportal.rowmapper.SellerLoginMapper;
 import com.springau.sellerportal.rowmapper.SellerMapper;
 
 /**
- * The Class SellerDAOImpl.
- * Implemenation of SellerDAO
- * @author Rohit Gonsalves
- * 	Database interaction for the seller Class
+ * The Class SellerDAOImpl. Implemenation of SellerDAO
+ * 
+ * @author Rohit Gonsalves Database interaction for the seller Class
  */
 @Repository
 public class SellerDAOImpl implements SellerDAO {
@@ -46,29 +45,24 @@ public class SellerDAOImpl implements SellerDAO {
 	 */
 	@Override
 	public Seller getSellerByEmail(String email) {
-		
+
 		try {
-			Seller seller = jdbcTemplate.queryForObject(
-					SellerQueries.GET_SELLER_LOGIN_DATA_BY_EMAIL,
-					new Object[] { email.trim() }, 
-					new SellerLoginMapper()
-					);
-		
-			if(seller != null) {
+			Seller seller = jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_LOGIN_DATA_BY_EMAIL,
+					new Object[] { email.trim() }, new SellerLoginMapper());
+
+			if (seller != null) {
 				return seller;
-			}
-			else {
+			} else {
 				return new Seller();
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Seller seller = new Seller();
 			seller.setExists(false);
+			seller.setValid(false);
 			return seller;
 		}
 	}
 
-	
 	/**
 	 * Save seller to the database.
 	 *
@@ -77,42 +71,33 @@ public class SellerDAOImpl implements SellerDAO {
 	 */
 	@Override
 	public int saveSeller(Seller seller) {
-		jdbcTemplate.update(SellerQueries.SAVE_SELLER,
-				seller.getName(),
-				seller.getEmail(),
-				seller.getPassword(),
-				seller.getContact().getPhoneNo(),
-				seller.getContact().getStreet(),
-				seller.getContact().getCity(),
-				seller.getContact().getPincode(),
-				seller.getApplicationStatus()
-		);
-		
+		jdbcTemplate.update(SellerQueries.SAVE_SELLER, seller.getName(), seller.getEmail(), seller.getPassword(),
+				seller.getContact().getPhoneNo(), seller.getContact().getStreet(), seller.getContact().getCity(),
+				seller.getContact().getPincode(), seller.getApplicationStatus());
+
 		return this.getSellerIdFromEmail(seller.getEmail());
 	}
-	
-	
-	
 
 	/**
 	 * Gets the Complete seller details by email.
 	 *
-	 * @param email the email id of the seller 
+	 * @param email the email id of the seller
 	 * @return the seller details by email
 	 */
 	@Override
 	public Seller getSellerDetailsByEmail(String email) {
-		
+
 		Seller seller = jdbcTemplate.queryForObject(
 				SellerQueries.GET_SELLER_LOGIN_DATA_BY_EMAIL,
-				new Object[] { email },
-				new SellerMapper());
+				new Object[] { email }, new SellerMapper()
+				);
 		
+
 		Documents documents = jdbcTemplate.queryForObject(
-														DocumentQueries.GET_DOCUMENTS,
-														new Object[] { seller.getId() },
-														new DocumentRowMapper());
-		
+				DocumentQueries.GET_DOCUMENTS,
+				new Object[] { seller.getId() }, new DocumentRowMapper()
+				);
+
 		seller.setDocuments(documents);
 		return seller;
 	}
@@ -122,7 +107,7 @@ public class SellerDAOImpl implements SellerDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/**
 	 * Save seller documents.
 	 *
@@ -130,25 +115,24 @@ public class SellerDAOImpl implements SellerDAO {
 	 * @return the documents
 	 */
 	public Documents saveSellerDocuments(Documents documents) {
-		
+
 		jdbcTemplate.update(
-				DocumentQueries.SAVE_DOCUMENTS,
-				documents.getSellerId(),
+				DocumentQueries.SAVE_DOCUMENTS, 
+				documents.getSellerId(), 
 				documents.getPanNo(),
 				documents.getPanImageType(),
-				documents.getPanImage(),
+				documents.getPanImage(), 
 				documents.getGstInNo(),
-				documents.getGstInImageType(),
-				documents.getGstInImage()
-				);
+				documents.getGstInImageType(), 
+				documents.getGstInImage());
 		return documents;
 	}
-	
+
 	public int getSellerIdFromEmail(String email) {
-		
+
 		Seller s = this.getSellerByEmail(email);
 		return s.getId();
-		
+
 	}
 
 }

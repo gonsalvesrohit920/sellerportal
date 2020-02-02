@@ -10,9 +10,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.springau.sellerportal.dao.ProductDAO;
+import com.springau.sellerportal.model.CategoryAnswer;
 import com.springau.sellerportal.model.Product;
 import com.springau.sellerportal.model.ProductImage;
+import com.springau.sellerportal.queries.CategoryAnswerQueries;
+import com.springau.sellerportal.queries.ProductImageQueries;
 import com.springau.sellerportal.queries.ProductQueries;
+import com.springau.sellerportal.rowmapper.IdMapper;
+import com.springau.sellerportal.rowmapper.ProductImageMapper;
 import com.springau.sellerportal.rowmapper.ProductMapper;
 
 
@@ -56,13 +61,29 @@ public class ProductDAOImpl implements ProductDAO{
 
 	@Override
 	public List<Product> saveProduct(Product product) {
-
+		int productId = jdbcTemplate.queryForObject(
+				ProductQueries.STORE_PRODUCT,
+				new Object[] {
+				product.getSellerId(),
+				product.getName(),
+				product.getDecription(),
+				product.getCategory(),
+				product.getQuantity(),
+				product.getPrice()},
+				new IdMapper()
+				);
+		
+		product.setProductId(productId);
+		
+		for(CategoryAnswer catAnswer : product.getAttributes()) {
+			catAnswer.setProductId(productId);
+		}
 		return null;
 	}
 
 	@Override
 	public List<Product> updateProduct(Product product) {
-
+		//TODO
 		return null;
 	}
 
@@ -73,13 +94,55 @@ public class ProductDAOImpl implements ProductDAO{
 	}
 
 	@Override
-	public Map<String, String> getProductAttributes(int productId) {
+	public List<CategoryAnswer> getProductAttributes(int productId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * Gets the product images by product Id.
+	 *
+	 * @param productId the product id
+	 * @return the product images
+	 */
 	@Override
 	public List<ProductImage> getProductImages(int productId) {
+		
+		
+		return jdbcTemplate.query(
+				ProductImageQueries.GET_PRODUCT_IMAGES,
+				new Object[] { 
+						productId 
+						},
+				new ProductImageMapper());
+	}
+	
+	
+	public boolean insertProductAttributes(List<CategoryAnswer> answers) {
+		
+		try {
+			for(CategoryAnswer categoryAnswer : answers) {
+				jdbcTemplate.update(
+						CategoryAnswerQueries.SAVE_PRODUCT_ANSWERS,
+						categoryAnswer.getProductId(),
+						categoryAnswer.getCatId(),
+						categoryAnswer.getCatqId(),
+						categoryAnswer.getCatAnswer()
+						);
+			}
+			
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		
+	}
+
+	@Override
+	public List<ProductImage> saveProductImages(int productId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

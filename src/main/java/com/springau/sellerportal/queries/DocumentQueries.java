@@ -1,5 +1,9 @@
 package com.springau.sellerportal.queries;
 
+/**
+ * @author Rohit Gonsalves
+ * Queries for Documents Table
+ */
 public class DocumentQueries {
 
 	public static final String GET_DOCUMENTS = "SELECT s_id,pan_no, pan_image_type, pan_image, gst_in_no, gst_in_image_type, gst_in_image" + 

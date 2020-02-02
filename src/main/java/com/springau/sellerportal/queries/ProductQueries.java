@@ -11,7 +11,7 @@ public class ProductQueries {
 	
 	public static final String STORE_PRODUCT = "INSERT INTO \"Product\"(" + 
 					"	 s_id, p_name, p_description, category, quantity, price)" + 
-					"	VALUES (?, ?, ?, ?, ?, ?);";
+					"	VALUES (?, ?, ?, ?, ?, ?) RETURNS p_id;";
 	
 	private ProductQueries() {
 		

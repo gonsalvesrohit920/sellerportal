@@ -7,8 +7,22 @@ import org.springframework.jdbc.core.RowMapper;
 import com.springau.sellerportal.model.Contact;
 import com.springau.sellerportal.model.Seller;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SellerMapper.
+ *
+ * @author Rohit Gonsalves
+ */
 public class SellerMapper implements RowMapper<Seller> {
 
+	/**
+	 * Map row.
+	 *
+	 * @param rs the rs
+	 * @param rowNum the row num
+	 * @return the seller
+	 * @throws SQLException the SQL exception
+	 */
 	@Override
 	public Seller mapRow(ResultSet rs, int rowNum) throws SQLException {
 		

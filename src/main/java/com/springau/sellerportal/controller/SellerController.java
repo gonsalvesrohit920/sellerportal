@@ -33,8 +33,8 @@ public class SellerController {
 	ProductService productService;
 	
 	/**
-	 * Gets the response.
-	 *@author Rohit Gonsalves
+	 * Dummy method.
+	 *
 	 * @return the response
 	 */
 	@GetMapping

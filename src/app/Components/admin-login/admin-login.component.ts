@@ -9,7 +9,11 @@ import { Router } from '@angular/router';
 })
 export class AdminLoginComponent implements OnInit {
 
-  constructor(cookieService: CookieService, router : Router, ) { }
+  constructor(cookieService: CookieService, router: Router, ) { }
+
+  public postURL = 'sellerportal/admin/sellers';
+
+  public route = 'admin/sellers';
 
   async ngOnInit() {
     

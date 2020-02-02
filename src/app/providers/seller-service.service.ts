@@ -16,6 +16,7 @@ export class SellerServiceService {
     password: ''
   };
 
+  private defaultPostURL = 'sellerportal/seller/login';
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
 
@@ -23,10 +24,10 @@ export class SellerServiceService {
 
 
 
-  loginUsername(email, password) {
+  loginUsername(email, password, postURL = this.defaultPostURL) {
     this.userobject.username = email;
     this.userobject.password = password;
-    return this.http.post('sellerportal/seller/login', this.userobject);
+    return this.http.post(postURL, this.userobject);
   }
 
 

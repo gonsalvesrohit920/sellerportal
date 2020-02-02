@@ -14,6 +14,7 @@
         <br>           
              <button mat-raised-button class="form-input-field" color="primary" style="margin-top: 3%;" type="submit" class="button">Login</button>               
      </form> 
-     
-     <button mat-raised-button color="accent" style="margin-top: 3%;" class="button"><a style="margin-top: 3%;" href="/signup">Sign Up</a></button>   
+     <div *ngIf="!isAdmin"> 
+      <button mat-raised-button color="accent" style="margin-top: 3%;" class="button"><a style="margin-top: 3%;" href="/signup">Sign Up</a></button>   
+    </div>
     </div>

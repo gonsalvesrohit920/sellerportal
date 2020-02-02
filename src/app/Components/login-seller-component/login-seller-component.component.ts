@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, FormControlName, Validators, EmailValidator } from '@angular/forms';
 import {CookieService} from 'ngx-cookie-service';
 import { Router } from '@angular/router';
@@ -12,10 +12,24 @@ import { SellerDataService } from 'src/app/providers/seller-data-service/seller-
   styleUrls: ['./login-seller-component.component.css']
 })
 export class LoginSellerComponentComponent implements OnInit {
-  constructor(private cookieservice: CookieService, private router: Router,
-              private sellerservice: SellerServiceService, private sellerDataService: SellerDataService) {
+  constructor(
+              private cookieservice: CookieService,
+              private router: Router,
+              private sellerservice: SellerServiceService,
+              private sellerDataService: SellerDataService
+              ) {
 
   }
+
+
+  private defaultPostURL = 'sellerportal/seller/login';
+
+  @Input() route = 'product';
+  @Input() postURL = this.defaultPostURL;
+  @Input() isAdmin = false;
+
+
+  
 
   errorMessage: string;
   Email: string;
@@ -46,7 +60,10 @@ export class LoginSellerComponentComponent implements OnInit {
   onLogin(pagename: string) {
     let bool = false;
 
-    this.sellerservice.loginUsername(this.RegisterForm.get('email').value, this.RegisterForm.get('password').value).subscribe((data) => {
+    this.sellerservice.loginUsername(
+      this.RegisterForm.get('email').value
+    , this.RegisterForm.get('password').value
+    , this.postURL).subscribe((data) => {
       console.log(data.valueOf());
       bool = true;
       console.log(bool + '');

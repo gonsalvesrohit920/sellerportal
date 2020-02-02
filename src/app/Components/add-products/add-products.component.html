@@ -1,0 +1,38 @@
+<div style="text-align: center; padding-top: 5%;" >
+     <label>Select Category :</label>
+     <mat-form-field>
+        <mat-select placeholder="Books" [(ngModel)]="SelectedType" (selectionChange)="GetType($event)">
+          <mat-option *ngFor="let type of types" [value]="type.value">
+            {{ type.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+</div> 
+<div *ngIf="data" style="text-align: center; padding-top: 5%;" >
+  <form   [formGroup]="ProductForm" (ngSubmit)="onSubmit()" class="example-form"  >
+<div>
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Product Name"  formControlName="Product Name">
+    </mat-form-field>
+    <br>
+        <mat-form-field  class="example-full-width">
+        <input matInput placeholder="Product Description"  formControlName="Product Description">
+    </mat-form-field>
+    <br>
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Quantity"  formControlName="Quantity">
+    </mat-form-field>
+    <br>
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Price"  formControlName="Price">
+    </mat-form-field>
+    <br>
+</div>  
+  <div *ngFor="let item of CategoryQuestions">
+    <mat-form-field  class="example-full-width">
+        <input matInput placeholder="{{item}}"  formControlName="{{item}}">
+    </mat-form-field>
+  </div>
+    <button style="margin-top: 3%;" type="submit" class="button">Submit</button> 
+  </form>
+ </div>

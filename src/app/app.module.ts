@@ -14,6 +14,7 @@ import { SellerComponent } from './Components/seller/seller.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatButtonModule, MatTabsModule, MatInputModule, MatToolbarModule} from '@angular/material';
+import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import {MatButtonModule, MatTabsModule, MatInputModule, MatToolbarModule} from '
     SignupSellerComponentComponent,
     ProductComponentComponent,
     SellerComponent,
+    AdminLoginComponent,
   ],
   imports: [
     BrowserModule,

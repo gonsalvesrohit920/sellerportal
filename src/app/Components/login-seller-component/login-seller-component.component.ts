@@ -3,8 +3,9 @@ import { FormGroup, FormControl, FormControlName, Validators, EmailValidator } f
 import {CookieService} from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { SellerServiceService } from 'src/app/providers/seller-service.service';
-import { SellerDataService } from '../../providers/seller-data-service/seller-data.service';
+
 import { from } from 'rxjs';
+import { SellerDataService } from 'src/app/providers/seller-data-service/seller-data.service';
 @Component({
   selector: 'app-login-seller-component',
   templateUrl: './login-seller-component.component.html',
@@ -31,7 +32,7 @@ export class LoginSellerComponentComponent implements OnInit {
 
   async ngOnInit() {
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
-    let session = await this.sellerservice.checkSession();
+    const session = await this.sellerservice.checkSession();
     console.log(session);
     if (session) {
       this.router.navigate(['product']);
@@ -61,10 +62,10 @@ export class LoginSellerComponentComponent implements OnInit {
 
         this.router.navigate([`${pagename}`]);
         this.cookieservice.set('email', this.RegisterForm.get('email').value);
-		    this.cookieservice.set('password', this.RegisterForm.get('password').value);
-		this.cookieservice.set('applicationStatus',this.sellerData['applicationStatus']);
+		      this.cookieservice.set('password', this.RegisterForm.get('password').value);
+		      this.cookieservice.set('applicationStatus', this.sellerData['applicationStatus']);
         console.log(this.RegisterForm.get('email').value);
-		
+
       }
 
 
@@ -74,7 +75,7 @@ export class LoginSellerComponentComponent implements OnInit {
 
 
   revalidateLogin(){
-    let username = this.cookieservice.get('email');
-    let password = this.cookieservice.get('password');
+    const username = this.cookieservice.get('email');
+    const password = this.cookieservice.get('password');
   }
 }

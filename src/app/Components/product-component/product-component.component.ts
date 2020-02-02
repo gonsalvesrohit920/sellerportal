@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
-import { SellerDataService } from '../../providers/seller-data-service/seller-data.service';
+
 import { Router } from '@angular/router';
+import { SellerDataService } from 'src/app/providers/seller-data-service/seller-data.service';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class ProductComponentComponent implements OnInit {
   username: string;
-  constructor(private cookieservice: CookieService, private sellerDataService: SellerDataService, private router: Router) { }
+  constructor(private cookieservice: CookieService, private sellerDataService: SellerDataService , private router: Router) { }
 
   sellerData: object;
 
@@ -24,7 +25,7 @@ export class ProductComponentComponent implements OnInit {
 
   onLogout() {
     this.cookieservice.deleteAll();
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
   }
 
 }

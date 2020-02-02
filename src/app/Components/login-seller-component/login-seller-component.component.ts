@@ -29,11 +29,16 @@ export class LoginSellerComponentComponent implements OnInit {
   sellerData: object;
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
+    let session = await this.sellerservice.checkSession();
+    console.log(session);
+    if (session) {
+      this.router.navigate(['product']);
+    }
   }
 
-  submit(){
+  submit() {
     this.sellerDataService.changeData(this.sellerData);
   }
 
@@ -49,14 +54,14 @@ export class LoginSellerComponentComponent implements OnInit {
 
       if (!data.valueOf()['exists']) {
           this.errorMessage = 'User Does Not Exist';
-      // tslint:disable-next-line: no-string-literal
+
       } else if (!data.valueOf()['valid']) {
         this.errorMessage = 'Please Check Your Password';
       } else {
 
         this.router.navigate([`${pagename}`]);
         this.cookieservice.set('email', this.RegisterForm.get('email').value);
-		this.cookieservice.set('password', this.RegisterForm.get('password').value);
+		    this.cookieservice.set('password', this.RegisterForm.get('password').value);
 		this.cookieservice.set('applicationStatus',this.sellerData['applicationStatus']);
         console.log(this.RegisterForm.get('email').value);
 		
@@ -65,5 +70,11 @@ export class LoginSellerComponentComponent implements OnInit {
 
 
     });
+  }
+
+
+  revalidateLogin(){
+    let username = this.cookieservice.get('email');
+    let password = this.cookieservice.get('password');
   }
 }

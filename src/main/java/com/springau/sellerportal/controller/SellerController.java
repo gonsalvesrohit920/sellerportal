@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Product;
 import com.springau.sellerportal.model.Seller;
+import com.springau.sellerportal.service.MailService;
 import com.springau.sellerportal.service.ProductService;
 import com.springau.sellerportal.service.SellerService;
 
@@ -32,6 +33,9 @@ public class SellerController {
 	@Autowired
 	ProductService productService;
 	
+	@Autowired
+	MailService mailService;
+	
 	/**
 	 * Dummy method.
 	 *
@@ -39,6 +43,7 @@ public class SellerController {
 	 */
 	@GetMapping
 	public String getResponse() {
+		mailService.crunchifyReadyToSendEmail("gonsalvesrohit920@gmail.com", "jkcbjbxbc", "kjbckjbzjxc");
 		return "Hello";
 	}
 	

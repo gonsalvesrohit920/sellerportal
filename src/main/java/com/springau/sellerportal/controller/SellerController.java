@@ -63,5 +63,17 @@ public class SellerController {
 	public List<Product> getAllProducts(){
 		return productService.getAllProducts();
 	}
+	
+	
+	/**
+	 * @author Shashank Jain
+	 * @param seller
+	 * @return
+	 */
+	@PostMapping(path = "/signup")
+	public Seller signupSeller(@RequestBody Seller seller) {
+		return sellerService.saveSeller(seller);
+	}
+	
 
 }

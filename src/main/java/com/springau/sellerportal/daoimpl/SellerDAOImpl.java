@@ -142,7 +142,7 @@ public class SellerDAOImpl implements SellerDAO {
 				documents.getPanImage(),
 				documents.getGstInNo(),
 				documents.getGstInImageType(),
-				documents.getGstInImage()
+				documents.getPanImage()
 				);
 		return documents;
 	}

@@ -6,7 +6,7 @@ import { SellerServiceService } from 'src/app/providers/seller-service.service';
 import { from } from 'rxjs';
 
 import { SellerDataService } from 'src/app/providers/seller-data-service/seller-data.service';
-import { Seller } from '../../Pojos/Pojos'
+import { Seller } from '../../Pojos/Pojos';
 
 @Component({
   selector: 'app-login-seller-component',
@@ -31,7 +31,7 @@ export class LoginSellerComponentComponent implements OnInit {
   @Input() isAdmin = false;
 
 
-  
+
 
   errorMessage: string;
   Email: string;
@@ -93,7 +93,7 @@ export class LoginSellerComponentComponent implements OnInit {
   }
 
 
-  revalidateLogin(){
+  revalidateLogin() {
     const username = this.cookieservice.get('email');
     const password = this.cookieservice.get('password');
   }

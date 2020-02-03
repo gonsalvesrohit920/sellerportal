@@ -23,10 +23,11 @@ export class SellerServiceService {
   private defaultPostURL = 'sellerportal/seller/login';
   private defaultAdminPostUrl = '/sellerportal/admin/login' ;
   private defaultSessionValidationURL = 'sellerportal/seller/validate_session';
+  private defaultAdminSessionValidationURL = 'sellerportal/admin/validate_session';
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   loginUsername(email, password, postURL = this.defaultPostURL) {
-    
+
     this.userobject.username = email;
     this.userobject.password = password;
 

@@ -14,25 +14,51 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * The Class AppConfig.
+ * Contains configuration for Database and mail service
+ *
+ * @author Rohit Gonsalves
+ */
 @Configuration
 @EnableWebMvc
 @PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = "com.*")
 public class AppConfig {
 	
+	/** The Constant URL. */
 	private static final String URL = "url";
+	
+	/** The Constant USER. */
 	private static final String USER = "dbuser";
+	
+	/** The Constant DRIVER. */
 	private static final String DRIVER = "driver";
+	
+	/** The Constant PASSWORD. */
 	private static final String PASSWORD = "dbpassword";
 	
+	/** The Constant MAIL_HOST. */
 	private static final String MAIL_HOST = "mail.host";
+	
+	/** The Constant MAIL_PORT. */
 	private static final String MAIL_PORT = "mail.port";
+	
+	/** The Constant MAIL_PROTOCOL. */
 	private static final String MAIL_PROTOCOL =  "mail.protocol";
+	
+	/** The Constant MAIL_SENDER. */
 	private static final String MAIL_SENDER = "mail.sender";
 	
+	/** The environment. */
 	@Autowired
 	Environment environment;
 
+	/**
+	 * Data source.
+	 *	Database Server Configuration
+	 * @return the data source
+	 */
 	@Bean
 	DataSource dataSource() {
 		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
@@ -44,6 +70,11 @@ public class AppConfig {
 	}
 	
 	
+	/**
+	 * Java mail service.
+	 * Mail Sending Configuration
+	 * @return the java mail sender
+	 */
 	@Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
@@ -53,6 +84,11 @@ public class AppConfig {
         return javaMailSender;
     }
 
+    /**
+     * Simple mail message.
+     *	Mail Sending Template
+     * @return the simple mail message
+     */
     @Bean
     public SimpleMailMessage simpleMailMessage() {
        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();

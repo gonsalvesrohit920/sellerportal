@@ -1,7 +1,6 @@
 package com.springau.sellerportal.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import com.springau.sellerportal.model.CategoryAnswer;
 import com.springau.sellerportal.model.Product;

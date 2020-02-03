@@ -15,7 +15,7 @@ export class CategoryAnswer {
 }
 
 
-class CategoryQuestion {
+export class CategoryQuestion {
 
 	  catqId: number;
 	  catId: number;
@@ -25,7 +25,7 @@ class CategoryQuestion {
 
 
 
-class Contact {
+export class Contact {
 
 	  phoneNo: string;
 	  street: string;
@@ -36,7 +36,7 @@ class Contact {
 }
 
 
-class Documents {
+export class Documents {
 
 	  sellerId: number;
 
@@ -54,7 +54,7 @@ class Documents {
 }
 
 
-class LoginData {
+export class LoginData {
 
 	  username: string;
 	  password: string;
@@ -62,7 +62,7 @@ class LoginData {
 }
 
 
-class Product {
+export class Product {
 
     productId: number;
 	sellerId: number;
@@ -77,7 +77,7 @@ class Product {
 }
 
 
-class ProductImage {
+export class ProductImage {
 
 	  imageId: number;
 	  productId: number;
@@ -86,3 +86,18 @@ class ProductImage {
 
 }
 
+export class Seller {
+	seller_id: number;
+	name: string ;
+	email: string ;
+	password: string ;
+	contact: Contact ;
+	street: string ;
+	city: string ;
+	pincode: number ;
+	phoneNo: string ;
+	documents: Documents;
+	valid: boolean;
+	exists: boolean;
+	applicationStatus: String;
+}

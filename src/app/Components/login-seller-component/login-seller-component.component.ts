@@ -3,9 +3,11 @@ import { FormGroup, FormControl, FormControlName, Validators, EmailValidator } f
 import {CookieService} from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { SellerServiceService } from 'src/app/providers/seller-service.service';
-
 import { from } from 'rxjs';
+
 import { SellerDataService } from 'src/app/providers/seller-data-service/seller-data.service';
+import { Seller } from '../../Pojos/Pojos'
+
 @Component({
   selector: 'app-login-seller-component',
   templateUrl: './login-seller-component.component.html',
@@ -63,24 +65,24 @@ export class LoginSellerComponentComponent implements OnInit {
     this.sellerservice.loginUsername(
       this.RegisterForm.get('email').value
     , this.RegisterForm.get('password').value
-    , this.postURL).subscribe((data) => {
+    , this.postURL).subscribe((data: Seller) => {
       console.log(data.valueOf());
       bool = true;
       console.log(bool + '');
 
       this.sellerData = data;
 
-      if (!data.valueOf()['exists']) {
+      if (!data.exists) {
           this.errorMessage = 'User Does Not Exist';
 
-      } else if (!data.valueOf()['valid']) {
+      } else if (!data.valid) {
         this.errorMessage = 'Please Check Your Password';
       } else {
 
         this.router.navigate([`${pagename}`]);
         this.cookieservice.set('email', this.RegisterForm.get('email').value);
 		      this.cookieservice.set('password', this.RegisterForm.get('password').value);
-		      this.cookieservice.set('applicationStatus', this.sellerData['applicationStatus']);
+		      this.cookieservice.set('applicationStatus', data.applicationStatus + '');
         console.log(this.RegisterForm.get('email').value);
 
       }

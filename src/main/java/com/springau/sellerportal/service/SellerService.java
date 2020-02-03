@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.springau.sellerportal.dao.SellerDAO;
 import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Seller;
+import com.springau.sellerportal.utility.PasswordHash;
 
 /**
  * @author Rohit Gonsalves
@@ -27,11 +28,10 @@ public class SellerService {
 	public Seller validateLogin(LoginData login) {
 			
 		Seller seller = dao.getSellerByEmail(login.getUsername());
-		
+		seller.setPassword(PasswordHash.getMd5Hash(seller.getPassword())); // Get MD5 Hash
 		if(seller.isExists() && !(seller.getEmail().equals(login.getUsername()) && seller.getPassword().equals(login.getPassword()))) {
 			seller.setValid(false);
 		}
-		
 		return seller;
 		
 	}

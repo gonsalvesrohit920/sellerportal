@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.springau.sellerportal.model.LoginData;
@@ -19,6 +17,7 @@ import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.service.MailService;
 import com.springau.sellerportal.service.ProductService;
 import com.springau.sellerportal.service.SellerService;
+import com.springau.sellerportal.utility.PasswordHash;
 
 
 /**
@@ -41,11 +40,11 @@ public class SellerController {
 	MailService mailService;
 	
 	/**
-	 * Dummy method.
+	 * Dummy method to test API is working
 	 *
 	 * @return the response
 	 */
-	@GetMapping
+	@GetMapping("/send_mail")
 	public String getResponse() {
 		mailService.crunchifyReadyToSendEmail("gonsalvesrohit920@gmail.com", "MAil Service test", "TEst Mail Service");
 		return "Hello";
@@ -55,20 +54,19 @@ public class SellerController {
 	public String getFile(MultipartHttpServletRequest httpServletRequest ) {
 		
 		System.out.println(httpServletRequest.toString());
-		
-		
 		Iterator<String>  itr = httpServletRequest.getFileNames();
-		
-		int c =  0;
 		
 		while(itr.hasNext())
 		{
-			System.out.println(itr.next());
+			String dead = itr.next();
 			
+			System.out.print(httpServletRequest.getFile(dead).getSize());		
 		}
 		
 		return "hello";
 	}
+	
+	
 	
 	/**
 	 * Login seller.
@@ -78,7 +76,19 @@ public class SellerController {
 	 */
 	@PostMapping(path = "/login")
 	public Seller loginSeller(@RequestBody LoginData loginData) {
-
+		
+		System.out.println("Login: " + loginData.toString());
+		if(!loginData.isValidate())
+			{
+					loginData.setPassword(PasswordHash.getMd5Hash(loginData.getPassword()));
+			}
+		return sellerService.validateLogin(loginData);
+	}
+	
+	
+	@PostMapping(path = "/validate_session")
+	public Seller validateSellerSession(@RequestBody LoginData loginData) {
+		System.out.println(loginData.toString());
 		return sellerService.validateLogin(loginData);
 	}
 	

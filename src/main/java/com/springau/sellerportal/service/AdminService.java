@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Seller;
+import com.springau.sellerportal.utility.PasswordHash;
 
 @Service
 @PropertySource("classpath:admin.properties")
@@ -26,7 +27,10 @@ public class AdminService {
 		String username = this.environment.getProperty(ADMIN_USERNAME);
 		String password = this.environment.getProperty(ADMIN_PASSWORD);
 		
+		password = PasswordHash.getMd5Hash(password);
+		
 		if(!data.getUsername().equals(username) || !data.getPassword().equals(password)) {
+			
 			seller.setExists(false);
 			seller.setValid(false);
 		}

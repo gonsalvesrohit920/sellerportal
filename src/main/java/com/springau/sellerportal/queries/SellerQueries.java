@@ -22,7 +22,7 @@ public class SellerQueries {
 	public static final String SAVE_SELLER = "INSERT INTO public.\"Seller\"(" + 
 											 "	s_name, email, s_password, phone_no, street, city, pincode, application_status)" + 
 											 "	VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-	
+	public static final String GET_SELLER_Status = "SELECT  s.application_status FROM public.\"Seller\" as s where s.s_id =?;";
 	
 	private SellerQueries() {
 		

@@ -1,6 +1,7 @@
 package com.springau.sellerportal.model;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,5 +23,18 @@ public class Product {
 	private String decription;
 	private List<ProductImage> images;
 	private List<CategoryAnswer> attributes;
+	private Map<String,CategoryAnswer> questionAnswers;
+	@Override
+	public String toString() {
+		System.out.println(productId+","+sellerId+","+category+","+quantity+","+price+","+name+","+decription);
+		for(Map.Entry<String, CategoryAnswer> ent:questionAnswers.entrySet()) {
+			System.out.println(ent.getKey()+","+ent.getValue().getCatAnswer());
+		}
+//		attributes.forEach((a)->{
+//			System.out.println(a.getCatqId()+","+a.getCatAnswer());
+//		});
+		
+		return super.toString();
+	}
 	
 }

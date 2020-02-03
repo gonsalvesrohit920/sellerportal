@@ -1,5 +1,6 @@
 package com.springau.sellerportal.config;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @author Rohit Gonsalves
  */
 @Configuration
+@MultipartConfig
 @EnableWebMvc
 @PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = "com.*")
@@ -94,6 +98,13 @@ public class AppConfig {
        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
        simpleMailMessage.setFrom(environment.getProperty(MAIL_SENDER));
        return simpleMailMessage;
+    }
+    
+    @Bean
+    public CommonsMultipartResolver multipartResolver(){
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSize(5242880); // set the size limit
+        return resolver;
     }
 	
 }

@@ -11,7 +11,8 @@ export class FileUploadComponent implements OnInit {
 
   SERVER_URL = 'sellerportal/seller/upload';
   uploadForm: FormGroup;
-  temp = 0;
+  file: string;
+  myFiles: string[] = [];
 
   constructor(private formBuilder: FormBuilder, private httpClient: HttpClient) { }
 
@@ -25,20 +26,30 @@ export class FileUploadComponent implements OnInit {
   }
 
   onFileSelect(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.uploadForm.get('profile').setValue(file);
+    for (let i = 0; i < event.target.files.length; i++) {
+      this.file = event.target.files[i];
+      this.myFiles.push(event.target.files[i]);
     }
+    console.log(this.myFiles);
   }
 
   onSubmit() {
     const formData = new FormData();
-    formData.append('rohit', this.uploadForm.get('profile').value);
+
+    for (let i = 0; i < this.myFiles.length; i++) {
+      formData.append('rohit[]', this.myFiles[i]);
+    }
 
     this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
+      (res) => {
+        console.log(res);
+        this.myFiles = null;
+        this.uploadForm.reset();
+      },
+      (err) => console.log(err),
     );
+
+
   }
 
 }

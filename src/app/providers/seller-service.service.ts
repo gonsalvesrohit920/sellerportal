@@ -16,16 +16,21 @@ export class SellerServiceService {
 
   userobject = {
     username: '',
-    password: ''
+    password: '',
+    validate: false,
   };
 
   private defaultPostURL = 'sellerportal/seller/login';
   private defaultAdminPostUrl = '/sellerportal/admin/login' ;
+  private defaultSessionValidationURL = 'sellerportal/seller/validate_session';
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   loginUsername(email, password, postURL = this.defaultPostURL) {
+    
     this.userobject.username = email;
     this.userobject.password = password;
+
+    console.log(this.userobject);
     return this.http.post(postURL, this.userobject);
   }
 
@@ -51,7 +56,7 @@ export class SellerServiceService {
         password,
         isAdmin ?
         this.defaultAdminPostUrl :
-        this.defaultPostURL
+        this.defaultSessionValidationURL,
         ).subscribe( data => {
 
         this.delay(500);

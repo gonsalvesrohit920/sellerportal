@@ -41,7 +41,19 @@ export class SellerServiceService {
   AddProduct(ProductDetails) {
      return this.http.post('sellerportal/seller/products/AddProduct/', ProductDetails);
   }
+  getSellerProductList(sellerId){
+    return this.http.get("sellerportal/seller/products/GetProducts/"+sellerId)
+  }
+  updateProduct(product){
+    return this.http.post("sellerportal/seller/product/UpdateProduct",product)
+  }
 
+  deleteProduct(productId){
+    return this.http.delete("sellerportal/seller/product/DeleteProduct/"+productId)
+  }
+  checkStatus(){
+    return this.http.get("sellerportal/seller/product/checkstatus/")
+  }
   delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }

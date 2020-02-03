@@ -16,10 +16,11 @@ export class ProductComponentComponent implements OnInit {
   constructor(private cookieservice: CookieService,
               private sellerDataService: SellerDataService,
               private router: Router,
-              private sellerService: SellerServiceService) { }
+              private sellerService: SellerServiceService
+              ) { }
 
   sellerData: object;
-
+  applicationStatus1 :any
   applicationStatus = this.cookieservice.get('applicationStatus');
 
   async ngOnInit() {
@@ -30,6 +31,9 @@ export class ProductComponentComponent implements OnInit {
     }
     this.username = this.cookieservice.get('email');
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
+    this.sellerService.checkStatus().subscribe((respose)=>{
+       this.applicationStatus1 = respose;
+    });
     }
 
   onLogout() {

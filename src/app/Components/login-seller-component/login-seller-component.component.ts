@@ -79,14 +79,14 @@ export class LoginSellerComponentComponent implements OnInit {
         this.errorMessage = 'Please Check Your Password';
       } else {
 
-        
+
 
         this.cookieservice.set('email', this.RegisterForm.get('email').value);
         this.cookieservice.set('password', data.password);
         this.cookieservice.set('applicationStatus', data.applicationStatus + '');
 
 
-        
+
 
         if (this.isAdmin) {
 

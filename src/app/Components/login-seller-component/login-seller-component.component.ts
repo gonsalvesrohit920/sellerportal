@@ -80,9 +80,17 @@ export class LoginSellerComponentComponent implements OnInit {
       } else {
 
         this.router.navigate([`${pagename}`]);
+
         this.cookieservice.set('email', this.RegisterForm.get('email').value);
-		      this.cookieservice.set('password', this.RegisterForm.get('password').value);
-		      this.cookieservice.set('applicationStatus', data.applicationStatus + '');
+        this.cookieservice.set('password', this.RegisterForm.get('password').value);
+        this.cookieservice.set('applicationStatus', data.applicationStatus + '');
+
+        if (this.isAdmin) {
+
+          this.cookieservice.set('admin', '' + this.isAdmin);
+
+        }
+
         console.log(this.RegisterForm.get('email').value);
 
       }

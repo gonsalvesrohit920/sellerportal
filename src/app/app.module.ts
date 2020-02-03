@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SellerComponent } from './Components/seller/seller.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 import { SignupSellerComponentComponent } from './Components/signup-seller-component/signup-seller-component.component';
+import { AuthService, FacebookLoginProvider, GoogleLoginProvider, SocialUser, AuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 
 import { AddProductsComponent } from './Components/add-products/add-products.component';
 import { MatTabsModule } from '@angular/material';
@@ -21,9 +22,23 @@ import {FormsModule} from '@angular/forms'
 import {MatGridListModule} from '@angular/material/grid-list'
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { ViewComponentComponent } from './Components/view-component/view-component.component';
-import { SellerDataService } from './providers/seller-data-service/seller-data.service';;
+import { SellerDataService } from './providers/seller-data-service/seller-data.service'; ;
 import { MatSliderModule } from '@angular/material/slider';
 import {MatButtonModule, MatToolbarModule} from '@angular/material';
+import { OauthComponent } from './Components/oauth/oauth.component';
+import { FileUploadComponent } from './Components/file-upload/file-upload.component';
+
+const config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider('343600838738-bg4nvl5lc1vc5mqmo29cjhdt4uhk5auk.apps.googleusercontent.com')
+  }]);
+
+  export function provideConfig() {
+    return config;
+  }
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +48,9 @@ import {MatButtonModule, MatToolbarModule} from '@angular/material';
     SellerComponent,
     AdminLoginComponent,
     AddProductsComponent,
-    ViewComponentComponent
+    ViewComponentComponent,
+    OauthComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -48,9 +65,15 @@ import {MatButtonModule, MatToolbarModule} from '@angular/material';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    SocialLoginModule
   ],
-  providers: [CookieService,SellerServiceService,SellerDataService],
+  providers: [
+    {
+    provide: AuthServiceConfig,
+    useFactory: provideConfig
+  },
+  CookieService, SellerServiceService, SellerDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

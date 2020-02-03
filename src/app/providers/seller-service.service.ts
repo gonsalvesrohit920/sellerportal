@@ -6,10 +6,13 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class SellerServiceService {
+  
   private USERNAME = 'email';
   private PASSWORD = 'password';
   private USER_PASSWORD = 'sellerPassword';
   private APPLICATION_STATUS = 'applicationStatus';
+  private ID = 'id';
+  private IS_ADMIN = 'isAdmin';
 
   userobject = {
     username: '',
@@ -17,22 +20,14 @@ export class SellerServiceService {
   };
 
   private defaultPostURL = 'sellerportal/seller/login';
+  private defaultAdminPostUrl = '/sellerportal/admin/login' ;
   constructor(private http: HttpClient, private cookieService: CookieService) { }
-
-
-
-
-
 
   loginUsername(email, password, postURL = this.defaultPostURL) {
     this.userobject.username = email;
     this.userobject.password = password;
     return this.http.post(postURL, this.userobject);
   }
-
-
-
-
 
   getCategoryAttributes(categoryname) {
     return this.http.get('sellerportal/seller/products/AddProductView/' + categoryname + '');
@@ -45,13 +40,19 @@ export class SellerServiceService {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
-  checkSession(): Promise<boolean> {
+  checkSession(isAdmin = false): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const username = this.cookieService.get(this.USERNAME);
       const password = this.cookieService.get(this.PASSWORD);
       let response: boolean;
 
-      this.loginUsername(username, password).subscribe( data => {
+      // Used to login User and Admin on the postURL
+      this.loginUsername(username,
+        password,
+        isAdmin ?
+        this.defaultAdminPostUrl :
+        this.defaultPostURL
+        ).subscribe( data => {
 
         this.delay(500);
 
@@ -62,8 +63,9 @@ export class SellerServiceService {
           response = false;
         } else {
 
-          this.saveLoginData(data);
+          this.saveLoginData(data, isAdmin);
           response = true;
+
         }
         resolve(response);
       });
@@ -73,9 +75,14 @@ export class SellerServiceService {
   }
 
 
-  saveLoginData(user) {
+  saveLoginData(user, isAdmin = false) {
+    this.cookieService.set(this.ID, user[this.ID] + '');
     this.cookieService.set(this.USERNAME, user[this.USERNAME]);
     this.cookieService.set(this.PASSWORD, user[this.PASSWORD]);
     this.cookieService.set(this.APPLICATION_STATUS, user[this.APPLICATION_STATUS]);
+
+    if (isAdmin) {
+      this.cookieService.set(this.IS_ADMIN, isAdmin + '');
+    }
   }
 }

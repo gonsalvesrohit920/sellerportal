@@ -11,12 +11,13 @@ export class AdminLoginComponent implements OnInit {
 
   constructor(cookieService: CookieService, router: Router, ) { }
 
-  public postURL = 'sellerportal/admin/sellers';
+  public postURL = 'sellerportal/admin/login';
 
   public route = 'admin/sellers';
 
+
   async ngOnInit() {
-    
+
   }
 
 }

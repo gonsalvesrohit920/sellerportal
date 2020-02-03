@@ -1,5 +1,5 @@
 <div style="text-align: center;" class="container">
-    <form [formGroup]="RegisterForm" class="form-input"  (ngSubmit)="onLogin('product')" style="padding-bottom: 3%;" class="box">
+    <form [formGroup]="RegisterForm" class="form-input"  (ngSubmit)="onLogin(route )" style="padding-bottom: 3%;" class="box">
             <h2>Login</h2>       
             <mat-form-field>
               <input matInput class="form-input-field" type="email" placeholder="Email" [(ngModel)]="Email" formControlName="email">

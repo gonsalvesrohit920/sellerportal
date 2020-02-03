@@ -6,10 +6,12 @@ import { AddProductsComponent } from './Components/add-products/add-products.com
 import { ViewComponentComponent } from './Components/view-component/view-component.component';
 import { SignupSellerComponentComponent } from './Components/signup-seller-component/signup-seller-component.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
+import { FileUploadComponent } from './Components/file-upload/file-upload.component';
 
 
 const routes: Routes = [
   {path: 'signup', component: SignupSellerComponentComponent},
+  {path: 'fileupload', component: FileUploadComponent},
   {path: 'product', component: ProductComponentComponent},
   {path: '', component: LoginSellerComponentComponent},
   {path: 'product/AddProduct', component: AddProductsComponent},

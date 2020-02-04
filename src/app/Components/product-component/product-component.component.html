@@ -6,7 +6,7 @@
     
 </div>
 
-<div *ngIf="applicationStatus == 'Accepted'">
+<div *ngIf="applicationStatus1 == 'Accepted'">
     <mat-tab-group>
         <mat-tab label="Add Product">
             <app-add-products></app-add-products>
@@ -16,8 +16,8 @@
     </mat-tab-group>
 </div>
 
-<div *ngIf="applicationStatus == 'Pending'">
+<div *ngIf="applicationStatus1 == 'Pending'">
     <p> Your Application is yet to be Accepted !</p>
 </div>
-
+<button (click)="check()">Click me</button>
 <p>{{ sellerData['name'] }}</p>

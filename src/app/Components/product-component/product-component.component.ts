@@ -22,14 +22,25 @@ export class ProductComponentComponent implements OnInit {
   ngOnInit() {
     this.username = this.cookieservice.get('email');
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
-    this.sellerservice.checkStatus().subscribe((respose)=>{
-       this.applicationStatus1 = respose;
+    this.sellerservice.subjectRefresh.subscribe(()=>{
+         this.keepCheckStatus()
     });
-    } 
+     this.keepCheckStatus()
+    }
 
-  onLogout() {
-    this.cookieservice.deleteAll();
-    this.router.navigate(['']);
-  }
-
+    private keepCheckStatus() {
+      this.sellerservice.checkStatus().subscribe((respose)=>{
+        this.applicationStatus1 = respose;
+        console.log( this.applicationStatus1)
+     });
+     } 
+      onLogout() {
+        this.cookieservice.deleteAll();
+        this.router.navigate(['']);
+      }
+     check(){
+       this.sellerservice.updateStatus().subscribe((details)=>{
+         console.log(details)
+       })
+     }
 }

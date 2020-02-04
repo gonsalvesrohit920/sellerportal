@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-
+import { Observable } from 'rxjs/internal/Observable';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators'
 @Injectable({
   providedIn: 'root'
 })
@@ -10,6 +12,11 @@ export class SellerServiceService {
   private PASSWORD = 'password';
   private USER_PASSWORD = 'sellerPassword';
   private APPLICATION_STATUS = 'applicationStatus';
+  
+  private _subjectRefresh = new Subject<void>();
+  get subjectRefresh(){
+    return this._subjectRefresh
+  }
 
   constructor(private http:HttpClient, private cookieService: CookieService) { }
 
@@ -38,9 +45,6 @@ export class SellerServiceService {
 
   deleteProduct(productId){
     return this.http.delete("sellerportal/seller/product/DeleteProduct/"+productId)
-  }
-  checkStatus(){
-    return this.http.get("sellerportal/seller/product/checkstatus/")
   }
   delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
@@ -73,7 +77,16 @@ export class SellerServiceService {
 
   }
 
-
+  checkStatus():Observable<string>{
+    return this.http.get("sellerportal/seller/product/checkstatus",{ responseType:'text'})
+  }
+  
+  updateStatus():Observable<any>{
+    return this.http.delete("sellerportal/seller/adminUpdate/1").pipe(tap(()=>{
+      console.log("updating....")
+        this._subjectRefresh.next();
+    }));
+  }
   saveLoginData(user){
     this.cookieService.set(this.USERNAME, user[this.USERNAME]);
     this.cookieService.set(this.PASSWORD, user[this.PASSWORD]);

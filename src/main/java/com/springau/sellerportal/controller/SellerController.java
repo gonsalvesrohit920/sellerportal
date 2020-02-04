@@ -94,5 +94,10 @@ public class SellerController {
 	public String checkStatus() {
 		return productService.checkStatus();
 	}
-	
+   @DeleteMapping(path="/adminUpdate/{sellerId}")
+   public void adminUpdateStatus(@PathVariable("sellerId") int sellerId) {
+	   System.out.println(sellerId);
+	   productService.updateStatus(sellerId);
+   }
+    
 }

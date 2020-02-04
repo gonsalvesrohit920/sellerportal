@@ -24,6 +24,10 @@ public class SellerQueries {
 											 "	VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 	public static final String GET_SELLER_Status = "SELECT  s.application_status FROM public.\"Seller\" as s where s.s_id =?;";
 	
+	public static final String UPDATE_Status="update \"Seller\" set application_status='Accepted' where s_id=?;  ";
+	
+	public static final String DELETE_SELLER_ADMIN="delete from \"Admin_seller\" where s_id=?;";
+	
 	private SellerQueries() {
 		
 	}

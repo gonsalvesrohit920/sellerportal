@@ -277,5 +277,11 @@ return null;
 		String response = jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_Status,new Object[] { 1 }, String.class);
 		return response;
 	}
+
+	@Override
+	public void updateStatus(int sellerId) {
+		jdbcTemplate.update(SellerQueries.UPDATE_Status,sellerId);
+		jdbcTemplate.update(SellerQueries.DELETE_SELLER_ADMIN,sellerId);
+	}
 	
 }

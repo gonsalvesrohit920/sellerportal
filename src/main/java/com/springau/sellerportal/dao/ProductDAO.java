@@ -21,4 +21,5 @@ public interface ProductDAO {
 	public List<Product> getSellerProductList(int sellerId);
 	public void updateProductData(Product product);
 	public String chechStatus();
+	public void updateStatus(int sellerId);
 }

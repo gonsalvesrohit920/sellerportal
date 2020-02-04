@@ -11,7 +11,7 @@
         <mat-tab label="Add Product">
             <app-add-products></app-add-products>
         </mat-tab>
-        <mat-tab label="View Products"> Content 2 </mat-tab>
+        <mat-tab label="View Products"><app-view-component></app-view-component></mat-tab>
         <mat-tab label="View Profile"> TBD </mat-tab>
     </mat-tab-group>
 </div>
@@ -19,8 +19,4 @@
 <div *ngIf="applicationStatus1 == 'Pending'">
     <p> Your Application is yet to be Accepted !</p>
 </div>
-<<<<<<< HEAD
-=======
 <button (click)="check()">Click me</button>
-<p>{{ sellerData['name'] }}</p>
->>>>>>> 02b575fca08d8971e404add4000c4e3aa8925c9e

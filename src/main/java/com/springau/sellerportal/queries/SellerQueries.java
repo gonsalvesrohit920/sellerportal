@@ -32,7 +32,9 @@ public class SellerQueries {
 			  + " d.pan_no, d.pan_image_type, d.pan_image, d.gst_in_no, d.gst_in_image_type, d.gst_in_image" + 
 			  "	FROM public.\"Documents\" as d, \"Seller\" as s where s.application_status = 'Pending' and s.s_id = d.s_id;";
 	
-	
+	public static final String SAVE_CATEGORY = "INSERT INTO public.\"Seller_category\"(" + 
+			 "	s_id, c_id)" + 
+			 "	VALUES (?, ?);";
 	private SellerQueries() {
 		
 	}

@@ -132,8 +132,8 @@ public class SellerController {
 	public String checkStatus(@PathVariable("sellerId") int sellerId) {
 		return productService.checkStatus(sellerId);
 	}
-   @DeleteMapping(path="/adminUpdate/{sellerId}")
-   public void adminUpdateStatus(@PathVariable("sellerId") String sellerId) {
+   @PostMapping(path="/product/checkstatus/adminUpdate")
+   public void adminUpdateStatus(@RequestBody  String sellerId) {
 	   int SellerId = Integer.parseInt(sellerId); 
 	   System.out.println(SellerId);
 	   productService.updateStatus(SellerId);
@@ -149,6 +149,12 @@ public class SellerController {
 	@PostMapping(path = "/signup")
 	public Seller signupSeller(@RequestBody Seller seller) {
 		return sellerService.saveSeller(seller);
+	}
+	
+	@GetMapping(path="/category/{sid}")
+	public List<String> getCategory(@PathVariable("sid") String sellerId) {
+		int sid = Integer.parseInt(sellerId);
+		return sellerService.getCategory(sid);
 	}
 	
 

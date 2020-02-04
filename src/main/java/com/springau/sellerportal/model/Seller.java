@@ -2,6 +2,8 @@ package com.springau.sellerportal.model;
 
 
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,5 +85,6 @@ public class Seller {
 	/** The documents. */
 	private Documents documents;
 	
+	private List<String> category; 
 
 }

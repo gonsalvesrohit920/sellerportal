@@ -59,4 +59,12 @@ public class SellerService {
 		return dao.getPendingSellerDetails();
 	}
 
+
+	public List<String> getCategory(int sid) {
+		// TODO Auto-generated method stub
+		return dao.getCategory(sid);
+	}
+	
+
+
 }

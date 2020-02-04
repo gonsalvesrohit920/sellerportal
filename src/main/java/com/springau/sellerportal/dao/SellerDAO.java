@@ -17,5 +17,5 @@ public interface SellerDAO {
 	Seller updateSeller(int sellerId, Seller seller);
 	Documents saveSellerDocuments(Documents documents);
 	List<Seller> getPendingSellerDetails();
-	
+	List<String> getCategory(int sid);
 }

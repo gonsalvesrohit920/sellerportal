@@ -1,18 +1,26 @@
 package com.springau.sellerportal.daoimpl;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
 import com.springau.sellerportal.dao.SellerDAO;
 import com.springau.sellerportal.model.Documents;
 import com.springau.sellerportal.model.Seller;
+import com.springau.sellerportal.queries.CategoryQueries;
+import com.springau.sellerportal.queries.CategoryQuestionsQueries;
 import com.springau.sellerportal.queries.DocumentQueries;
 import com.springau.sellerportal.queries.SellerQueries;
+import com.springau.sellerportal.rowmapper.CategoryID;
+import com.springau.sellerportal.rowmapper.CategoryQuestionMapperList;
 import com.springau.sellerportal.rowmapper.DocumentRowMapper;
 import com.springau.sellerportal.rowmapper.PendingSellerDetail;
 import com.springau.sellerportal.rowmapper.SellerLoginMapper;
@@ -74,7 +82,7 @@ public class SellerDAOImpl implements SellerDAO {
 	 */
 	@Override
 	public int saveSeller(Seller seller) {
-		jdbcTemplate.update(SellerQueries.SAVE_SELLER,
+	jdbcTemplate.update(SellerQueries.SAVE_SELLER,
 				seller.getName(),
 				seller.getEmail(),
 				seller.getPassword(),
@@ -85,7 +93,14 @@ public class SellerDAOImpl implements SellerDAO {
 				"Pending"
 		);
 		
-		return this.getSellerIdFromEmail(seller.getEmail());
+		int s_id = this.getSellerIdFromEmail(seller.getEmail());
+		
+		for(String s:seller.getCategory()) {
+			int c_id =  jdbcTemplate.queryForObject(CategoryQueries.GET_CATEGORY_ID,new Object[] { s },Integer.class);
+			jdbcTemplate.update(SellerQueries.SAVE_CATEGORY, s_id,c_id);
+		}
+		//List<Integer> c_idlist = jdbcTemplate.query(CategoryQueries.GET_CATEGORY_ID,)
+		return s_id;
 	}
 
 	/**
@@ -158,5 +173,22 @@ public class SellerDAOImpl implements SellerDAO {
 		System.out.println(pendingSellers);
 		return pendingSellers;
 	}
+
+	@Override
+	public List<String> getCategory(int sid) {
+	    List<String> category = new ArrayList<String>();
+		List<Integer> categorylist = jdbcTemplate.query(CategoryQuestionsQueries.GET_CATEGORY_ID,new PreparedStatementSetter() {
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1, sid);
+            }
+        }, new CategoryID());
+		for(int id :categorylist) {
+			String s = jdbcTemplate.queryForObject(CategoryQuestionsQueries.GET_CATEGORYS,new Object[] { id },String.class);
+			category.add(s);
+		}
+		return category;
+	}
+
+	
 
 }

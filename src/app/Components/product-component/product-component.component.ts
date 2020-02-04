@@ -34,11 +34,27 @@ export class ProductComponentComponent implements OnInit {
     this.sellerService.checkStatus().subscribe((respose)=>{
        this.applicationStatus1 = respose;
     });
+
+    this.sellerService.subjectRefresh.subscribe(()=>{
+      this.keepCheckStatus()
+      });
+  this.keepCheckStatus()
     }
 
-  onLogout() {
-    this.cookieservice.deleteAll();
-    this.router.navigate(['']);
-  }
 
+    private keepCheckStatus() {
+      this.sellerService.checkStatus().subscribe((respose)=>{
+        this.applicationStatus1 = respose;
+        console.log( this.applicationStatus1)
+     });
+     } 
+      onLogout() {
+        this.cookieservice.deleteAll();
+        this.router.navigate(['']);
+      }
+     check(){
+       this.sellerService.updateStatus().subscribe((details)=>{
+         console.log(details)
+       })
+     }
 }

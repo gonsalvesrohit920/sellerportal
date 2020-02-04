@@ -20,7 +20,13 @@
               <label>
                   Confirm Password : 
                   <input type="password" placeholder="Confirm Password" formControlName="confirmPassword"><br>
-              </label>                
+              </label>
+              <br>
+              <label>Select Category :
+                <mat-checkbox *ngFor="let type of types" [value]="type.value" (change)="GetType( type.viewValue,$event)">
+                    {{ type.viewValue }}
+                </mat-checkbox>
+        </label>                
           </form>
       </mat-tab>
       <mat-tab label = "Contact Details">

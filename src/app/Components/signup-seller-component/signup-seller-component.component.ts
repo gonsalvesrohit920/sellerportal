@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { SellerSignupDetailsService } from 'src/app/providers/seller-signup-details.service';
 import { Router } from '@angular/router';
+import { SellerServiceService } from 'src/app/providers/seller-service.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-signup-seller-component',
@@ -15,10 +17,19 @@ export class SignupSellerComponentComponent implements OnInit {
 
   selectedGSTINFile: File = null;
   selectedPANFile: File = null;
-
-  constructor(public service : SellerSignupDetailsService, private router: Router) { }
+  types = []
+  selectedckeckbox={'Books':0,
+  'Mobile':0,
+'Laptops':0,
+  'Shoes':0}
+  selectedckeckboxlist = []
+  constructor(public service : SellerSignupDetailsService, private router: Router,private sellerservice:SellerServiceService) { }
 
   ngOnInit() {
+    this.types = [ {value:'Books',viewValue:'Books'},
+                    {value:'Mobile',viewValue:'Mobile'},
+                    {value:'Laptops',viewValue:'Laptops'},
+                    {value:'Shoes',viewValue:'Shoes'}      ];
   }
 
   basicDetailsForm = new FormGroup({
@@ -26,8 +37,6 @@ export class SignupSellerComponentComponent implements OnInit {
     email: new FormControl('s@g.com',Validators.email),
     password : new FormControl('abc', Validators.required),
     confirmPassword : new FormControl('abc',Validators.required),
-    
-      
   });
 
   contactDetailsForm = new FormGroup({
@@ -44,7 +53,14 @@ export class SignupSellerComponentComponent implements OnInit {
   });
 
   onSignUp() {
-    this.service.onSignupService(this.basicDetailsForm.get('name').value, this.basicDetailsForm.get('email').value, this.basicDetailsForm.get('password').value, this.contactDetailsForm.get('street').value, this.contactDetailsForm.get('city').value, this.contactDetailsForm.get('pincode').value, this.contactDetailsForm.get('phoneNo').value, this.documentsForm.get('panNo').value, this.documentsForm.get('gstInNo').value).subscribe((details) => {
+    let keys=Object.keys(this.selectedckeckbox);
+    keys.forEach((element)=>{
+      if(this.selectedckeckbox[element]=='1')
+      this.selectedckeckboxlist.push(element)
+    })
+
+    this.service.onSignupService(this.basicDetailsForm.get('name').value, this.basicDetailsForm.get('email').value, this.basicDetailsForm.get('password').value, this.contactDetailsForm.get('street').value, this.contactDetailsForm.get('city').value, this.contactDetailsForm.get('pincode').value, this.contactDetailsForm.get('phoneNo').value, this.documentsForm.get('panNo').value, this.documentsForm.get('gstInNo').value,this.selectedckeckboxlist).subscribe((details) => {
+     console.log(this.selectedckeckboxlist)
       this.router.navigate(['/']);
     })
     
@@ -57,5 +73,17 @@ export class SignupSellerComponentComponent implements OnInit {
   onGSTINSelected(event) {
     this.selectedGSTINFile = <File>event.target.files[0];
   }
- 
+
+  GetType(value,ob){
+    if(ob.checked==true){
+         this.selectedckeckbox[value]=1
+    
+    }
+    else{
+      this.selectedckeckbox[value] =0;
+    }
+    console.log(this.selectedckeckbox)
+    
+        
+  }
 }

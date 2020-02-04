@@ -8,7 +8,7 @@ export class SellerSignupDetailsService {
 
   constructor(public http : HttpClient) { }
 
-  onSignupService(name, email, password, street, city, pincode, phoneNo, panNo, gstInNo){
+  onSignupService(name, email, password, street, city, pincode, phoneNo, panNo, gstInNo,category){
     let sellerObj = {
       'name' : name,
       'email' : email,
@@ -24,7 +24,8 @@ export class SellerSignupDetailsService {
         'panImageType' : "jpg",
         'gstInNo' : gstInNo,
         'gstInImageType' : ".jpg"
-      }
+      },
+      'category':category
     }
     console.log(sellerObj);
     return this.http.post("/sellerportal/seller/signup", sellerObj);

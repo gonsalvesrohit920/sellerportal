@@ -11,13 +11,15 @@ import { Router } from '@angular/router';
 })
 export class SellerServiceService {
   
+  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) { }
+
   private USERNAME = 'email';
   private PASSWORD = 'password';
   private USER_PASSWORD = 'sellerPassword';
   private APPLICATION_STATUS = 'applicationStatus';
   private ID = 'id';
   private IS_ADMIN = 'isAdmin';
-  
+  sid :string
   private _subjectRefresh = new Subject<void>();
   get subjectRefresh(){
     return this._subjectRefresh
@@ -28,13 +30,26 @@ export class SellerServiceService {
     password: '',
     validate: false,
   };
+  categoryname=[]
 
   private defaultPostURL = 'sellerportal/seller/login';
   private defaultAdminPostUrl = '/sellerportal/admin/login' ;
   private defaultSessionValidationURL = 'sellerportal/seller/validate_session';
   private defaultAdminSessionValidationURL = 'sellerportal/admin/validate_session';
-  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) { }
+ 
 
+  checkStatus(sellerId):Observable<string>{
+    return this.http.get("sellerportal/seller/product/checkstatus/"+sellerId,{ responseType:'text'})
+  }
+  
+  updateStatus(SellerId):Observable<any>{
+ 
+    return this.http.post("sellerportal/seller/product/checkstatus/adminUpdate",SellerId).pipe(tap(()=>{
+      console.log("updating....")
+        this._subjectRefresh.next();
+        console.log( this._subjectRefresh.next())
+    }));
+  }
   loginUsername(email, password, postURL = this.defaultPostURL) {
 
     this.userobject.username = email;
@@ -63,11 +78,6 @@ export class SellerServiceService {
   delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
-
-
-  
-
-
   checkSession(isAdmin = false): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const username = this.cookieService.get(this.USERNAME);
@@ -101,7 +111,7 @@ export class SellerServiceService {
     });
 
   }
-
+  
 
   saveLoginData(user, isAdmin = false) {
     this.cookieService.set(this.ID, user[this.ID] + '');
@@ -115,17 +125,22 @@ export class SellerServiceService {
       this.cookieService.set(this.IS_ADMIN, isAdmin + '');
     }
   }
+  setSellerId(id){
+    this.sid = id;
+ }
+ getSellerId(){
+   return this.sid
+ }
+ 
+  getCategroy(sid){
+    console.log(sid)
+    return this.http.get('sellerportal/seller/category/'+sid)
 
-  checkStatus(sellerId):Observable<string>{
-    return this.http.get("sellerportal/seller/product/checkstatus/"+sellerId,{ responseType:'text'})
   }
-  
-  updateStatus(SellerId):Observable<any>{
-    return this.http.delete("sellerportal/seller/adminUpdate/"+SellerId).pipe(tap(()=>{
-      console.log("updating....")
-        this._subjectRefresh.next();
-    }));
+  setCategory(categoryname){
+   this.categoryname = categoryname
+  // return this.http.post('sellerportal/seller/category',categoryname)
   }
 
-
+ 
 }

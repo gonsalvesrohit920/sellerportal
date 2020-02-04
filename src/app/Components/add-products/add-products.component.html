@@ -2,8 +2,8 @@
      <label>Select Category :</label>
      <mat-form-field>
         <mat-select placeholder="Books" [(ngModel)]="SelectedType" (selectionChange)="GetType($event)">
-          <mat-option *ngFor="let type of types" [value]="type.value">
-            {{ type.viewValue }}
+          <mat-option *ngFor="let type of seletedCategory" [value]="type">
+            {{ type }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -33,6 +33,34 @@
         <input matInput placeholder="{{item}}"  formControlName="{{item}}">
     </mat-form-field>
   </div>
+  <label>Upload Images:
+    <br>
+  <input formControlName="document" type="file" ng2FileSelect accept=".png" [uploader]="uploader" multiple/><br/>
+  </label>
+  <div  style="text-align: center; padding-left: 35%;">
+  <table>
+       <thead>
+            <tr>
+              <th>
+              </th>
+              <th>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of uploader.queue">
+              <th>
+                {{item?.file?.name}} {{ item?.file?.size/1024/1024 | number:'.2' }} MB
+              </th>
+              <th class="text-center">
+                <mat-icon (click)="item.remove()">delete</mat-icon>
+              </th>
+            </tr>
+            </tbody>
+          </table>
+    </div>      
+          <br>
+    <br>
     <button style="margin-top: 3%;" type="submit" class="button">Submit</button> 
   </form>
  </div>

@@ -13,7 +13,7 @@ import { SellerComponent } from './Components/seller/seller.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 import { SignupSellerComponentComponent } from './Components/signup-seller-component/signup-seller-component.component';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider, SocialUser, AuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AddProductsComponent } from './Components/add-products/add-products.component';
 import { MatTabsModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,7 +28,8 @@ import {MatButtonModule,MatToolbarModule} from '@angular/material';
 import { SellerDetailsAdminComponent } from './Components/seller-details-admin/seller-details-admin.component';
 import { OauthComponent } from './Components/oauth/oauth.component';
 import { FileUploadComponent } from './Components/file-upload/file-upload.component';
-
+import {FileSelectDirective} from "ng2-file-upload";
+import { MatIconModule } from "@angular/material/icon";
 const config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
@@ -54,6 +55,8 @@ const config = new AuthServiceConfig([
     OauthComponent,
     FileUploadComponent,
     SellerDetailsAdminComponent,
+    FileSelectDirective
+    
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,10 @@ const config = new AuthServiceConfig([
     MatInputModule,
     MatButtonModule,
     MatToolbarModule,
-    SocialLoginModule
+    SocialLoginModule,
+    MatCheckboxModule,
+    MatIconModule
+  
   ],
   providers: [
     {

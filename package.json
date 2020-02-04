@@ -25,6 +25,7 @@
     "angular5-social-login": "^1.0.9",
     "angularx-social-login": "^2.2.1",
     "hammerjs": "^2.0.8",
+    "ng2-file-upload": "^1.4.0",
     "ngx-cookie-service": "^2.3.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

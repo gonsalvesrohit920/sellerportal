@@ -84,9 +84,8 @@ export class LoginSellerComponentComponent implements OnInit {
         this.cookieservice.set('email', this.RegisterForm.get('email').value);
         this.cookieservice.set('password', data.password);
         this.cookieservice.set('applicationStatus', data.applicationStatus + '');
-
-
-
+        this.cookieservice.set('id',data.id + '');
+        this.sellerservice.setSellerId(data.id) 
 
         if (this.isAdmin) {
 

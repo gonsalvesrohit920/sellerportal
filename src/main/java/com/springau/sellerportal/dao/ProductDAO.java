@@ -19,6 +19,6 @@ public interface ProductDAO {
 	public List<ProductImage> saveProductImages(int productId);
 	public List<Product> getSellerProductList(int sellerId);
 	public void updateProductData(Product product);
-	public String chechStatus();
+	public String chechStatus(int sellerId);
 	public void updateStatus(int sellerId);
 }

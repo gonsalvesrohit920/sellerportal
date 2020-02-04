@@ -272,8 +272,8 @@ return null;
 	}
 
 	@Override
-	public String chechStatus() {
-		String response = jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_Status,new Object[] { 1 }, String.class);
+	public String chechStatus(int sellerId) {
+		String response = jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_Status,new Object[] { sellerId }, String.class);
 		return response;
 	}
 

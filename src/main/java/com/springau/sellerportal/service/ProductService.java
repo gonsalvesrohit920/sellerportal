@@ -38,8 +38,8 @@ public class ProductService {
     public void deleteProduct(int productId) {
     	dao.deleteProduct(productId);
     }
-	public String checkStatus() {
-		return dao.chechStatus();
+	public String checkStatus(int sellerId) {
+		return dao.chechStatus(sellerId);
 	}
 	public void updateStatus(int sellerId) {
 		dao.updateStatus(sellerId);

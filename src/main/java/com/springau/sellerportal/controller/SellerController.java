@@ -128,14 +128,15 @@ public class SellerController {
 		productService.deleteProduct(productId);
 	}
 	
-	@GetMapping(path="/product/checkstatus")
-	public String checkStatus() {
-		return productService.checkStatus();
+	@GetMapping(path="/product/checkstatus/{sellerId}")
+	public String checkStatus(@PathVariable("sellerId") int sellerId) {
+		return productService.checkStatus(sellerId);
 	}
    @DeleteMapping(path="/adminUpdate/{sellerId}")
-   public void adminUpdateStatus(@PathVariable("sellerId") int sellerId) {
-	   System.out.println(sellerId);
-	   productService.updateStatus(sellerId);
+   public void adminUpdateStatus(@PathVariable("sellerId") String sellerId) {
+	   int SellerId = Integer.parseInt(sellerId); 
+	   System.out.println(SellerId);
+	   productService.updateStatus(SellerId);
    }
     
 	

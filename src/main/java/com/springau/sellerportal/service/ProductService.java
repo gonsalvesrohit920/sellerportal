@@ -41,4 +41,8 @@ public class ProductService {
 	public String checkStatus() {
 		return dao.chechStatus();
 	}
+	public void updateStatus(int sellerId) {
+		dao.updateStatus(sellerId);
+		
+	}
 }

@@ -138,4 +138,17 @@ public class SellerController {
 	   productService.updateStatus(sellerId);
    }
     
+	
+	
+	/**
+	 * @author Shashank Jain
+	 * @param seller
+	 * @return
+	 */
+	@PostMapping(path = "/signup")
+	public Seller signupSeller(@RequestBody Seller seller) {
+		return sellerService.saveSeller(seller);
+	}
+	
+
 }

@@ -12,7 +12,7 @@ public class SellerQueries {
 																	+ " d.pan_no, d.pan_image_type, d.pan_image, d.gst_in_no, d.gst_in_image_type, d.gst_in_image" + 
 																	"	FROM public.\"Documents\" as d, \"Seller\" as s where s.email = ? and s.s_id = d.s_id;";
 	
-	public static final String GET_COMPLETE_DATA_ALL_SELLERS = "SELECT d.s_id,s.s_name, s.email, s.s_password, s.phone_no,+"
+	public static final String GET_COMPLETE_DATA_ALL_SELLERS = "SELECT d.s_id,s.s_name, s.email, s.s_password, s.phone_no," 
 															  + " s.street, s.city, s.pincode, s.application_status,"
 															  + " d.pan_no, d.pan_image_type, d.pan_image, d.gst_in_no, d.gst_in_image_type, d.gst_in_image" + 
 															  "	FROM public.\"Documents\" as d, \"Seller\" as s where and s.s_id = d.s_id;";
@@ -27,6 +27,11 @@ public class SellerQueries {
 	public static final String UPDATE_Status="update \"Seller\" set application_status='Accepted' where s_id=?;  ";
 	
 	public static final String DELETE_SELLER_ADMIN="delete from \"Admin_seller\" where s_id=?;";
+	public static final String GET_PENDING_DATA_ALL_SELLERS = "SELECT d.s_id,s.s_name, s.email, s.phone_no," 
+			  + " s.street, s.city, s.pincode, s.application_status,"
+			  + " d.pan_no, d.pan_image_type, d.pan_image, d.gst_in_no, d.gst_in_image_type, d.gst_in_image" + 
+			  "	FROM public.\"Documents\" as d, \"Seller\" as s where s.application_status = 'Pending' and s.s_id = d.s_id;";
+	
 	
 	private SellerQueries() {
 		

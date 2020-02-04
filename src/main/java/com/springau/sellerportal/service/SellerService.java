@@ -1,5 +1,7 @@
 package com.springau.sellerportal.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +53,10 @@ public class SellerService {
 		dao.saveSellerDocuments(seller.getDocuments());
 		return seller;
 		
+	}
+	
+	public List<Seller> getPendingSellerDetails(){
+		return dao.getPendingSellerDetails();
 	}
 
 }

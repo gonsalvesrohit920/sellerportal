@@ -1,6 +1,6 @@
 package com.springau.sellerportal.controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,8 @@ import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.service.AdminService;
 import com.springau.sellerportal.utility.PasswordHash;
 
+import com.springau.sellerportal.service.SellerService;
+
 /**
  * @author Shashank Jain
  *
@@ -25,6 +27,7 @@ public class AdminController {
 	
 	
 	@Autowired
+	private SellerService sellerService;
 	private AdminService adminService;
 	
 	@PostMapping("/login")
@@ -39,12 +42,12 @@ public class AdminController {
 	public Seller validateAdminSession(@RequestBody LoginData data) {
 		return adminService.validateAdmin(data);
 	}
+
 	
 	
-	@GetMapping("/sellers")
+	@GetMapping
 	public List<Seller> getPendingSellerDetails() {
-		//return sellerService.getPendingSellerDetails();
-		return new ArrayList<>();
+		return sellerService.getPendingSellerDetails();
 	}
 
 }

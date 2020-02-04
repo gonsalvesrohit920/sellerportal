@@ -1,5 +1,7 @@
 package com.springau.sellerportal.daoimpl;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.queries.DocumentQueries;
 import com.springau.sellerportal.queries.SellerQueries;
 import com.springau.sellerportal.rowmapper.DocumentRowMapper;
+import com.springau.sellerportal.rowmapper.PendingSellerDetail;
 import com.springau.sellerportal.rowmapper.SellerLoginMapper;
 import com.springau.sellerportal.rowmapper.SellerMapper;
 
@@ -71,10 +74,17 @@ public class SellerDAOImpl implements SellerDAO {
 	 */
 	@Override
 	public int saveSeller(Seller seller) {
-		jdbcTemplate.update(SellerQueries.SAVE_SELLER, seller.getName(), seller.getEmail(), seller.getPassword(),
-				seller.getContact().getPhoneNo(), seller.getContact().getStreet(), seller.getContact().getCity(),
-				seller.getContact().getPincode(), seller.getApplicationStatus());
-
+		jdbcTemplate.update(SellerQueries.SAVE_SELLER,
+				seller.getName(),
+				seller.getEmail(),
+				seller.getPassword(),
+				seller.getContact().getPhoneNo(),
+				seller.getContact().getStreet(),
+				seller.getContact().getCity(),
+				seller.getContact().getPincode(),
+				"Pending"
+		);
+		
 		return this.getSellerIdFromEmail(seller.getEmail());
 	}
 
@@ -123,8 +133,9 @@ public class SellerDAOImpl implements SellerDAO {
 				documents.getPanImageType(),
 				documents.getPanImage(), 
 				documents.getGstInNo(),
-				documents.getGstInImageType(), 
-				documents.getGstInImage());
+				documents.getGstInImageType(),
+				documents.getPanImage()
+				);
 		return documents;
 	}
 
@@ -133,6 +144,19 @@ public class SellerDAOImpl implements SellerDAO {
 		Seller s = this.getSellerByEmail(email);
 		return s.getId();
 
+	}
+
+	/**
+	 * Gets the pending seller details.
+	 *
+	 * @return the pending seller details
+	 * @author Shashank Jain
+	 */
+	@Override
+	public List<Seller> getPendingSellerDetails() {
+		List<Seller> pendingSellers = jdbcTemplate.query(SellerQueries.GET_PENDING_DATA_ALL_SELLERS,new PendingSellerDetail());
+		System.out.println(pendingSellers);
+		return pendingSellers;
 	}
 
 }

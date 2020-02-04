@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { element, promise } from 'protractor';
 import { SellerServiceService } from 'src/app/providers/seller-service.service';
 import { resolve } from 'url';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -27,13 +28,14 @@ export class ViewComponentComponent implements OnInit {
   trackByFn(index:any, item:any){
       return index;
   }
-  constructor(private sellerService:SellerServiceService) { 
+  constructor(private sellerService:SellerServiceService, private router: Router) { 
     console.log("con")
     this.fun();
   }
   delete(form){
     this.sellerService.deleteProduct(form.get('productId').value).subscribe((respone)=>{
       console.log(respone);
+      this.router.navigate(['/product'])
     })
   }
   update(form){
@@ -67,6 +69,7 @@ export class ViewComponentComponent implements OnInit {
     console.log(senddata)
     this.sellerService.updateProduct(senddata).subscribe((response)=>{
       console.log(response)
+      this.router.navigate(['/product'])
     })
     
   }
@@ -80,18 +83,11 @@ export class ViewComponentComponent implements OnInit {
   async ngOnInit() {
     console.log("init")
     // this.data.forEach((element)=>{
-    //   console.log(element)
-    //   this.fg=new FormGroup({});
-    //   this.keys=Object.keys(element);
-    //   //this.fg.addControl()
-    //   this.keys.forEach((k)=>{
-    //     this.fg.addControl(k,new FormControl(element[k]))
-    //   })
-    //   console.log(this.fg)
-      
-    //   this.forms.push(this.fg)
-    // })
-    // console.log(this.forms)
+      const session = await this.sellerService.checkSession();
+      console.log('Session:' +  session);
+      if (!session) {
+        this.router.navigate(['/']);
+      }
     
   }
    loadsellerProduct(): Promise<boolean>{

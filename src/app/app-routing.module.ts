@@ -7,6 +7,7 @@ import { ViewComponentComponent } from './Components/view-component/view-compone
 import { SignupSellerComponentComponent } from './Components/signup-seller-component/signup-seller-component.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 import { FileUploadComponent } from './Components/file-upload/file-upload.component';
+import { SellerDetailsAdminComponent } from './Components/seller-details-admin/seller-details-admin.component';
 
 
 const routes: Routes = [
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: '', component: LoginSellerComponentComponent},
   {path: 'product/AddProduct', component: AddProductsComponent},
   {path: 'view', component: ViewComponentComponent},
-  {path: 'admin', component: AdminLoginComponent},
+  {path: 'admin/login', component: AdminLoginComponent},
+  {path: 'admin', component: SellerDetailsAdminComponent},
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 

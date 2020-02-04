@@ -1,0 +1,52 @@
+<table class="center" style="margin-top: 5%;" *ngIf="details">
+    <tr>
+        <th>Seller Id</th>
+        <th>Seller Name</th>
+        <th>Seller Email</th>
+        <th>Application Status</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>Pin Code</th>
+        <th>Phone Number</th>
+        <th>PAN Number</th>
+        <th>GSTIN Number</th>
+        <th>GSTIN Image</th>
+        <th>PAN Image</th>
+    </tr>
+    <tr *ngFor="let item of details">
+        <td>
+           {{item.id}}
+        </td>
+        <td>
+            {{item.name}}
+         </td>
+         <td>
+            {{item.email}}
+         </td>
+         <td>
+            {{item.applicationStatus}}
+         </td>
+         <td>
+            {{item.contact.street}}
+         </td>
+         <td>
+            {{item.contact.city}}
+         </td>
+         <td>
+            {{item.contact.pincode}}
+         </td>
+         <td>
+            {{item.contact.phoneNo}}
+         </td>
+         <td>
+            {{item.documents.panNo}}
+         </td>
+         <td>
+            {{item.documents.gstInNo}}
+         </td>         
+         <td>
+            <button type="submit" (click) = "onAccepted(item.id)">Accept</button>
+            <button type="submit">Reject</button>
+         </td> 
+    </tr>
+</table>

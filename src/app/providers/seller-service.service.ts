@@ -4,6 +4,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators'
+import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +33,7 @@ export class SellerServiceService {
   private defaultAdminPostUrl = '/sellerportal/admin/login' ;
   private defaultSessionValidationURL = 'sellerportal/seller/validate_session';
   private defaultAdminSessionValidationURL = 'sellerportal/admin/validate_session';
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router) { }
 
   loginUsername(email, password, postURL = this.defaultPostURL) {
 
@@ -61,6 +63,10 @@ export class SellerServiceService {
   delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
   }
+
+
+  
+
 
   checkSession(isAdmin = false): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -110,14 +116,16 @@ export class SellerServiceService {
     }
   }
 
-  checkStatus():Observable<string>{
-    return this.http.get("sellerportal/seller/product/checkstatus",{ responseType:'text'})
+  checkStatus(sellerId):Observable<string>{
+    return this.http.get("sellerportal/seller/product/checkstatus/"+sellerId,{ responseType:'text'})
   }
   
-  updateStatus():Observable<any>{
-    return this.http.delete("sellerportal/seller/adminUpdate/1").pipe(tap(()=>{
+  updateStatus(SellerId):Observable<any>{
+    return this.http.delete("sellerportal/seller/adminUpdate/"+SellerId).pipe(tap(()=>{
       console.log("updating....")
         this._subjectRefresh.next();
     }));
   }
+
+
 }

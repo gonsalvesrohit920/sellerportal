@@ -13,6 +13,7 @@ import { SellerServiceService } from 'src/app/providers/seller-service.service';
 })
 export class ProductComponentComponent implements OnInit {
   username: string;
+  sellerId:string
   constructor(private cookieservice: CookieService,
               private sellerDataService: SellerDataService,
               private router: Router,
@@ -24,26 +25,28 @@ export class ProductComponentComponent implements OnInit {
   applicationStatus = this.cookieservice.get('applicationStatus');
 
   async ngOnInit() {
+    
     const session = await this.sellerService.checkSession();
     console.log('Session:' +  session);
     if (!session) {
       this.router.navigate(['/']);
     }
     this.username = this.cookieservice.get('email');
+    this.sellerId = this.cookieservice.get('id')
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
-    this.sellerService.checkStatus().subscribe((respose)=>{
+    this.sellerService.checkStatus(this.sellerId).subscribe((respose)=>{
        this.applicationStatus1 = respose;
     });
 
     this.sellerService.subjectRefresh.subscribe(()=>{
-      this.keepCheckStatus()
+      this.keepCheckStatus(this.sellerId)
       });
-  this.keepCheckStatus()
+  this.keepCheckStatus(this.sellerId)
     }
 
 
-    private keepCheckStatus() {
-      this.sellerService.checkStatus().subscribe((respose)=>{
+    private keepCheckStatus(sellerId) {
+      this.sellerService.checkStatus(sellerId).subscribe((respose)=>{
         this.applicationStatus1 = respose;
         console.log( this.applicationStatus1)
      });
@@ -52,9 +55,4 @@ export class ProductComponentComponent implements OnInit {
         this.cookieservice.deleteAll();
         this.router.navigate(['']);
       }
-     check(){
-       this.sellerService.updateStatus().subscribe((details)=>{
-         console.log(details)
-       })
-     }
 }

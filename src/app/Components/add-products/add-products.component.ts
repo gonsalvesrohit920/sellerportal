@@ -3,6 +3,7 @@ import { SellerServiceService } from 'src/app/providers/seller-service.service';
 import { KeyValuePipe } from '@angular/common';
 import { FormGroup, FormControl, FormControlName, Validators, EmailValidator } from '@angular/forms';
 import { element } from 'protractor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-products',
@@ -11,7 +12,7 @@ import { element } from 'protractor';
 })
 export class AddProductsComponent implements OnInit {
 
-  constructor(private sellerservice:SellerServiceService) { }
+  constructor(private sellerService:SellerServiceService, private router: Router) { }
   types = []
   data :any
   selectedType: string;
@@ -19,16 +20,21 @@ export class AddProductsComponent implements OnInit {
   CategoryObject= {}
   ProductForm:FormGroup;
 group={} 
-  ngOnInit() {
+  async ngOnInit() {
     this.types = [ {value:'Books',viewValue:'Books'},
                     {value:'Mobile',viewValue:'Mobiles'},
                     {value:'Laptops',viewValue:'Laptops'},
                     {value:'Shoes',viewValue:'Shoes'}      ];
+    const session = await this.sellerService.checkSession();
+    console.log('Session:' +  session);
+    if (!session) {
+      this.router.navigate(['/']);
+    }
   }
  
   GetType(ob) {
     console.log(ob.value);
-      this.sellerservice.getCategoryAttributes(ob.value).subscribe((attributes)=>{
+      this.sellerService.getCategoryAttributes(ob.value).subscribe((attributes)=>{
       this.data =attributes;
       console.log(this.data)
       this.data.forEach(element => {
@@ -72,8 +78,9 @@ group={}
     console.log(answers)
     console.log(senddata)
 
-    this.sellerservice.AddProduct(senddata).subscribe((response)=>{
+    this.sellerService.AddProduct(senddata).subscribe((response)=>{
       console.log(response)
+      this.router.navigate(['/product/'])
     })
   }
 }

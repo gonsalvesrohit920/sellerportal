@@ -24,7 +24,8 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { ViewComponentComponent } from './Components/view-component/view-component.component';
 import { SellerDataService } from './providers/seller-data-service/seller-data.service'; ;
 import { MatSliderModule } from '@angular/material/slider';
-import {MatButtonModule, MatToolbarModule} from '@angular/material';
+import {MatButtonModule,MatToolbarModule} from '@angular/material';
+import { SellerDetailsAdminComponent } from './Components/seller-details-admin/seller-details-admin.component';
 import { OauthComponent } from './Components/oauth/oauth.component';
 import { FileUploadComponent } from './Components/file-upload/file-upload.component';
 
@@ -39,6 +40,7 @@ const config = new AuthServiceConfig([
   }
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +52,8 @@ const config = new AuthServiceConfig([
     AddProductsComponent,
     ViewComponentComponent,
     OauthComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    SellerDetailsAdminComponent,
   ],
   imports: [
     BrowserModule,

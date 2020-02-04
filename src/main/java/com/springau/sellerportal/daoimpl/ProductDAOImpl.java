@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Attr;
 import com.springau.sellerportal.dao.ProductDAO;
 import com.springau.sellerportal.model.CategoryAnswer;
 import com.springau.sellerportal.model.CategoryQuestion;

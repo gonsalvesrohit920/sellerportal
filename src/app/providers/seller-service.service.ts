@@ -56,7 +56,9 @@ export class SellerServiceService {
   updateProduct(product){
     return this.http.post("sellerportal/seller/product/UpdateProduct",product)
   }
-
+  getOrdersOfSeller(sellerId){
+    return this.http.get("sellerportal/order/GetOrder/"+sellerId)
+  }
   deleteProduct(productId){
     return this.http.delete("sellerportal/seller/product/DeleteProduct/"+productId)
   }

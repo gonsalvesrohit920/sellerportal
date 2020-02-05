@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, Input } from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
 
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { SellerServiceService } from 'src/app/providers/seller-service.service';
   styleUrls: ['./product-component.component.css']
 })
 export class ProductComponentComponent implements OnInit {
+  tabIndex=1;
   username: string;
   sellerId:string
   constructor(private cookieservice: CookieService,

@@ -45,6 +45,7 @@ export class SignupSellerComponentComponent implements OnInit {
 
   onSignUp() {
     this.service.onSignupService(this.basicDetailsForm.get('name').value, this.basicDetailsForm.get('email').value, this.basicDetailsForm.get('password').value, this.contactDetailsForm.get('street').value, this.contactDetailsForm.get('city').value, this.contactDetailsForm.get('pincode').value, this.contactDetailsForm.get('phoneNo').value, this.documentsForm.get('panNo').value, this.documentsForm.get('gstInNo').value).subscribe((details) => {
+      console.log(details)
       this.router.navigate(['/']);
     })
     

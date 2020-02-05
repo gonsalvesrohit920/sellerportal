@@ -1,0 +1,17 @@
+<div *ngIf="orderHistory">
+    
+    <table>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Product quantity sold</th>
+            <th>Product rating</th>
+        </tr>
+        <tr *ngFor="let order of orderHistory | keyvalue">
+            <td>{{order.key}}</td>
+            <td>{{order.value.name}}</td>
+            <td>{{order.value.quantity}}</td>
+            <td>{{order.value.rating}}</td>
+        </tr>
+    </table>
+</div>

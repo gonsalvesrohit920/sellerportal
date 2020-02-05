@@ -15,7 +15,7 @@ import { SignupSellerComponentComponent } from './Components/signup-seller-compo
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider, SocialUser, AuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 
 import { AddProductsComponent } from './Components/add-products/add-products.component';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule, MatSnackBarModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select'
 import {FormsModule} from '@angular/forms'
@@ -25,9 +25,11 @@ import { ViewComponentComponent } from './Components/view-component/view-compone
 import { SellerDataService } from './providers/seller-data-service/seller-data.service'; ;
 import { MatSliderModule } from '@angular/material/slider';
 import {MatButtonModule,MatToolbarModule} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { SellerDetailsAdminComponent } from './Components/seller-details-admin/seller-details-admin.component';
 import { OauthComponent } from './Components/oauth/oauth.component';
 import { FileUploadComponent } from './Components/file-upload/file-upload.component';
+import { ViewOrderHistoryComponent } from './Components/view-order-history/view-order-history.component';
 
 const config = new AuthServiceConfig([
   {
@@ -54,6 +56,7 @@ const config = new AuthServiceConfig([
     OauthComponent,
     FileUploadComponent,
     SellerDetailsAdminComponent,
+    ViewOrderHistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,8 @@ const config = new AuthServiceConfig([
     MatInputModule,
     MatButtonModule,
     MatToolbarModule,
-    SocialLoginModule
+    SocialLoginModule,
+    MatSnackBarModule
   ],
   providers: [
     {

@@ -12,27 +12,31 @@
   <form   [formGroup]="ProductForm" (ngSubmit)="onSubmit()" class="example-form"  >
 <div>
     <mat-form-field  class="example-full-width">
-      <input matInput placeholder="Product Name"  formControlName="Product Name">
+      <input matInput placeholder="Product Name"  formControlName="Product Name" required>
     </mat-form-field>
     <br>
         <mat-form-field  class="example-full-width">
-        <input matInput placeholder="Product Description"  formControlName="Product Description">
+        <input matInput placeholder="Product Description"  formControlName="Product Description" required>
     </mat-form-field>
     <br>
     <mat-form-field  class="example-full-width">
-      <input matInput placeholder="Quantity"  formControlName="Quantity">
+      <input matInput placeholder="Quantity"  formControlName="Quantity" required>
     </mat-form-field>
     <br>
     <mat-form-field  class="example-full-width">
-      <input matInput placeholder="Price"  formControlName="Price">
+      <input matInput placeholder="Price"  formControlName="Price" required>
     </mat-form-field>
     <br>
 </div>  
   <div *ngFor="let item of CategoryQuestions">
     <mat-form-field  class="example-full-width">
-        <input matInput placeholder="{{item}}"  formControlName="{{item}}">
+        <input matInput placeholder="{{item}}"  formControlName="{{item}}" required>
     </mat-form-field>
+    
   </div>
+  <div *ngIf="enterAllDetails">
+      <p>Enter all details</p>
+    </div>
     <button style="margin-top: 3%;" type="submit" class="button">Submit</button> 
   </form>
  </div>

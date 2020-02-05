@@ -1,9 +1,9 @@
 import { Component, OnInit, ApplicationRef, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { element, promise } from 'protractor';
 import { SellerServiceService } from 'src/app/providers/seller-service.service';
-import { resolve } from 'url';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class ViewComponentComponent implements OnInit {
   public data:any;
 
   hidden=true;
-  toggle(name, qty, price,details,f){
+  edit(name, qty, price,details,f){
     console.log(name.value, qty.value, price.value)
      details.hidden=!details.hidden
     
@@ -28,15 +28,32 @@ export class ViewComponentComponent implements OnInit {
   trackByFn(index:any, item:any){
       return index;
   }
-  constructor(private sellerService:SellerServiceService, private router: Router) { 
+  constructor(private sellerService:SellerServiceService, 
+    private router: Router,private snackBar: MatSnackBar) { 
     console.log("con")
     this.fun();
   }
   delete(form){
-    this.sellerService.deleteProduct(form.get('productId').value).subscribe((respone)=>{
-      console.log(respone);
+    this.ngOnInit()
+    this.sellerService.deleteProduct(form.get('productId').value).subscribe((response)=>{
+      console.log(response);
+      if(response==0){
+        console.log("Check your mail")
+        this.snackBar.open("Check your mail", "Ok",{
+          duration: 2000,
+        });
+      }
+      else{
+        console.log("Product deleted")
+        this.snackBar.open("Product deleted successfully", "Ok",{
+          duration: 2000,
+        });
+        window.location.reload();   
+      }
       this.router.navigate(['/product'])
-    })
+    },(error:HttpErrorResponse)=>{
+      console.log(error.status)
+      })
   }
   update(form){
     console.log(form.value)
@@ -45,7 +62,7 @@ export class ViewComponentComponent implements OnInit {
     }
     senddata['name'] = form.get('name').value
     senddata['decription'] = form.get('decription').value
-    senddata['quantity'] = form.get('quantity').value
+    senddata['quantity'] = form.get('quantity').value+form.get('addQuantity').value;
     senddata['price'] = form.get('price').value
     senddata['productId']=form.get('productId').value;
     senddata['sellerId']=form.get('sellerId').value;
@@ -68,9 +85,27 @@ export class ViewComponentComponent implements OnInit {
     console.log(answers)
     console.log(senddata)
     this.sellerService.updateProduct(senddata).subscribe((response)=>{
-      console.log(response)
-      this.router.navigate(['/product'])
-    })
+        if(response==1){
+          this.snackBar.open("Product updated succesfully", "Ok",{
+            duration: 2000,
+          });
+          window.location.reload();
+        }
+        else if(response==0){
+          this.snackBar.open("Couldn't update the Product data", "Ok",{
+            duration: 2000,
+          });
+        }
+        this.router.navigate(['/product'])
+      },(error:HttpErrorResponse)=>{
+        if(error.status==406){
+          console.log("response error", error)
+          this.snackBar.open("Enter proper details", "Ok",{
+            duration: 2000,
+          });
+        }
+      }
+    )
     
   }
   async fun(){
@@ -130,8 +165,9 @@ export class ViewComponentComponent implements OnInit {
       console.log(555, this.keys)
       this.keys=Object.keys(element);
       this.keys.forEach((k)=>{
-        if(k!='questionAnswers')
-        this.fg.addControl(k, new FormControl(element[k]))
+        if(k!='questionAnswers'){
+          this.fg.addControl(k, new FormControl(element[k]))
+        }
         else{
           let dummy=Object.keys(element[k]);
           dummy.forEach((spec)=>{
@@ -140,6 +176,7 @@ export class ViewComponentComponent implements OnInit {
         }
         
       })
+      this.fg.addControl('addQuantity',new FormControl(''));
       this.forms.push(this.fg)
     })
     this.fetched=true;

@@ -29,9 +29,9 @@ public class Product {
 	@Override
 	public String toString() {
 		System.out.println(productId+","+sellerId+","+category+","+quantity+","+price+","+name+","+decription);
-		for(Map.Entry<String, CategoryAnswer> ent:questionAnswers.entrySet()) {
-			System.out.println(ent.getKey()+","+ent.getValue().getCatAnswer());
-		}
+//		for(Map.Entry<String, CategoryAnswer> ent:questionAnswers.entrySet()) {
+//			System.out.println(ent.getKey()+","+ent.getValue().getCatAnswer());
+//		}
 //		attributes.forEach((a)->{
 //			System.out.println(a.getCatqId()+","+a.getCatAnswer());
 //		});

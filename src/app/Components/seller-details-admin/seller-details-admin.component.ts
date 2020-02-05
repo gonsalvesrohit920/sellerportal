@@ -24,13 +24,22 @@ export class SellerDetailsAdminComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private router: Router) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    const session = await this.sellerService.checkSession(true);
+    console.log('Session:' +  session);
+    if (!session) {
+      this.router.navigate(['/admin/login']);
+    }
+    else{
     this.service.getSellerDetails().subscribe((details) => {
       this.details = details;
       console.log(details);
 
-      
-    })
+
+    });
+  
+  }
   }
 
   getPanImage(id){

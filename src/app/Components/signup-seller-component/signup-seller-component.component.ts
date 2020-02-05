@@ -37,7 +37,9 @@ export class SignupSellerComponentComponent implements OnInit {
    panUploadForm: FormGroup;
  
    gstinUploadForm: FormGroup;
- 
+   
+
+   emailExists = false;
 
   ngOnInit() {
     this.types = [ {value:'Books',viewValue:'Books'},
@@ -85,6 +87,10 @@ export class SignupSellerComponentComponent implements OnInit {
      this.selectedckeckboxlist).subscribe((details: Seller) => {
      console.log(this.selectedckeckboxlist)
      console.log('Seller ID:' + details.id);
+     this.emailExists = details.exists;
+
+     console.log(this.emailExists);
+     if(!this.emailExists){
      this.service.uploadSignupImageService(details.id,
      this.uploadForm.get('panImage').value,
      this.uploadForm.get('gstinImage').value).subscribe((res: Uint8Array) => {
@@ -92,8 +98,9 @@ export class SignupSellerComponentComponent implements OnInit {
        this.router.navigate(['/']);
 
      });
-    })
-    
+    }
+    });
+
   }
 
   onPANSelected(event) {

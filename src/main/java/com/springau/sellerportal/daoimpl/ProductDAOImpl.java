@@ -106,6 +106,7 @@ public class ProductDAOImpl implements ProductDAO{
 	
 	@Override
 	public List<Product> saveProduct(Product product) {
+		System.out.println(product);
 		int productId = jdbcTemplate.queryForObject(
 				ProductQueries.STORE_PRODUCT,
 				new Object[] {

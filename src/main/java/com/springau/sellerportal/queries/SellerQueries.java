@@ -36,6 +36,9 @@ public class SellerQueries {
 	
 	public static final String GET_SELLER_DATA_FROM_SELLER_ID="select * from public.\"Seller\" where s_id=?;";
 	
+	public static final String SAVE_CATEGORY = "INSERT INTO public.\"Seller_category\"(" + 
+			 "	s_id, c_id)" + 
+			 "	VALUES (?, ?);";
 	private SellerQueries() {
 		
 	}

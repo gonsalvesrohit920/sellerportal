@@ -113,31 +113,32 @@ public class ProductDAOImpl implements ProductDAO{
 
 	
 	@Override
-	public List<Product> saveProduct(Product product) {
-		try {
-			int productId = jdbcTemplate.queryForObject(
-					ProductQueries.STORE_PRODUCT,
-					new Object[] {
-					product.getSellerId(),
-					product.getName(),
-					product.getDecription(),
-					product.getCategory(),
-					product.getQuantity(),
-					product.getPrice()},
-					new IdMapper()
-					);
-			
-			product.setProductId(productId);
-			
-			for(CategoryAnswer catAnswer : product.getAttributes()) {
-				catAnswer.setProductId(productId);
-			}
-			insertProductAttributes(product.getAttributes());
-			return getSellerProductList(product.getSellerId());
-		}catch (Exception e) {
-
-			return new ArrayList<Product>();
+	public List<Integer> saveProduct(Product product) {
+		List<Integer> productImageIds = new ArrayList<>();
+		int productId = jdbcTemplate.queryForObject(
+				ProductQueries.STORE_PRODUCT,
+				new Object[] {
+				product.getSellerId(),
+				product.getName(),
+				product.getDecription(),
+				product.getCategory(),
+				product.getQuantity(),
+				product.getPrice()},
+				new IdMapper()
+				);
+		
+		product.setProductId(productId);
+		
+		for(CategoryAnswer catAnswer : product.getAttributes()) {
+			catAnswer.setProductId(productId);
 		}
+		insertProductAttributes(product.getAttributes());
+		
+		for(ProductImage image: product.getImages())
+		{
+			productImageIds.add(storeImageMetadata(image, productId));
+		}
+		return productImageIds;
 	}
 
 	@Override
@@ -205,9 +206,9 @@ return null;
 		
 		
 		return jdbcTemplate.query(
-				ProductImageQueries.GET_PRODUCT_IMAGES,
+				ProductImageQueries.GET_PRODUCT_IMAGE_DATA,
 				new Object[] { 
-						productId 
+						productId
 						},
 				new ProductImageMapper());
 	}
@@ -342,6 +343,48 @@ return null;
 		return jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_DATA_FROM_SELLER_ID, new Object[] {
 				sellerId
 		}, new SellerMapper());
+		
+	}
+	public int storeImageMetadata(ProductImage image, int productId) {
+		try {
+				
+				return jdbcTemplate.queryForObject(
+						ProductImageQueries.SAVE_IMAGE_METADATA,
+						new Object[] { 
+								
+								productId,
+								image.getImageType(),
+								
+						}
+						, new IdMapper());
+			}
+		catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	
+}
+	
+	@Override
+	public boolean saveProductImages(List<Integer> productImageIds, List<byte[]> productImages) {
+		
+		boolean response;
+		
+		try {
+			for(int i = 0; i < productImageIds.size(); i++) {
+				jdbcTemplate.update(ProductImageQueries.SAVE_PRODUCT_IMAGE, 
+						productImages.get(i), 
+						productImageIds.get(i));
+			}
+			response = true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			response = false;
+		}
+		
+		
+		return response;
 	}
 	
 }

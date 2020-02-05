@@ -3,7 +3,9 @@ package com.springau.sellerportal.daoimpl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -13,11 +15,17 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springau.sellerportal.dao.OrderDAO;
 import com.springau.sellerportal.model.Order;
+import com.springau.sellerportal.model.OrderData;
+import com.springau.sellerportal.model.Product;
 import com.springau.sellerportal.queries.OrderQueries;
+import com.springau.sellerportal.queries.ProductQueries;
 import com.springau.sellerportal.rowmapper.IdMapper;
 import com.springau.sellerportal.rowmapper.OrderCountAndSumRowMapper;
+import com.springau.sellerportal.rowmapper.OrderMapper;
+import com.springau.sellerportal.rowmapper.ProductMapper;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO {
@@ -36,7 +44,7 @@ public class OrderDAOImpl implements OrderDAO {
 				order.getProductId(),
 				order.getSellerId()
 		}, new IdMapper());
-		
+		System.out.println(qtyList.size());
 		List<Integer> total=jdbcTemplate.query(OrderQueries.GET_QTY_OF_PRODUCT_SOLD,new PreparedStatementSetter() {
 
 			@Override
@@ -95,6 +103,24 @@ public class OrderDAOImpl implements OrderDAO {
 			System.out.println(updatedAvgRatingCount);
 			return 1;
 		}
+	}
+
+	@Override
+	public Map<Integer,Product> getOrdersOfSeller(int sellerId) {
+		Map<Integer,Product> sellerViewHistory=new HashMap<>();
+		List<OrderData> orderDataList=jdbcTemplate.query(OrderQueries.GET_PRODUCT_ID_QUANTITY_MAPPING, new Object[] {
+				sellerId
+		},new OrderMapper());
+	
+		orderDataList.forEach((orderData)->{
+			int productId=orderData.getProductId();
+			Product product=jdbcTemplate.queryForObject(ProductQueries.PRODUCT_BY_ID, new Object[] {
+					productId
+			},new ProductMapper());
+			product.setQuantity(orderData.getTotalQty());
+			sellerViewHistory.put(productId,product);
+		});
+		return sellerViewHistory;
 	}
 	
 	

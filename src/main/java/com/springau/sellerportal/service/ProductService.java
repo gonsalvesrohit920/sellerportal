@@ -24,19 +24,19 @@ public class ProductService {
     	
     	return dao.getAllProductAttributes(categoryname);
     }
-    public void addProduct(Product product) {
-    	dao.saveProduct(product);
+    public List<Product> addProduct(Product product) {
+    	return dao.saveProduct(product);
     
     }
     public List<Product> getSellerProductList(int sellerId) {
     	return dao.getSellerProductList(sellerId);
     }
     
-    public void updateProductData(Product product) {
-    	dao.updateProductData(product);
+    public int updateProductData(Product product) {
+    	return dao.updateProductData(product);
     }
-    public void deleteProduct(int productId) {
-    	dao.deleteProduct(productId);
+    public int deleteProduct(int productId) {
+    	return dao.deleteProduct(productId);
     }
 	public String checkStatus(int sellerId) {
 		return dao.chechStatus(sellerId);

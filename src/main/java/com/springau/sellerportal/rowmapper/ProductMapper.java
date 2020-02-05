@@ -30,7 +30,7 @@ public class ProductMapper implements RowMapper<Product>{
 		product.setCategory(rs.getInt(ProductColumns.CATEGORY));
 		product.setQuantity(rs.getInt(ProductColumns.QUANTITY));
 		product.setPrice(rs.getInt(ProductColumns.PRICE));
-		
+		product.setRating(rs.getInt("avg_rating"));
 		return product;
 	}
 

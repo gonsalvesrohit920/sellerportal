@@ -21,9 +21,11 @@ public class Product {
 	private int price;
 	private String name;
 	private String decription;
+	private int rating;
 	private List<ProductImage> images;
 	private List<CategoryAnswer> attributes;
 	private Map<String,CategoryAnswer> questionAnswers;
+	
 	@Override
 	public String toString() {
 		System.out.println(productId+","+sellerId+","+category+","+quantity+","+price+","+name+","+decription);

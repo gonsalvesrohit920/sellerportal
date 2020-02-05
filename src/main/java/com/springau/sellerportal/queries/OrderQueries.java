@@ -2,7 +2,7 @@ package com.springau.sellerportal.queries;
 
 public class OrderQueries {
 	
-	public static final String GET_AVAILABLE_QTY_FROM_PRODUCT="select quantity from public.\"Product\" where p_id=? and s_id=?;";
+	public static final String GET_AVAILABLE_QTY_FROM_PRODUCT="select quantity from public.\"Product\" where p_id=? and s_id=? and is_deleted=false;";
 	
 	public static final String GET_QTY_OF_PRODUCT_SOLD="select sum(quantity) as soldQty from public.\"Order\" where s_id=? and p_id=?;";
 	
@@ -22,7 +22,10 @@ public class OrderQueries {
 	
 	public static final String UPDATE_AVERAGE_RATING_IN_PRODUCT = "UPDATE public.\"Product\"" + 
 			"	SET  rating_count=?, avg_rating=?" + 
-			"	WHERE p_id=?;";
+			"	WHERE p_id=? ;";
+	
+	public static final String GET_PRODUCT_ID_QUANTITY_MAPPING="SELECT p_id, sum(quantity) " + 
+			"	FROM public.\"Order\" where s_id=? group by(p_id);";
 	private OrderQueries() {
 		
 	}

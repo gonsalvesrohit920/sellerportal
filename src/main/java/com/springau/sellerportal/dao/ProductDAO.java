@@ -12,13 +12,14 @@ public interface ProductDAO {
 	public List<Product> getAllSellerProducts(int sellerId);
 	public List<Product> saveProduct(Product product);
 	public List<Product> updateProduct(Product product);
-	public void deleteProduct(int productId);
+	public int deleteProduct(int productId);
 	public List<CategoryAnswer> getProductAttributes(int productId);
 	public List<CategoryQuestion> getAllProductAttributes(String categoryname);
 	public List<ProductImage> getProductImages(int productId);
 	public List<ProductImage> saveProductImages(int productId);
 	public List<Product> getSellerProductList(int sellerId);
-	public void updateProductData(Product product);
+	public int updateProductData(Product product);
 	public String chechStatus(int sellerId);
 	public void updateStatus(int sellerId);
+	Product getProductById(int productId);
 }

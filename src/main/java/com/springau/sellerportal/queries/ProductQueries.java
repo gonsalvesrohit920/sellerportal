@@ -12,7 +12,7 @@ public class ProductQueries {
 	public static final String STORE_PRODUCT = "INSERT INTO \"Product\"(" + 
 					"	 s_id, p_name, p_description, category, quantity, price)" + 
 					"	VALUES (?, ?, ?, ?, ?, ?) RETURNING p_id;";
-	public static final String GET_SELLER_PRODUCT_LIST="select * from \"Product\" where s_id=? ";
+	public static final String GET_SELLER_PRODUCT_LIST="select * from \"Product\" where s_id=? and is_deleted=false ";
 	
 	public static final String UPDATE_PRODUCT_TABLE="update \"Product\" set p_description=?, quantity=?, price=? where p_id=?;  ";
 	

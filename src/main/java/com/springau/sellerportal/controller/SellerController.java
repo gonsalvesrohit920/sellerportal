@@ -4,7 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +51,7 @@ public class SellerController {
 	 */
 	@GetMapping("/send_mail")
 	public String getResponse() {
-		mailService.crunchifyReadyToSendEmail("gonsalvesrohit920@gmail.com", "MAil Service test", "TEst Mail Service");
+		mailService.sendEmail("gonsalvesrohit920@gmail.com", "MAil Service test", "TEst Mail Service");
 		return "Hello";
 	}
 	
@@ -109,9 +111,9 @@ public class SellerController {
 		return productService.getAllProductAttributes(categoryname);
 	}
 	@PostMapping(path = "/products/AddProduct")
-	public int AddProduct(@RequestBody Product product) {
-		productService.addProduct(product);
-		return 0;
+	public List<Product> AddProduct(@RequestBody Product product) {
+		return productService.addProduct(product);
+
 	}
 	@GetMapping(path="/products/GetProducts/{sellerId}")
 	public List<Product> getSellerProductList(@PathVariable("sellerId") int sellerId) {
@@ -119,13 +121,13 @@ public class SellerController {
 		return productList;
 	}
 	@PostMapping(path="/product/UpdateProduct")
-	public void updateProductData(@RequestBody Product product) {
+	public int updateProductData(@RequestBody Product product) {
 		System.out.println(product);
-		productService.updateProductData(product);
+		return productService.updateProductData(product);
 	}
 	@DeleteMapping(path="/product/DeleteProduct/{productId}")
-	public void deleteProductData(@PathVariable("productId") int productId) {
-		productService.deleteProduct(productId);
+	public int deleteProductData(@PathVariable("productId") int productId) {
+		return productService.deleteProduct(productId);
 	}
 	
 	@GetMapping(path="/product/checkstatus/{sellerId}")

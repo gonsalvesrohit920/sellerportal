@@ -32,6 +32,9 @@ public class SellerQueries {
 			  + " d.pan_no, d.pan_image_type, d.pan_image, d.gst_in_no, d.gst_in_image_type, d.gst_in_image" + 
 			  "	FROM public.\"Documents\" as d, \"Seller\" as s where s.application_status = 'Pending' and s.s_id = d.s_id;";
 	
+	public static final String GET_SELLER_ID_FROM_PRODUCT_ID="select s_id from \"Product\" where p_id=?";
+	
+	public static final String GET_SELLER_DATA_FROM_SELLER_ID="select * from public.\"Seller\" where s_id=?;";
 	
 	private SellerQueries() {
 		

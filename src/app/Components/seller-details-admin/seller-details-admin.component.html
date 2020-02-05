@@ -43,10 +43,15 @@
          </td>
          <td>
             {{item.documents.gstInNo}}
-         </td>         
+         </td> 
+         <td><button id="viewPan" (click)="getPanImage(item.id)">View PAN</button></td>       
+         <td><button id="viewGstin" (click)="getGstinImage(item.id)">View GSTIN</button></td>        
          <td>
             <button type="submit" (click) = "onAccepted(item.id)">Accept</button>
             <button type="submit">Reject</button>
          </td> 
     </tr>
 </table>
+
+
+<img [src]="image">

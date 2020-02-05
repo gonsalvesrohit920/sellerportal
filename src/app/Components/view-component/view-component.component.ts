@@ -4,7 +4,9 @@ import { element, promise } from 'protractor';
 import { SellerServiceService } from 'src/app/providers/seller-service.service';
 import { resolve } from 'url';
 import { Router } from '@angular/router';
-
+import { CookieService } from 'ngx-cookie-service';
+import { FileDownloadService } from 'src/app/providers/file-download-service/file-download.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-component',
@@ -12,94 +14,113 @@ import { Router } from '@angular/router';
   styleUrls: ['./view-component.component.css']
 })
 export class ViewComponentComponent implements OnInit {
-  forms=null;
-  fetched=false;
-  fg=new FormGroup({});
-  keys=[];
-  groups={};
-  public data:any;
+  forms = null;
+  fetched = false;
+  fg = new FormGroup({});
+  keys = [];
+  groups = {};
+  public data: any;
 
-  hidden=true;
-  toggle(name, qty, price,details,f){
-    console.log(name.value, qty.value, price.value)
-     details.hidden=!details.hidden
-    
+  hidden = true;
+  toggle(name, qty, price, details, f,counter) {
+    console.log(name.value, qty.value, price.value);
+    details.hidden = !details.hidden;
+    let productId = f.get('productId').value;
+    let count = counter;
+
+    this.fetchProductimages(productId, count);
+
   }
-  trackByFn(index:any, item:any){
+  trackByFn(index: any, item: any) {
       return index;
   }
-  constructor(private sellerService:SellerServiceService, private router: Router) { 
-    console.log("con")
+  constructor(private sellerService: SellerServiceService,
+              private router: Router,
+              private cookieService: CookieService,
+              private fileDownloadService: FileDownloadService,
+              private sanitizer: DomSanitizer) {
+    console.log('con');
     this.fun();
   }
-  delete(form){
-    this.sellerService.deleteProduct(form.get('productId').value).subscribe((respone)=>{
+  delete(form) {
+    this.sellerService.deleteProduct(form.get('productId').value).subscribe((respone) => {
       console.log(respone);
-      this.router.navigate(['/product'])
-    })
-  }
-  update(form){
-    console.log(form.value)
-    let senddata={
-      
-    }
-    senddata['name'] = form.get('name').value
-    senddata['decription'] = form.get('decription').value
-    senddata['quantity'] = form.get('quantity').value
-    senddata['price'] = form.get('price').value
-    senddata['productId']=form.get('productId').value;
-    senddata['sellerId']=form.get('sellerId').value;
-    senddata['category']=form.get('category').value;
-    let answers={};
-    let keys=Object.keys(form.value)
-    keys.forEach(element => {
-      let ans={};
-      if(element!='name' && element!='decription' && element!='quantity' && element!='price'  && element!='productId'  && element!='sellerId' && element!='images'  && element!='attributes'  && element!='category' ){
-       console.log("Element",element)
-       
-        ans['catId']=form.get('category').value;
-      //  ans['catAnswer']=form.get(element.catQuestion).value;
-      console.log(element,form.value[element])
-      ans['catAnswer']=form.value[element]
-      answers[element]=ans;   
-      } 
+      this.router.navigate(['/product']);
     });
-    senddata['questionAnswers']=answers
-    console.log(answers)
-    console.log(senddata)
-    this.sellerService.updateProduct(senddata).subscribe((response)=>{
-      console.log(response)
-      this.router.navigate(['/product'])
-    })
-    
   }
-  async fun(){
-    let loadData = await this.loadsellerProduct()
-    if(loadData){
-      console.log(this.data)
-      
+  update(form) {
+    console.log(form.value);
+    let senddata = {
+
+    };
+    senddata['name'] = form.get('name').value;
+    senddata['decription'] = form.get('decription').value;
+    senddata['quantity'] = form.get('quantity').value;
+    senddata['price'] = form.get('price').value;
+    senddata['productId'] = form.get('productId').value;
+    senddata['sellerId'] = form.get('sellerId').value;
+    senddata['category'] = form.get('category').value;
+    let answers = {};
+    let keys = Object.keys(form.value);
+    keys.forEach(element => {
+      let ans = {};
+      if (element != 'name'
+      && element != 'decription'
+      && element != 'quantity'
+      && element != 'price'
+      && element != 'productId'
+      && element != 'sellerId'
+      && element != 'images'
+      && element != 'attributes'
+      && element != 'category' ) {
+       console.log('Element', element);
+
+       ans['catId'] = form.get('category').value;
+      //  ans['catAnswer']=form.get(element.catQuestion).value;
+       console.log(element, form.value[element]);
+       ans['catAnswer'] = form.value[element];
+       answers[element] = ans;
+      }
+    });
+    senddata['questionAnswers'] = answers;
+    console.log(answers);
+    console.log(senddata);
+    this.sellerService.updateProduct(senddata).subscribe((response: number[]) => {
+      console.log(response);
+      this.router.navigate(['/product']);
+    });
+
+  }
+  async fun() {
+    let loadData = await this.loadsellerProduct();
+    if (loadData) {
+      console.log("data",this.data);
+
     }
   }
   async ngOnInit() {
-    console.log("init")
+    console.log("init");
     // this.data.forEach((element)=>{
-      const session = await this.sellerService.checkSession();
-      console.log('Session:' +  session);
-      if (!session) {
+    const session = await this.sellerService.checkSession();
+    console.log('Session:' +  session);
+    if (!session) {
         this.router.navigate(['/']);
       }
-    
+
   }
-   loadsellerProduct(): Promise<boolean>{
+   loadsellerProduct(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       let response: boolean;
-      this.sellerService.getSellerProductList(1).subscribe(details=>{
-        console.log(details)
-        this.data =details
-        response=true
-        resolve(response)
+      this.sellerService.getSellerProductList(this.cookieService.get('id')).subscribe((details: object[])  => {
+        console.log(details);
+        this.data = details.map(x => {
+          x['images'] = [];
+          return x;
+        });
+        response = true;
+        resolve(response);
         this.showInUI();
-      })
+      });
       // this.loginUsername(username, password).subscribe( data => {
 
       //   this.delay(500);
@@ -119,29 +140,52 @@ export class ViewComponentComponent implements OnInit {
 
     });
    }
-   showInUI(){
+   showInUI() {
       this.forms = [];
-      
 
-     this.forms=[];
-     console.log(11, this.data)
-     this.data.forEach((element)=>{
-      this.fg=new FormGroup({});
-      console.log(555, this.keys)
-      this.keys=Object.keys(element);
-      this.keys.forEach((k)=>{
-        if(k!='questionAnswers')
-        this.fg.addControl(k, new FormControl(element[k]))
-        else{
-          let dummy=Object.keys(element[k]);
-          dummy.forEach((spec)=>{
-            this.fg.addControl(spec,new FormControl(element[k][spec].catAnswer))
-          })
+
+      this.forms = [];
+      console.log(11, this.data);
+      this.data.forEach((element) => {
+      this.fg = new FormGroup({});
+      console.log(555, this.keys);
+      this.keys = Object.keys(element);
+      this.keys.forEach((k) => {
+        if (k != 'questionAnswers')
+        this.fg.addControl(k, new FormControl(element[k]));
+        else {
+          let dummy = Object.keys(element[k]);
+          dummy.forEach((spec) => {
+            this.fg.addControl(spec, new FormControl(element[k][spec].catAnswer));
+          });
         }
-        
-      })
-      this.forms.push(this.fg)
-    })
-    this.fetched=true;
+
+      });
+      this.forms.push(this.fg);
+    });
+      this.fetched = true;
+   }
+
+   fetchProductimages(productId: number, index) {
+
+    this.data[index]['images'] = [];
+    this.fileDownloadService.getProductImages(productId).subscribe((res: []) =>{
+
+      console.log(res);
+
+      let filenames;
+
+      for (let image of res) {
+
+        this.data[index]['images'].push(this.sanitizer.bypassSecurityTrustUrl( image )) ;
+
+      }
+
+    });
+   }
+
+
+   getDetailsById(productId: number) {
+
    }
 }

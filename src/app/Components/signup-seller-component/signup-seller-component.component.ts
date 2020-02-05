@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { SellerSignupDetailsService } from 'src/app/providers/seller-signup-details.service';
 import { Router } from '@angular/router';
+import { SellerServiceService } from 'src/app/providers/seller-service.service';
+import { element } from 'protractor';
+import { Seller } from 'src/app/Pojos/Pojos';
 
 @Component({
   selector: 'app-signup-seller-component',
@@ -15,10 +18,34 @@ export class SignupSellerComponentComponent implements OnInit {
 
   selectedGSTINFile: File = null;
   selectedPANFile: File = null;
+  types = []
+  selectedckeckbox={'Books':0,
+  'Mobile':0,
+'Laptops':0,
+  'Shoes':0}
+  selectedckeckboxlist = []
+  constructor(public service : SellerSignupDetailsService, private router: Router,private sellerservice:SellerServiceService,private formBuilder: FormBuilder) {
+    this.uploadForm = this.formBuilder.group({
+      profile: [''],
+      panImage: [''],
+      gstinImage: [''],
+    });
+   }
 
-  constructor(public service : SellerSignupDetailsService, private router: Router) { }
+
+   uploadForm: FormGroup;
+   panUploadForm: FormGroup;
+ 
+   gstinUploadForm: FormGroup;
+   
+
+   emailExists = false;
 
   ngOnInit() {
+    this.types = [ {value:'Books',viewValue:'Books'},
+                    {value:'Mobile',viewValue:'Mobile'},
+                    {value:'Laptops',viewValue:'Laptops'},
+                    {value:'Shoes',viewValue:'Shoes'}      ];
   }
 
   basicDetailsForm = new FormGroup({
@@ -26,8 +53,6 @@ export class SignupSellerComponentComponent implements OnInit {
     email: new FormControl('s@g.com',Validators.email),
     password : new FormControl('abc', Validators.required),
     confirmPassword : new FormControl('abc',Validators.required),
-    
-      
   });
 
   contactDetailsForm = new FormGroup({
@@ -44,19 +69,69 @@ export class SignupSellerComponentComponent implements OnInit {
   });
 
   onSignUp() {
-    this.service.onSignupService(this.basicDetailsForm.get('name').value, this.basicDetailsForm.get('email').value, this.basicDetailsForm.get('password').value, this.contactDetailsForm.get('street').value, this.contactDetailsForm.get('city').value, this.contactDetailsForm.get('pincode').value, this.contactDetailsForm.get('phoneNo').value, this.documentsForm.get('panNo').value, this.documentsForm.get('gstInNo').value).subscribe((details) => {
-      console.log(details)
-      this.router.navigate(['/']);
+    let keys=Object.keys(this.selectedckeckbox);
+    keys.forEach((element)=>{
+      if(this.selectedckeckbox[element]=='1')
+      this.selectedckeckboxlist.push(element)
     })
-    
+
+    this.service.onSignupService(this.basicDetailsForm.get('name').value,
+     this.basicDetailsForm.get('email').value, 
+     this.basicDetailsForm.get('password').value, 
+     this.contactDetailsForm.get('street').value, 
+     this.contactDetailsForm.get('city').value, 
+     this.contactDetailsForm.get('pincode').value, 
+     this.contactDetailsForm.get('phoneNo').value, 
+     this.documentsForm.get('panNo').value, 
+     this.documentsForm.get('gstInNo').value,
+     this.selectedckeckboxlist).subscribe((details: Seller) => {
+     console.log(this.selectedckeckboxlist)
+     console.log('Seller ID:' + details.id);
+     this.emailExists = details.exists;
+
+     console.log(this.emailExists);
+     if(!this.emailExists){
+     this.service.uploadSignupImageService(details.id,
+     this.uploadForm.get('panImage').value,
+     this.uploadForm.get('gstinImage').value).subscribe((res: Uint8Array) => {
+       console.log(res);
+       this.router.navigate(['/']);
+
+     });
+    }
+    });
+
   }
 
   onPANSelected(event) {
-    this.selectedPANFile = <File>event.target.files[0];
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0] as File;
+      console.log(file.name);
+      this.selectedPANFile = file;
+      this.uploadForm.get('panImage').setValue(file);
+    }
   }
 
   onGSTINSelected(event) {
-    this.selectedGSTINFile = <File>event.target.files[0];
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0] as File;
+      console.log(file.name);
+      this.selectedGSTINFile = file;
+      this.uploadForm.get('gstinImage').setValue(file);
+    }
+
   }
- 
+
+  GetType(value,ob){
+    if(ob.checked==true){
+         this.selectedckeckbox[value]=1
+    
+    }
+    else{
+      this.selectedckeckbox[value] =0;
+    }
+    console.log(this.selectedckeckbox)
+    
+        
+  }
 }

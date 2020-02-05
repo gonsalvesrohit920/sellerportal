@@ -20,7 +20,13 @@
               <label>
                   Confirm Password : 
                   <input type="password" placeholder="Confirm Password" formControlName="confirmPassword"><br>
-              </label>                
+              </label>
+              <br>
+              <label>Select Category :
+                <mat-checkbox *ngFor="let type of types" [value]="type.value" (change)="GetType( type.viewValue,$event)">
+                    {{ type.viewValue }}
+                </mat-checkbox>
+        </label>                
           </form>
       </mat-tab>
       <mat-tab label = "Contact Details">
@@ -47,29 +53,33 @@
           </form>
       </mat-tab>
       <mat-tab label = "Document Details">
-          <form [formGroup] = "documentsForm" (ngSubmit)="onSignUp()">
-              <label>
-                  PAN Number
-                  <input type="text" placeholder="PAN Number" formControlName="panNo"><br>
-              </label>
-              <br> 
-              <label>
-                  PAN Image 
-                  <input type="file" accept="image/" (change)="onPANSelected($event)"><br>
-              </label>
-              <br>
-              <label>
-                  GSTIN Number
-                  <input type="text" placeholder="GSTIN Number" formControlName="gstInNo"><br>
-              </label>
-              <br>
-              <label>
-                  GSTIN Image 
-                  <input type="file" accept="image/" (change)="onGSTINSelected($event)"><br>
-              </label>
-              <br>
-              <button style="margin-top: 3%;" type="submit" class="button" [disabled]="basicDetailsForm.invalid && contactDetailsForm.invalid && documentsForm.invalid" >SignUp</button> 
-          </form> 
+        <form [formGroup] = "documentsForm" (ngSubmit)="onSignUp()">
+            <label>
+                PAN Number
+                <input type="text" placeholder="PAN Number" formControlName="panNo"><br>
+            </label>
+            <br> 
+            <label>
+              GSTIN Number
+              <input type="text" placeholder="GSTIN Number" formControlName="gstInNo"><br>
+          </label>
+          <br>
+          <form [formGroup] = "uploadForm" enctype="multipart/form-data"  (ngSubmit)="onSubmit()">
+            <label>
+                PAN Image 
+                <input type="file" accept="image/" name="panImage" multiple="multiple" (change)="onPANSelected($event)"><br>
+            </label>
+            <br>
+            
+            <label>
+                GSTIN Image 
+                <input type="file" accept="image/" name="gstinImage" multiple="multiple" (change)="onGSTINSelected($event)"><br>
+            </label>
+            <br>
+        </form>
+            <button style="margin-top: 3%;" type="submit" class="button" [disabled]="basicDetailsForm.invalid && contactDetailsForm.invalid && documentsForm.invalid" >SignUp</button> 
+        </form> 
+    
       </mat-tab>
   </mat-tab-group>
 </div>

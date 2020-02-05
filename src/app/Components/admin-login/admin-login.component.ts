@@ -13,7 +13,7 @@ export class AdminLoginComponent implements OnInit {
 
   public postURL = 'sellerportal/admin/login';
 
-  public route = 'admin/sellers';
+  public route = 'admin/';
 
 
   async ngOnInit() {

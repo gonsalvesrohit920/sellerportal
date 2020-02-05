@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
+import { CookieService } from 'ngx-cookie-service';
+import { FileDownloadService } from 'src/app/providers/file-download-service/file-download.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-view-component',
@@ -20,16 +23,23 @@ export class ViewComponentComponent implements OnInit {
   public data:any;
 
   hidden=true;
-  edit(name, qty, price,details,f){
+  edit(name, qty, price,details,f,counter){
     console.log(name.value, qty.value, price.value)
      details.hidden=!details.hidden
-    
+     let productId = f.get('productId').value;
+     let count = counter;
+ 
+     this.fetchProductimages(productId, count);
   }
-  trackByFn(index:any, item:any){
+  trackByFn(index: any, item: any) {
       return index;
   }
   constructor(private sellerService:SellerServiceService, 
-    private router: Router,private snackBar: MatSnackBar) { 
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private cookieService: CookieService,
+    private fileDownloadService: FileDownloadService,
+    private sanitizer: DomSanitizer) { 
     console.log("con")
     this.fun();
   }
@@ -70,16 +80,24 @@ export class ViewComponentComponent implements OnInit {
     let answers={};
     let keys=Object.keys(form.value)
     keys.forEach(element => {
-      let ans={};
-      if(element!='name' && element!='decription' && element!='quantity' && element!='price'  && element!='productId'  && element!='sellerId' && element!='images'  && element!='attributes'  && element!='category' ){
-       console.log("Element",element)
-       
-        ans['catId']=form.get('category').value;
+      let ans = {};
+      if (element != 'name'
+      && element != 'decription'
+      && element != 'quantity'
+      && element != 'price'
+      && element != 'productId'
+      && element != 'sellerId'
+      && element != 'images'
+      && element != 'attributes'
+      && element != 'category' ) {
+       console.log('Element', element);
+
+       ans['catId'] = form.get('category').value;
       //  ans['catAnswer']=form.get(element.catQuestion).value;
-      console.log(element,form.value[element])
-      ans['catAnswer']=form.value[element]
-      answers[element]=ans;   
-      } 
+       console.log(element, form.value[element]);
+       ans['catAnswer'] = form.value[element];
+       answers[element] = ans;
+      }
     });
     senddata['questionAnswers']=answers
     console.log(answers)
@@ -108,33 +126,36 @@ export class ViewComponentComponent implements OnInit {
     )
     
   }
-  async fun(){
-    let loadData = await this.loadsellerProduct()
-    if(loadData){
-      console.log(this.data)
-      
+  async fun() {
+    let loadData = await this.loadsellerProduct();
+    if (loadData) {
+      console.log("data",this.data);
+
     }
   }
   async ngOnInit() {
-    console.log("init")
+    console.log("init");
     // this.data.forEach((element)=>{
-      const session = await this.sellerService.checkSession();
-      console.log('Session:' +  session);
-      if (!session) {
+    const session = await this.sellerService.checkSession();
+    console.log('Session:' +  session);
+    if (!session) {
         this.router.navigate(['/']);
       }
-    
+
   }
-   loadsellerProduct(): Promise<boolean>{
+   loadsellerProduct(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       let response: boolean;
-      this.sellerService.getSellerProductList(1).subscribe(details=>{
-        console.log(details)
-        this.data =details
-        response=true
-        resolve(response)
+      this.sellerService.getSellerProductList(this.cookieService.get('id')).subscribe((details: object[])  => {
+        console.log(details);
+        this.data = details.map(x => {
+          x['images'] = [];
+          return x;
+        });
+        response = true;
+        resolve(response);
         this.showInUI();
-      })
+      });
       // this.loginUsername(username, password).subscribe( data => {
 
       //   this.delay(500);
@@ -154,7 +175,7 @@ export class ViewComponentComponent implements OnInit {
 
     });
    }
-   showInUI(){
+   showInUI() {
       this.forms = [];
       
 
@@ -181,4 +202,26 @@ export class ViewComponentComponent implements OnInit {
     })
     this.fetched=true;
    }
+
+   
+   fetchProductimages(productId: number, index) {
+
+    this.data[index]['images'] = [];
+    this.fileDownloadService.getProductImages(productId).subscribe((res: []) =>{
+
+      console.log(res);
+
+      let filenames;
+
+      for (let image of res) {
+
+        this.data[index]['images'].push(this.sanitizer.bypassSecurityTrustUrl( image )) ;
+
+      }
+
+    });
+   }
+
+
+   getDetailsById(productId: number) {}
 }

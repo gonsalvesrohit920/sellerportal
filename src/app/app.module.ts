@@ -13,7 +13,7 @@ import { SellerComponent } from './Components/seller/seller.component';
 import { AdminLoginComponent } from './Components/admin-login/admin-login.component';
 import { SignupSellerComponentComponent } from './Components/signup-seller-component/signup-seller-component.component';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider, SocialUser, AuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { AddProductsComponent } from './Components/add-products/add-products.component';
 import { MatTabsModule, MatSnackBarModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,6 +31,8 @@ import { OauthComponent } from './Components/oauth/oauth.component';
 import { FileUploadComponent } from './Components/file-upload/file-upload.component';
 import { ViewOrderHistoryComponent } from './Components/view-order-history/view-order-history.component';
 
+import {FileSelectDirective} from "ng2-file-upload";
+import { MatIconModule } from "@angular/material/icon";
 const config = new AuthServiceConfig([
   {
     id: GoogleLoginProvider.PROVIDER_ID,
@@ -57,6 +59,8 @@ const config = new AuthServiceConfig([
     FileUploadComponent,
     SellerDetailsAdminComponent,
     ViewOrderHistoryComponent,
+    FileSelectDirective
+    
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,10 @@ const config = new AuthServiceConfig([
     MatButtonModule,
     MatToolbarModule,
     SocialLoginModule,
+    MatCheckboxModule,
+    MatIconModule,
     MatSnackBarModule
+  
   ],
   providers: [
     {

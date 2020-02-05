@@ -26,21 +26,24 @@
         <label>{{d.pages}}</label>
     </div> -->
     <!-- </div> -->
-    <div *ngIf="data && forms" >
-    <div  *ngFor="let f of forms">
+    <div *ngIf="data && forms">
+    <div  *ngFor="let f of forms; let counter = index">
         <p></p>
         <form [formGroup]="f" >
             <label>Name</label><input type="text" readonly #name formControlName="name" value={{f.value.name}}/>&nbsp;&nbsp;            
             <label>Quantity Available</label><input type="text" readonly  #qty formControlName="quantity" value={{f.value.quantity}}/>&nbsp;&nbsp;
             <label>Add Quantity</label><input type="number" min="0" oninput="validity.valid||(value='');" formControlName="addQuantity" />&nbsp;&nbsp;
             <label>Price</label><input type="text" #price formControlName="price"  value={{f.value.price}}/>&nbsp;&nbsp;
-            <button (click)="edit(name,qty, price, details,f)">Edit</button>
+            <button (click)="edit(name,qty, price, details,f,counter)">Edit</button>
             <div style="text-align:center" #details [hidden]=true>
                 <div   *ngFor="let k of f.value| keyvalue; trackBy:trackByFn; "  >
                     <div *ngIf="k.key!='name' && k.key!='quantity' && k.key!='price'&& k.key!='attributes'&& k.key!='images' && k.key!='addQuantity'">
                         <br/><label >{{k.key}} </label><input type="text" formControlName={{k.key}} value={{k.value}}/><br/>
                     </div>
                     
+                </div>
+                <div *ngFor="let image of data[counter]['images']">
+                    <img [src] = "image" >
                 </div>
                 <button (click)="update(f)">Update</button>
             </div>

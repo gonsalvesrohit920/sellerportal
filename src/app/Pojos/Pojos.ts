@@ -87,7 +87,7 @@ export class ProductImage {
 }
 
 export class Seller {
-	seller_id: number;
+	id: number;
 	name: string ;
 	email: string ;
 	password: string ;

@@ -15,45 +15,55 @@ export class ProductComponentComponent implements OnInit {
   tabIndex=1;
   username: string;
   sellerId:string
+  sellerData: object;
+  applicationStatus1 :any
+  value :string
+  disable:boolean
+  applicationStatus = this.cookieservice.get('applicationStatus');
   constructor(private cookieservice: CookieService,
               private sellerDataService: SellerDataService,
               private router: Router,
               private sellerService: SellerServiceService
-              ) { }
-
-  sellerData: object;
-  applicationStatus1 :any
-  applicationStatus = this.cookieservice.get('applicationStatus');
-
-  async ngOnInit() {
+              ) 
+              {
+                this.sellerId = this.cookieservice.get('id');
+                console.log("id",this.sellerId)
+                this.value = "Check Status"
+                this.disable = false
+               }
+  async ngOnInit(){
+    
+    this.username = this.cookieservice.get('email');
+    //this.sellerId = this.cookieservice.get('id')
+    
     
     const session = await this.sellerService.checkSession();
     console.log('Session:' +  session);
     if (!session) {
       this.router.navigate(['/']);
-    }
-    this.username = this.cookieservice.get('email');
-    this.sellerId = this.cookieservice.get('id')
+    }     
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
-    this.sellerService.checkStatus(this.sellerId).subscribe((respose)=>{
-       this.applicationStatus1 = respose;
-    });
-
-    this.sellerService.subjectRefresh.subscribe(()=>{
-      this.keepCheckStatus(this.sellerId)
-      });
-  this.keepCheckStatus(this.sellerId)
-    }
-
-
+  }
     private keepCheckStatus(sellerId) {
       this.sellerService.checkStatus(sellerId).subscribe((respose)=>{
         this.applicationStatus1 = respose;
+        if(this.applicationStatus1==="Accepted"){
+          this.value = "Accpeted"
+          this.disable=true
+        }
         console.log( this.applicationStatus1)
      });
      } 
       onLogout() {
         this.cookieservice.deleteAll();
         this.router.navigate(['']);
+      }
+      Check(){
+        this.sellerService.subjectRefresh.subscribe(()=>{
+          this.keepCheckStatus(this.sellerId)
+          console.log("checkkkkk",this.sellerId)
+          });
+         this.keepCheckStatus(this.sellerId)
+      this.ngOnInit()
       }
 }

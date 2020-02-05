@@ -20,10 +20,10 @@ export class SellerDetailsAdminComponent implements OnInit {
       console.log(details);
     })
   }
-  onAccepted(SellerId){
-     this.sellerService.updateStatus(SellerId).subscribe((details)=>{
+  onAccepted(sellerid){
+    this.sellerService.updateStatus(sellerid).subscribe((details)=>{
       console.log(details)
-      this.ngOnInit()
     })
+     this.ngOnInit()
   }
 }

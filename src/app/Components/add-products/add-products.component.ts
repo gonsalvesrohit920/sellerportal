@@ -102,14 +102,16 @@ group={}
   }
   onupload(){
   this.imageUpload()}
-  
+
   imageUpload(){
-      for (let i = 0; i < this.uploader.queue.length; i++) {
+      for (let i = 0; i < this.uploader.queue.length ; i++) {
+        if(i<=5){
         let fileItem = this.uploader.queue[i]._file;
         if(fileItem.size > 10000000){
           alert("Each File should be less than 10 MB of size.");
           return;
         }
+      }
       }
       for (let j = 0; j < this.uploader.queue.length; j++) {
         let data = new FormData();

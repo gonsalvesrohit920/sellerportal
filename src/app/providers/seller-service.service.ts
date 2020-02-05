@@ -37,11 +37,6 @@ export class SellerServiceService {
   private defaultSessionValidationURL = 'sellerportal/seller/validate_session';
   private defaultAdminSessionValidationURL = 'sellerportal/admin/validate_session';
  
-
-  checkStatus(sellerId):Observable<string>{
-    return this.http.get("sellerportal/seller/product/checkstatus/"+sellerId,{ responseType:'text'})
-  }
-  
   updateStatus(SellerId):Observable<any>{
  
     return this.http.post("sellerportal/seller/product/checkstatus/adminUpdate",SellerId).pipe(tap(()=>{
@@ -50,6 +45,11 @@ export class SellerServiceService {
         console.log( this._subjectRefresh.next())
     }));
   }
+
+  checkStatus(sellerId):Observable<string>{
+    return this.http.get("sellerportal/seller/product/checkstatus/"+sellerId,{ responseType:'text'})
+  }
+
   loginUsername(email, password, postURL = this.defaultPostURL) {
 
     this.userobject.username = email;
@@ -131,7 +131,7 @@ export class SellerServiceService {
  getSellerId(){
    return this.sid
  }
- 
+
   getCategroy(sid){
     console.log(sid)
     return this.http.get('sellerportal/seller/category/'+sid)

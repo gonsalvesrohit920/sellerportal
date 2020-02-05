@@ -2,7 +2,10 @@
     <mat-toolbar>
         Welcome {{username}}
         <span class = "spacer"></span>
-        <button mat-raised-button color="warn" id="logout" (click)="onLogout()" >Logout</button> </mat-toolbar>
+        <button  style="margin-right: 8px;" [disabled]="disable" mat-raised-button color="primary" (click)="Check()">{{value}}</button>
+        <button mat-raised-button color="warn" id="logout" (click)="onLogout()" >Logout</button>
+      
+        </mat-toolbar>
     
 </div>
 

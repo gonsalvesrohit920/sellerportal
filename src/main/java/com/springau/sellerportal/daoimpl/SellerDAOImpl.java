@@ -188,6 +188,36 @@ public class SellerDAOImpl implements SellerDAO {
 		}
 		return category;
 	}
+	
+	@Override
+	public boolean savePanImage(int sellerId, byte[] panImage) {
+		
+		jdbcTemplate.update(DocumentQueries.SAVE_PAN_IMAGE, panImage, sellerId);
+		
+		return true;
+	}
+	
+	
+	@Override
+	public boolean saveGstinImage(int sellerId, byte[] gstinImage) {
+		
+		System.out.println(gstinImage.length);
+		
+		jdbcTemplate.update(DocumentQueries.SAVE_GSTIN_IMAGE, gstinImage, sellerId);
+		
+		return true;
+	}
+
+	@Override
+	public Documents getPanImage(int sellerId) {
+		
+		Documents documents = jdbcTemplate.queryForObject(
+				DocumentQueries.GET_DOCUMENTS,
+				new Object[] { sellerId }, new DocumentRowMapper()
+				);
+		
+		return documents;
+	}
 
 	
 

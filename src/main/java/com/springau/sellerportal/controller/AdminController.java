@@ -28,6 +28,7 @@ public class AdminController {
 	
 	@Autowired
 	private SellerService sellerService;
+	@Autowired
 	private AdminService adminService;
 	
 	@PostMapping("/login")

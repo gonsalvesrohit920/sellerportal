@@ -1,7 +1,11 @@
 package com.springau.sellerportal.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -30,6 +35,12 @@ import com.springau.sellerportal.utility.PasswordHash;
 @RestController
 @RequestMapping("/seller")
 public class SellerController {
+	
+	/** The Constant PAN_IMAGE. */
+	private static final String PAN_IMAGE = "panImage";
+	
+	/** The Constant GST_IMAGE. */
+	private static final String GST_IMAGE = "gstImage";
 	
 	/** The seller service. */
 	@Autowired
@@ -104,20 +115,47 @@ public class SellerController {
 	public List<Product> getAllProducts(){
 		return productService.getAllProducts();
 	}
+	
+	
 	@GetMapping(path = "/products/AddProductView/{Catname}")
 	public List<CategoryQuestion> getAllCategroy(@PathVariable("Catname") String categoryname){
 		return productService.getAllProductAttributes(categoryname);
 	}
+	
+	
 	@PostMapping(path = "/products/AddProduct")
-	public int AddProduct(@RequestBody Product product) {
-		productService.addProduct(product);
-		return 0;
+	public List<Integer> AddProduct(@RequestBody Product product) {
+		
+		return productService.addProduct(product);
 	}
 	@GetMapping(path="/products/GetProducts/{sellerId}")
 	public List<Product> getSellerProductList(@PathVariable("sellerId") int sellerId) {
+		System.out.print("Hit: " + sellerId);
 		List<Product> productList=productService.getSellerProductList(sellerId);
 		return productList;
 	}
+	
+	@PostMapping(path = "/product/addProductImages")
+	public boolean addProductImages(MultipartHttpServletRequest servletRequest) throws IOException {
+		
+		Iterator<String> itr = servletRequest.getFileNames();
+		
+		List<Integer> imageIds = new ArrayList<>();
+		List<byte[]> imageDatas = new ArrayList<>();
+		
+		
+		while(itr.hasNext())
+		{
+			String id = itr.next();
+			imageIds.add(Integer.parseInt(id));
+			imageDatas.add(servletRequest.getFile(id).getBytes());
+			
+		}
+		
+		productService.saveProductImages(imageIds, imageDatas);
+		return true;
+	}
+	
 	@PostMapping(path="/product/UpdateProduct")
 	public void updateProductData(@RequestBody Product product) {
 		System.out.println(product);
@@ -155,6 +193,63 @@ public class SellerController {
 	public List<String> getCategory(@PathVariable("sid") String sellerId) {
 		int sid = Integer.parseInt(sellerId);
 		return sellerService.getCategory(sid);
+	}
+	
+	
+	@PostMapping(path = "/signup/images/{id}")
+	public Seller saveSellerImages(MultipartHttpServletRequest servletRequest,
+			@PathVariable("id") int sellerId) throws IOException {
+		
+		Iterator<String> itr = servletRequest.getFileNames();
+		
+		while(itr.hasNext())
+		{
+			System.out.println(itr.next() +  servletRequest.getFile(GST_IMAGE).getSize());
+		}
+		
+		sellerService.savePanImage(sellerId, servletRequest.getFile(PAN_IMAGE).getBytes());
+		sellerService.saveGstinImage(sellerId, servletRequest.getFile(GST_IMAGE).getBytes());
+		return new Seller();
+	}
+	
+	/**
+	 * Gets the pan image.
+	 *
+	 * @param sellerId the seller id
+	 * @return the pan image in string format
+	 */
+	@GetMapping("/getPanImage/{id}")
+	public @ResponseBody Map<String, String> getPanImage(@PathVariable("id")int sellerId) {
+		
+		Map<String, String> jsonMap = new HashMap<>();
+
+		jsonMap.put("content", sellerService.getPanImage(sellerId));
+		
+		return jsonMap;
+	}
+	
+	/**
+	 * Gets the gstin image.
+	 *
+	 * @param sellerId the seller id
+	 * @return the gstin image
+	 */
+	@GetMapping("/getGstinImage/{id}")
+	public @ResponseBody Map<String, String> getGstinImage(@PathVariable("id")int sellerId) {
+		
+		Map<String, String> jsonMap = new HashMap<>();
+
+		jsonMap.put("content", sellerService.getGstinImage(sellerId));
+		
+		return jsonMap;
+	}
+	
+	@GetMapping("/product/getProductImages/{id}")
+	public @ResponseBody List<String> getProductImages(@PathVariable("id") int productId){
+		
+		
+		
+		return productService.getProductImages(productId);
 	}
 	
 

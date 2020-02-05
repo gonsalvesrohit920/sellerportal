@@ -2,6 +2,7 @@ package com.springau.sellerportal.daoimpl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +106,8 @@ public class ProductDAOImpl implements ProductDAO{
 
 	
 	@Override
-	public List<Product> saveProduct(Product product) {
+	public List<Integer> saveProduct(Product product) {
+		List<Integer> productImageIds = new ArrayList<>();
 		int productId = jdbcTemplate.queryForObject(
 				ProductQueries.STORE_PRODUCT,
 				new Object[] {
@@ -124,7 +126,12 @@ public class ProductDAOImpl implements ProductDAO{
 			catAnswer.setProductId(productId);
 		}
 		insertProductAttributes(product.getAttributes());
-		return null;
+		
+		for(ProductImage image: product.getImages())
+		{
+			productImageIds.add(storeImageMetadata(image, productId));
+		}
+		return productImageIds;
 	}
 
 	@Override
@@ -159,9 +166,9 @@ return null;
 		
 		
 		return jdbcTemplate.query(
-				ProductImageQueries.GET_PRODUCT_IMAGES,
+				ProductImageQueries.GET_PRODUCT_IMAGE_DATA,
 				new Object[] { 
-						productId 
+						productId
 						},
 				new ProductImageMapper());
 	}
@@ -281,6 +288,49 @@ return null;
 	public void updateStatus(int sellerId) {
 		jdbcTemplate.update(SellerQueries.UPDATE_Status,sellerId);
 		jdbcTemplate.update(SellerQueries.DELETE_SELLER_ADMIN,sellerId);
+	}
+	
+	
+	public int storeImageMetadata(ProductImage image, int productId) {
+		try {
+				
+				return jdbcTemplate.queryForObject(
+						ProductImageQueries.SAVE_IMAGE_METADATA,
+						new Object[] { 
+								
+								productId,
+								image.getImageType(),
+								
+						}
+						, new IdMapper());
+			}
+		catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	
+}
+	
+	@Override
+	public boolean saveProductImages(List<Integer> productImageIds, List<byte[]> productImages) {
+		
+		boolean response;
+		
+		try {
+			for(int i = 0; i < productImageIds.size(); i++) {
+				jdbcTemplate.update(ProductImageQueries.SAVE_PRODUCT_IMAGE, 
+						productImages.get(i), 
+						productImageIds.get(i));
+			}
+			response = true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			response = false;
+		}
+		
+		
+		return response;
 	}
 	
 }

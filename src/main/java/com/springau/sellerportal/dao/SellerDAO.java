@@ -18,4 +18,7 @@ public interface SellerDAO {
 	Documents saveSellerDocuments(Documents documents);
 	List<Seller> getPendingSellerDetails();
 	List<String> getCategory(int sid);
+	Documents getPanImage(int sellerId);
+	boolean saveGstinImage(int sellerId, byte[] gstinImage);
+	boolean savePanImage(int sellerId, byte[] panImage);
 }

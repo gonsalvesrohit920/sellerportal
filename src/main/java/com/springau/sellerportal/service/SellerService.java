@@ -1,11 +1,13 @@
 package com.springau.sellerportal.service;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springau.sellerportal.dao.SellerDAO;
+import com.springau.sellerportal.model.Documents;
 import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.utility.PasswordHash;
@@ -65,6 +67,45 @@ public class SellerService {
 		return dao.getCategory(sid);
 	}
 	
+	
+public boolean savePanImage(int sellerId, byte[] panImage) {
+		
+		dao.savePanImage(sellerId, panImage);
+		
+		return true;
+		
+	}
+	
+	public boolean saveGstinImage(int sellerId, byte[] gstinImage) {
+		
+		System.out.println(gstinImage.length);
+		dao.saveGstinImage(sellerId, gstinImage);
+		
+		return true;
+		
+	}
+	
+	
+
+	public String getPanImage(int sellerId) {
+
+		String panImage;
+		Documents documents = dao.getPanImage(sellerId);
+		
+		panImage = Base64.getEncoder().withoutPadding().encodeToString(documents.getPanImage());
+
+		return panImage;
+	}
+
+
+	public String getGstinImage(int sellerId) {
+		String panImage;
+		Documents documents = dao.getPanImage(sellerId);
+		
+		panImage = Base64.getEncoder().withoutPadding().encodeToString(documents.getGstInImage());
+
+		return panImage;
+	}
 
 
 }

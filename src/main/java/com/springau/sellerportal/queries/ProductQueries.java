@@ -22,6 +22,11 @@ public class ProductQueries {
 	
 	public static final String DELETE_PRODUCT_IMAGES_BY_ID="delete from \"Product_images\" where p_id=?;";
 	
+	public static final String GET_AVAILABLE_QTY_FROM_PRODUCT="select quantity from public.\"Product\" where p_id=?;";
+	
+	public static final String GET_QTY_OF_PRODUCT_SOLD="select sum(quantity) as soldQty from public.\"Order\" where p_id=?;";
+	
+	public static final String PRODUCT_SOFT_DELETE="UPDATE public.\"Product\" SET is_deleted=true WHERE p_id=?;";
 	private ProductQueries() {
 		
 	}

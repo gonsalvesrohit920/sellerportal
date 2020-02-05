@@ -135,10 +135,33 @@ return null;
 
 	@Override
 	public void deleteProduct(int productId) {
+		
+		List<Integer> qtyList=jdbcTemplate.query(ProductQueries.GET_AVAILABLE_QTY_FROM_PRODUCT, new Object[] {
+				productId
+		},new IdMapper());
+		
+		if(qtyList!=null&&qtyList.size()==1) {
+			int qty=qtyList.get(0);
+			List<Integer> total=jdbcTemplate.query(ProductQueries.GET_QTY_OF_PRODUCT_SOLD,new Object[] {
+					productId
+			},new IdMapper());
+			int soldQty=total.get(0);
+			if(soldQty<qty/3) {
+				System.out.println("Mailing");
+			}
+			else {
 
-		jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_SPECIFICATION_BY_ID,productId);
-		jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_IMAGES_BY_ID,productId);
-		jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_BY_ID,productId);
+				System.out.println("Deleting");
+				jdbcTemplate.update(ProductQueries.PRODUCT_SOFT_DELETE, productId);
+//				jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_SPECIFICATION_BY_ID,productId);
+//				jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_IMAGES_BY_ID,productId);
+//				jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_BY_ID,productId);
+			}
+		}
+		else {
+			System.out.println("Something wrong");
+		}
+		
 		
 	}
 

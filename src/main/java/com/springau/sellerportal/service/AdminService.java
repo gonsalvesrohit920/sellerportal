@@ -28,6 +28,8 @@ public class AdminService {
 		String password = this.environment.getProperty(ADMIN_PASSWORD);
 		
 		password = PasswordHash.getMd5Hash(password);
+		System.out.println(password);
+		System.out.println(data.getPassword());
 		
 		if(!data.getUsername().equals(username) || !data.getPassword().equals(password)) {
 			

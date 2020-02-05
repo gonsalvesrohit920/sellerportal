@@ -35,12 +35,15 @@ public class AdminController {
 	public Seller validateAdmin(@RequestBody LoginData data){
 		
 		data.setPassword(PasswordHash.getMd5Hash(data.getPassword()));
-		return adminService.validateAdmin(data);
+		Seller admin = adminService.validateAdmin(data);
+		System.out.println(admin.isValid());
+		return admin;
 		
 	}
 	
 	@PostMapping("/validate_session")
 	public Seller validateAdminSession(@RequestBody LoginData data) {
+		
 		return adminService.validateAdmin(data);
 	}
 

@@ -13,8 +13,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.springau.sellerportal.dao.ProductDAO;
+import com.springau.sellerportal.daoimpl.ProductDAOImpl;
 import com.springau.sellerportal.model.CategoryAnswer;
 import com.springau.sellerportal.model.Product;
 import com.springau.sellerportal.model.ProductImage;
@@ -31,6 +38,7 @@ public class ProductServiceTest {
 	List<CategoryAnswer> caList = new ArrayList<>();
 	Map<String, CategoryAnswer> questionAnswers = new HashMap<>();
 	List<Product> productList = new ArrayList<>();
+	Product p1 = new Product();
 	
 	@InjectMocks
 	ProductService productService;
@@ -55,7 +63,7 @@ public class ProductServiceTest {
 		
 		questionAnswers.put("RAM", cA);
 		
-		Product p1 = new Product();
+		
 		p1.setProductId(1);
 		p1.setName("Redmi Mobile");
 		p1.setCategory(1);
@@ -78,37 +86,22 @@ public class ProductServiceTest {
 		System.out.println("Hello");
 		
 		Assert.assertEquals(productService.getAllProducts(), productList);
-		Assert.assertEquals(productService.getAllProducts(), new ArrayList<Product>());
+		//Assert.assertEquals(productService.getAllProducts(), new ArrayList<Product>());
 		
 	}
 	
 	@Test
-	public void testAddProduct(Product product) {
-		productList.add(product);
+	public void testAddProduct() {
+		productList.add(p1);
+		//Assert.assertEquals("Adding product to the List", 2, productList.size());
+		
 		Assert.assertEquals("Adding product to the List", 2, productList.size());
-		Assert.assertEquals("Adding product to the List", 3, productList.size());
-	}
-	
-	
-	@Test
-	public void testGetPanImage() {
-		
-	}
-	
-	
-	@Test
-	public void testGetGstInImage() {
-		
 	}
 	
 	@Test
-	public void testsavePanImage() {
-		
+	public void testCheckStatus() {
+		when(dao.chechStatus(anyInt())).thenReturn("Pending");
+		Assert.assertEquals("Pending", productService.checkStatus(1)); 
 	}
 	
-	@Test
-	public void testSaveGstInImage() {
-		
-	}
-
 }

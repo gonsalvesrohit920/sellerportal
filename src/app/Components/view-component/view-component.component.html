@@ -17,7 +17,7 @@
 <!-- <div *ngFor="let d of d2 | keyvalue">  -->
     
 <!--     
-        <label>Product name:{{d.name}}</label> &nbsp;&nbsp;
+        <label>Product name:{{d.name}}</label> &nbsp;s&nbsp;
     <label>Quantity available:{{d.quantityAvailable}}</label>&nbsp;&nbsp;
     <label>Price:{{d.price}}</label>
     <button (click)="toggle()">Toggle</button>
@@ -26,26 +26,36 @@
         <label>{{d.pages}}</label>
     </div> -->
     <!-- </div> -->
-    <div *ngIf="data && forms" >
-    <div  *ngFor="let f of forms">
-        <p></p>
-        <form [formGroup]="f" >
-            <label>Name</label><input type="text" readonly #name formControlName="name" value={{f.value.name}}/>&nbsp;&nbsp;            
-            <label>Quantity Available</label><input type="text"  #qty formControlName="quantity" value={{f.value.quantity}}/>&nbsp;&nbsp;
-            <label>Price</label><input type="text" #price formControlName="price"  value={{f.value.price}}/>&nbsp;&nbsp;
-            <button (click)="toggle(name,qty, price, details,f)">Toggle</button>
-            <div style="text-align:center" #details [hidden]=true>
-                <div   *ngFor="let k of f.value| keyvalue; trackBy:trackByFn; "  >
-                    <div *ngIf="k.key!='name' && k.key!='quantity' && k.key!='price'&& k.key!='attributes'&& k.key!='images' ">
-                        <br/><label >{{k.key}} </label><input type="text" formControlName={{k.key}} value={{k.value}}/><br/>
-                    </div>
-                    
+<div *ngIf="data && forms" >
+<div  *ngFor="let f of forms" id="div1" class="container" style="text-align: center;">
+<p></p>
+<form [formGroup]="f" >
+    <label style="padding-left: 2px;">Name :     </label>
+    <mat-form-field  class="example-full-width">
+        <input type="text"  matInput readonly #name formControlName="name" value={{f.value.name}}/>
+    </mat-form-field>&nbsp;&nbsp;            
+    <label>Quantity Available :     </label>
+    <mat-form-field  class="example-full-width"><input type="text"  matInput #qty formControlName="quantity" value={{f.value.quantity}}/>
+    </mat-form-field>&nbsp;&nbsp;
+    <label>Price :     </label> <mat-form-field  class="example-full-width"><input type="text"  matInput #price formControlName="price"  value={{f.value.price}}/></mat-form-field>&nbsp;&nbsp;
+    <button (click)="toggle(name,qty, price, details,f)" mat-raised-button color="primary">Edit</button>&nbsp;&nbsp;
+    <button (click)="delete(f)"  mat-raised-button color="warn">Delete</button>&nbsp;&nbsp;
+    <div style="text-align:center" #details [hidden]=true>
+    <hr>
+        <div   *ngFor="let k of f.value| keyvalue; trackBy:trackByFn; "  >
+            <div *ngIf="k.key!='name' && k.key!='quantity' && k.key!='price'&& k.key!='attributes'&& k.key!='images' ">
+                <div id="myGrid" class="container1">
+                    <label id="label1">{{k.key}} : </label>
+                    <mat-form-field  class="" >
+                    <input id="input1" matInput type="text" formControlName={{k.key}} value={{k.value}}><br/>
+                    </mat-form-field>
                 </div>
-                <button (click)="update(f)">Update</button>
-                <button (click)="delete(f)">Delete</button>
-            </div>
-    
-        </form>
-
+            </div>  
+        </div>
+        <button (click)="update(f)"  mat-raised-button color="primary" style="margin-bottom: 3%;">Update</button>
     </div>
+
+</form>
+
+</div>
 </div>

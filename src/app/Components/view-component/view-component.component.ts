@@ -4,6 +4,7 @@ import { element, promise } from 'protractor';
 import { SellerServiceService } from 'src/app/providers/seller-service.service';
 import { resolve } from 'url';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class ViewComponentComponent implements OnInit {
   trackByFn(index:any, item:any){
       return index;
   }
-  constructor(private sellerService:SellerServiceService, private router: Router) { 
+  constructor(private sellerService:SellerServiceService, private router: Router,private cookieservice: CookieService) { 
     console.log("con")
     this.fun();
   }
@@ -40,9 +41,7 @@ export class ViewComponentComponent implements OnInit {
   }
   update(form){
     console.log(form.value)
-    let senddata={
-      
-    }
+    let senddata={ }
     senddata['name'] = form.get('name').value
     senddata['decription'] = form.get('decription').value
     senddata['quantity'] = form.get('quantity').value
@@ -93,7 +92,7 @@ export class ViewComponentComponent implements OnInit {
    loadsellerProduct(): Promise<boolean>{
     return new Promise((resolve, reject) => {
       let response: boolean;
-      this.sellerService.getSellerProductList(1).subscribe(details=>{
+      this.sellerService.getSellerProductList(this.cookieservice.get('id')).subscribe(details=>{
         console.log(details)
         this.data =details
         response=true

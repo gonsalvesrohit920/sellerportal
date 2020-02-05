@@ -1,5 +1,6 @@
-<div style="text-align: center; padding-top: 5%;" >
-     <label>Select Category :</label>
+<div style="text-align: center; padding-top: 2%;" >
+  <div id="grid1">
+     <label style="padding-right: 10%;">Select Category :</label>
      <mat-form-field>
         <mat-select placeholder="Books" [(ngModel)]="SelectedType" (selectionChange)="GetType($event)">
           <mat-option *ngFor="let type of seletedCategory" [value]="type">
@@ -7,60 +8,78 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
 </div> 
-<div *ngIf="data" style="text-align: center; padding-top: 5%;" >
-  <form   [formGroup]="ProductForm" (ngSubmit)="onSubmit()" class="example-form"  >
-<div>
-    <mat-form-field  class="example-full-width">
-      <input matInput placeholder="Product Name"  formControlName="Product Name">
-    </mat-form-field>
-    <br>
+<div *ngIf="data" style="text-align: center; padding-top: 2%;" > 
+  <form   [formGroup]="ProductForm" (ngSubmit)="onSubmit()" class="example-form">
+  <div id="grid">
+    <div id="grid1">
+      <div style="background-color: #39ace7; padding-top: 1%;" >
+      <p><strong>Basic Information</strong></p>
+       <hr>
+      </div>
         <mat-form-field  class="example-full-width">
-        <input matInput placeholder="Product Description"  formControlName="Product Description">
-    </mat-form-field>
-    <br>
-    <mat-form-field  class="example-full-width">
-      <input matInput placeholder="Quantity"  formControlName="Quantity">
-    </mat-form-field>
-    <br>
-    <mat-form-field  class="example-full-width">
-      <input matInput placeholder="Price"  formControlName="Price">
-    </mat-form-field>
-    <br>
-</div>  
-  <div *ngFor="let item of CategoryQuestions">
-    <mat-form-field  class="example-full-width">
-        <input matInput placeholder="{{item}}"  formControlName="{{item}}">
-    </mat-form-field>
+          <input matInput placeholder="Product Name"  formControlName="Product Name">
+        </mat-form-field>
+        <br>
+            <mat-form-field  class="example-full-width">
+            <input matInput placeholder="Product Description"  formControlName="Product Description">
+        </mat-form-field>
+        <br>
+        <mat-form-field  class="example-full-width">
+          <input matInput placeholder="Quantity"  formControlName="Quantity">
+        </mat-form-field>
+        <br>
+        <mat-form-field  class="example-full-width">
+          <input matInput placeholder="Price"  formControlName="Price">
+        </mat-form-field>
+        <br>
+    </div> 
+     <div id="grid1" >
+      <div style="background-color: #39ace7; padding-top: 1%;" >
+        <p><strong>Specifications</strong></p>
+         <hr>
+        </div>
+      <div *ngFor="let item of CategoryQuestions">
+        <mat-form-field  class="example-full-width">
+            <input matInput placeholder="{{item}}"  formControlName="{{item}}">
+        </mat-form-field>
+      </div>
+     </div>
+     <div id="grid1" >
+      <div style="background-color: #39ace7; padding-top: 1%;" >
+        <p><strong>Upload images</strong></p>
+         <hr>
+        </div>
+      <input formControlName="document" type="file" ng2FileSelect accept=".png" [uploader]="uploader" ng-show="show" multiple/><br/>
+      <div  style="text-align: center; padding-left: 35%;">
+      <table>
+           <thead>
+                <tr>
+                  <th>
+                  </th>
+                  <th>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                  <th>
+                    {{item?.file?.name}} {{ item?.file?.size/1024/1024 | number:'.2' }} MB
+                  </th>
+                  <th class="text-center">
+                    <mat-icon (click)="item.remove()">delete</mat-icon>
+                  </th>
+                </tr>
+                </tbody>
+              </table>
+        </div>      
+              <br>
+        <br> 
+     </div>
+   </div>
+   <div style="padding-bottom: 100px; padding-right: 10%;">
+   <button style="margin-top: 3%;" type="submit" class="button" mat-raised-button color="primary">Submit</button>
   </div>
-  <label>Upload Images:
-    <br>
-  <input formControlName="document" type="file" ng2FileSelect accept=".png" [uploader]="uploader" multiple/><br/>
-  </label>
-  <div  style="text-align: center; padding-left: 35%;">
-  <table>
-       <thead>
-            <tr>
-              <th>
-              </th>
-              <th>
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of uploader.queue">
-              <th>
-                {{item?.file?.name}} {{ item?.file?.size/1024/1024 | number:'.2' }} MB
-              </th>
-              <th class="text-center">
-                <mat-icon (click)="item.remove()">delete</mat-icon>
-              </th>
-            </tr>
-            </tbody>
-          </table>
-    </div>      
-          <br>
-    <br>
-    <button style="margin-top: 3%;" type="submit" class="button">Submit</button> 
-  </form>
+ </form>
  </div>

@@ -1,20 +1,25 @@
-<div style="text-align: center;" class="container">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<body><div class="wrapper fadeInDown">
+  <div id="formContent">  
     <form [formGroup]="RegisterForm" class="form-input"  (ngSubmit)="onLogin(route )" style="padding-bottom: 3%;" class="box">
             <h2>Login</h2>       
             <mat-form-field>
-              <input matInput class="form-input-field" type="email" placeholder="Email" [(ngModel)]="Email" formControlName="email">
+              <input matInput class="form-input-field" type="email" placeholder="Email" [(ngModel)]="Email" formControlName="email" class="fadeIn second">
             </mat-form-field>
-
             <br>
         <mat-form-field>
-              <input matInput type="password"  placeholder="Password" [(ngModel)]="password" formControlName="password"> 
+              <input matInput type="password"  placeholder="Password" [(ngModel)]="password" formControlName="password" > 
         </mat-form-field>                    
         <br> 
         <h2>{{ errorMessage }}</h2>
         <br>           
-             <button mat-raised-button class="form-input-field" color="primary" style="margin-top: 3%;" type="submit" class="button">Login</button>               
+             <button mat-raised-button class="form-input-field" color="primary" style="margin-top: 3%;" type="submit" class="button"  class="fadeIn fourth">Login</button>
+             <div *ngIf="!isAdmin"> 
+              <button mat-raised-button color="accent" style="margin-top: 3%;" class="button"  class="fadeIn five" ><a style="margin-top: 3%;" href="/signup" class="fadeIn five">Sign Up</a></button>   
+            </div>             
      </form> 
-     <div *ngIf="!isAdmin"> 
-      <button mat-raised-button color="accent" style="margin-top: 3%;" class="button"><a style="margin-top: 3%;" href="/signup">Sign Up</a></button>   
-    </div>
-    </div>
+    <div>
+</div>    
+<body>

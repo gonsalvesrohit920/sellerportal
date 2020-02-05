@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -74,7 +74,8 @@ const config = new AuthServiceConfig([
     MatToolbarModule,
     SocialLoginModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   
   ],
   providers: [

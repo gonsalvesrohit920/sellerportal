@@ -6,7 +6,7 @@ import { element } from 'protractor';
 import { Router } from '@angular/router';
 import {FileUploader} from "ng2-file-upload";
 import { CookieService } from 'ngx-cookie-service';
-
+import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
   selector: 'app-add-products',
   templateUrl: './add-products.component.html',
@@ -21,12 +21,13 @@ export class AddProductsComponent implements OnInit {
   ProductForm:FormGroup;
   seletedCategory:any
   uploadForm: FormGroup;
+  show:false
   public uploader:FileUploader = new FileUploader({
     isHTML5: true
   });
 group={} 
   sid:string
-  constructor(private sellerService:SellerServiceService, private router: Router,private cookieservice: CookieService) {
+  constructor(private sellerService:SellerServiceService, private router: Router,private cookieservice: CookieService,private snackBar: MatSnackBar) {
     this.sid = this.sellerService.getSellerId()
    }
   async ngOnInit() {
@@ -75,13 +76,13 @@ group={}
     console.log(this.ProductForm.value)
     let senddata = {}
     let specdata = []
-   
     senddata['name'] = this.ProductForm.get('Product Name').value
     senddata['decription'] = this.ProductForm.get('Product Description').value
     senddata['quantity'] = this.ProductForm.get('Quantity').value
     senddata['price'] = this.ProductForm.get('Price').value
     senddata['category'] = this.data[0].catId
-    senddata['sellerId']=this.cookieservice.set('id',this.sellerService.getSellerId() + '');
+    senddata['sellerId']=this.cookieservice.get('id');
+    console.log(this.cookieservice.get('id'))
     console.log(senddata)
     let answers=[];
     this.data.forEach(element => {
@@ -94,38 +95,60 @@ group={}
     senddata['attributes']=answers
     console.log(answers)
     console.log(senddata)
+    let x = this.imageUpload()
+    console.log(x)
+    if(x==1){
+      this.sellerService.AddProduct(senddata).subscribe((response)=>{
+        console.log(response)
+        this.router.navigate(['/product/'])
+      })
+    }
+    
 
-    this.sellerService.AddProduct(senddata).subscribe((response)=>{
-      console.log(response)
-      this.router.navigate(['/product/'])
-    })
   }
-  onupload(){
-  this.imageUpload()}
+
 
   imageUpload(){
+    let f=1;
       for (let i = 0; i < this.uploader.queue.length ; i++) {
-        if(i<=5){
+        if(i<=0){
         let fileItem = this.uploader.queue[i]._file;
-        if(fileItem.size > 10000000){
-          alert("Each File should be less than 10 MB of size.");
-          return;
+        console.log(fileItem.type)
+        if(fileItem.type!="jpg"){
+                if(fileItem.size > 10000000){
+                  alert("Each File should be less than 10 MB of size.");
+                          f=0
+                }
+              }
+        else{
+          f=0
+          this.snackBar.open("File Type Should Be JPG","ok",{
+            duration:2000
+          })
         }
+      }else{
+        f=0
+        this.snackBar.open("Upload Limit Crossed(Max 5 Images)","ok",{
+          duration:2000
+        })
       }
-      }
-      for (let j = 0; j < this.uploader.queue.length; j++) {
-        let data = new FormData();
-        let fileItem = this.uploader.queue[j]._file;
-        console.log(fileItem.name);
-        data.append('file', fileItem);
-        data.append('fileSeq', 'seq'+j);
-        data.append( 'dataType', this.uploadForm.controls.type.value);
-      //   CREATE THIS IN SERVICE
-      //  this.uploadFile(data).subscribe(data => alert(data.message));
-      //  uploadFile(data: FormData): Observable {
-      //   return this.http.post('http://localhost:8080/upload', data);
       }
       this.uploader.clearQueue();
+
+      
+      // for (let j = 0; j < this.uploader.queue.length; j++) {
+      //   let data = new FormData();
+      //   let fileItem = this.uploader.queue[j]._file;
+      //   console.log(fileItem.name);
+      //   data.append('file', fileItem);
+      //   data.append('fileSeq', 'seq'+j);
+      //   data.append( 'dataType', this.uploadForm.controls.type.value);
+      // //   CREATE THIS IN SERVICE
+      // //  this.uploadFile(data).subscribe(data => alert(data.message));
+      // //  uploadFile(data: FormData): Observable {
+      // //   return this.http.post('http://localhost:8080/upload', data);
+      // }
+    return f;
       }
       
 }

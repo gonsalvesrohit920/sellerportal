@@ -1,86 +1,82 @@
-<div style="text-align: center;">
-  <mat-tab-group>
-      <mat-tab label = "Basic Information">
-          <form [formGroup] = "basicDetailsForm" (ngSubmit)="onSignUp()">
-              <label>
-                  Name :
-                  <input type="text" placeholder="Name" formControlName="name"><br>
-              </label>
-              <br>
-              <label>
-                  Email : 
-                  <input type="email" placeholder="Email"formControlName="email"><br>
-              </label>
-              <br>
-              <label>
-                  Password : 
-                  <input type="password" placeholder="Password" formControlName="password"><br>
-              </label>
-              <br>
-              <label>
-                  Confirm Password : 
-                  <input type="password" placeholder="Confirm Password" formControlName="confirmPassword"><br>
-              </label>
-              <br>
-              <label>Select Category :
-                <mat-checkbox *ngFor="let type of types" [value]="type.value" (change)="GetType( type.viewValue,$event)">
-                    {{ type.viewValue }}
-                </mat-checkbox>
-        </label>                
-          </form>
-      </mat-tab>
-      <mat-tab label = "Contact Details">
-          <form [formGroup] = "contactDetailsForm">
-              <label>
-                Street :  
-                <input type="text" placeholder="Street" formControlName="street"><br>
-              </label>
-              <br>
-              <label>
-                  City :  
-                  <input type="text" placeholder="City" formControlName="city"><br>
-              </label>
-              <br>
-              <label>
-                  Pincode : 
-                  <input type="text" placeholder="Pincode" formControlName="pincode"><br>
-              </label>
-              <br>
-              <label>
-                  Phone Number : 
-                  <input type="text" placeholder="Phone Number" formControlName="phoneNo"><br>
-              </label>                
-          </form>
-      </mat-tab>
-      <mat-tab label = "Document Details">
-        <form [formGroup] = "documentsForm" (ngSubmit)="onSignUp()">
-            <label>
-                PAN Number
-                <input type="text" placeholder="PAN Number" formControlName="panNo"><br>
-            </label>
-            <br> 
-            <label>
-              GSTIN Number
-              <input type="text" placeholder="GSTIN Number" formControlName="gstInNo"><br>
-          </label>
-          <br>
-          <form [formGroup] = "uploadForm" enctype="multipart/form-data"  (ngSubmit)="onSubmit()">
-            <label>
-                PAN Image 
-                <input type="file" accept="image/" name="panImage" multiple="multiple" (change)="onPANSelected($event)"><br>
-            </label>
-            <br>
-            
-            <label>
-                GSTIN Image 
-                <input type="file" accept="image/" name="gstinImage" multiple="multiple" (change)="onGSTINSelected($event)"><br>
-            </label>
-            <br>
-        </form>
-            <button style="margin-top: 3%;" type="submit" class="button" [disabled]="basicDetailsForm.invalid && contactDetailsForm.invalid && documentsForm.invalid" >SignUp</button> 
-        </form> 
-    
-      </mat-tab>
-  </mat-tab-group>
-</div>
-  
+<body>
+    <div style="text-align: center;" >
+        <mat-tab-group>
+            <mat-tab label = "Basic Information">
+            <div class="container">    
+                <form [formGroup] = "basicDetailsForm" (ngSubmit)="onSignUp()" id="contact" >
+                    <fieldset>
+                        <input type="text" placeholder="Name" formControlName="name"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <input type="email" placeholder="Email"formControlName="email"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <input type="password" placeholder="Password" formControlName="password"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <input type="password" placeholder="Confirm Password" formControlName="confirmPassword"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset id="field">Select Category :
+                      <mat-checkbox *ngFor="let type of types" [value]="type.value" (change)="GetType( type.viewValue,$event)">
+                         <span></span> {{ type.viewValue }}
+                      </mat-checkbox>
+              </fieldset>                
+                </form>
+            </div>    
+            </mat-tab>
+            <mat-tab label = "Contact Details">
+                <div class="container"> 
+                <form [formGroup] = "contactDetailsForm" id="contact" >
+                    <fieldset>
+                      <input type="text" placeholder="Street" formControlName="street"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <input type="text" placeholder="City" formControlName="city"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <input type="text" placeholder="Pincode" formControlName="pincode"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <input type="text" placeholder="Phone Number" formControlName="phoneNo"><br>
+                    </fieldset>                
+                </form>
+                </div>
+            </mat-tab>
+
+            <mat-tab label = "Document Details">
+                <div class="container"> 
+                <form [formGroup] = "documentsForm" (ngSubmit)="onSignUp()" id="contact" >
+                    <fieldset>
+                        <input type="text" placeholder="PAN Number" formControlName="panNo"><br>
+                    </fieldset>
+                    <br> 
+                    <fieldset>
+                        <input type="text" placeholder="GSTIN Number" formControlName="gstInNo"><br>
+                    </fieldset>
+                    <br>
+                    <form [formGroup] = "uploadForm" enctype="multipart/form-data"  (ngSubmit)="onSubmit()">
+                    <fieldset>
+                        <input type="file" accept="image/" (change)="onPANSelected($event)"><br>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <input type="file" accept="image/" (change)="onGSTINSelected($event)"><br>
+                    </fieldset>
+                </form>
+                    <br>
+                    <button style="margin-top: 3%;" type="submit" class="button" [disabled]="basicDetailsForm.invalid && contactDetailsForm.invalid && documentsForm.invalid" id="contact-submit">SignUp</button> 
+                </form> 
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+      </div>
+        
+      
+</body>

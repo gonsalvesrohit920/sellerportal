@@ -28,8 +28,11 @@ export class ProductComponentComponent implements OnInit {
               {
                 this.sellerId = this.cookieservice.get('id');
                 console.log("id",this.sellerId)
+                console.log(this.value)
+                if(this.value!="Check Status"){
                 this.value = "Check Status"
                 this.disable = false
+                }
                }
   async ngOnInit(){
     
@@ -43,6 +46,7 @@ export class ProductComponentComponent implements OnInit {
       this.router.navigate(['/']);
     }     
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
+    this.keepCheckStatus(this.sellerId)
   }
     private keepCheckStatus(sellerId) {
       this.sellerService.checkStatus(sellerId).subscribe((respose)=>{
@@ -64,6 +68,5 @@ export class ProductComponentComponent implements OnInit {
           console.log("checkkkkk",this.sellerId)
           });
          this.keepCheckStatus(this.sellerId)
-      this.ngOnInit()
       }
 }

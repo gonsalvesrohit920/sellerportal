@@ -4,7 +4,6 @@ import { SellerServiceService } from 'src/app/providers/seller-service.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
 import { CookieService } from 'ngx-cookie-service';
 import { FileDownloadService } from 'src/app/providers/file-download-service/file-download.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -25,21 +24,21 @@ export class ViewComponentComponent implements OnInit {
   hidden=true;
   edit(name, qty, price,details,f,counter){
     console.log(name.value, qty.value, price.value)
-     details.hidden=!details.hidden
-     let productId = f.get('productId').value;
-     let count = counter;
+    details.hidden=!details.hidden
+    let productId = f.get('productId').value;
+    let count = counter;
  
-     this.fetchProductimages(productId, count);
+    this.fetchProductimages(productId, count);
   }
   trackByFn(index: any, item: any) {
       return index;
   }
   constructor(private sellerService:SellerServiceService, 
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private cookieService: CookieService,
-    private fileDownloadService: FileDownloadService,
-    private sanitizer: DomSanitizer) { 
+              private router: Router,
+              private snackBar: MatSnackBar,
+              private cookieService: CookieService,
+              private fileDownloadService: FileDownloadService,
+              private sanitizer: DomSanitizer) { 
     console.log("con")
     this.fun();
   }
@@ -67,9 +66,7 @@ export class ViewComponentComponent implements OnInit {
   }
   update(form){
     console.log(form.value)
-    let senddata={
-      
-    }
+    let senddata={ }
     senddata['name'] = form.get('name').value
     senddata['decription'] = form.get('decription').value
     senddata['quantity'] = form.get('quantity').value+form.get('addQuantity').value;
@@ -179,9 +176,9 @@ export class ViewComponentComponent implements OnInit {
       this.forms = [];
       
 
-     this.forms=[];
-     console.log(11, this.data)
-     this.data.forEach((element)=>{
+      this.forms=[];
+      console.log(11, this.data)
+      this.data.forEach((element)=>{
       this.fg=new FormGroup({});
       console.log(555, this.keys)
       this.keys=Object.keys(element);
@@ -200,7 +197,7 @@ export class ViewComponentComponent implements OnInit {
       this.fg.addControl('addQuantity',new FormControl(''));
       this.forms.push(this.fg)
     })
-    this.fetched=true;
+      this.fetched=true;
    }
 
    

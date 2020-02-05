@@ -19,8 +19,8 @@ import { FileUploadService } from '../../providers/file-upload-service/file-uplo
 export class AddProductsComponent implements OnInit {
 
   constructor(private sellerService:SellerServiceService, private router: Router,private snackBar: MatSnackBar,
-    private cookieservice: CookieService,
-      private uploadService: FileUploadService,) { }
+              private cookieservice: CookieService,
+              private uploadService: FileUploadService,) { }
   types = []
   enterAllDetails=false;
   data :any
@@ -56,7 +56,7 @@ export class AddProductsComponent implements OnInit {
 
   GetType(ob) {
     console.log(ob.value);
-      this.sellerService.getCategoryAttributes(ob.value).subscribe((attributes) => {
+    this.sellerService.getCategoryAttributes(ob.value).subscribe((attributes) => {
       this.data = attributes;
       console.log(this.data);
       this.data.forEach(element => {
@@ -132,7 +132,7 @@ export class AddProductsComponent implements OnInit {
           response,
           this.uploader.queue.map( x => x._file)).subscribe((response) => {
             console.log(response);
-          this.router.navigate(['/product/']);
+            this.router.navigate(['/product/']);
         }
 
        );
@@ -163,16 +163,31 @@ export class AddProductsComponent implements OnInit {
   this.imageUpload(); }
 
   imageUpload(){
-      for (let i = 0; i < this.uploader.queue.length ; i++) {
-        if (i <= 5){
+    let f=1;
+    for (let i = 0; i < this.uploader.queue.length ; i++) {
+        if(i<=0){
         let fileItem = this.uploader.queue[i]._file;
-        if (fileItem.size > 10000000){
-          alert("Each File should be less than 10 MB of size.");
-          return;
+        console.log(fileItem.type)
+        if(fileItem.type!="jpg"){
+                if(fileItem.size > 10000000){
+                  alert("Each File should be less than 10 MB of size.");
+                  f=0
+                }
+              }
+        else{
+          f=0
+          this.snackBar.open("File Type Should Be JPG","ok",{
+            duration:2000
+          })
         }
+      }else{
+        f=0
+        this.snackBar.open("Upload Limit Crossed(Max 5 Images)","ok",{
+          duration:2000
+        })
       }
       }
-      for (let j = 0; j < this.uploader.queue.length; j++) {
+    for (let j = 0; j < this.uploader.queue.length; j++) {
         let data = new FormData();
         let fileItem = this.uploader.queue[j]._file;
         console.log(fileItem.name);
@@ -184,7 +199,22 @@ export class AddProductsComponent implements OnInit {
       //  uploadFile(data: FormData): Observable {
       //   return this.http.post('http://localhost:8080/upload', data);
       }
-      this.uploader.clearQueue();
+    this.uploader.clearQueue();
+
+      
+      // for (let j = 0; j < this.uploader.queue.length; j++) {
+      //   let data = new FormData();
+      //   let fileItem = this.uploader.queue[j]._file;
+      //   console.log(fileItem.name);
+      //   data.append('file', fileItem);
+      //   data.append('fileSeq', 'seq'+j);
+      //   data.append( 'dataType', this.uploadForm.controls.type.value);
+      // //   CREATE THIS IN SERVICE
+      // //  this.uploadFile(data).subscribe(data => alert(data.message));
+      // //  uploadFile(data: FormData): Observable {
+      // //   return this.http.post('http://localhost:8080/upload', data);
+      // }
+    return f;
       }
 
 }

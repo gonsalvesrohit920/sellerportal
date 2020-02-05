@@ -19,8 +19,8 @@ public class OrderService {
 		return orderDAO.placeOrder(order); 
 	}
 	
-	public int submitRating(int o_id, int rating) {
-		return orderDAO.submitRating(o_id, rating);
+	public int submitRating(int orderId, int rating) {
+		return orderDAO.submitRating(orderId, rating);
 	}
 	public Map<Integer,Product> getOrdersOfSeller(int sellerId){
 		return orderDAO.getOrdersOfSeller(sellerId);

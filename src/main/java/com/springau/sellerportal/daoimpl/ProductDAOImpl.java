@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -44,7 +45,8 @@ import com.springau.sellerportal.service.MailService;
 @Repository
 public class ProductDAOImpl implements ProductDAO{
 	
-	
+	@Autowired
+	Logger logger;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -86,7 +88,7 @@ public class ProductDAOImpl implements ProductDAO{
 					
 				}},new CategoryAnswerMapper());
 			Map<String,CategoryAnswer> ca=new HashMap<>();
-			qa.forEach((i)->{
+			qa.forEach( i ->{
 				CategoryAnswer c=new CategoryAnswer();
 				c.setCatAnswer(i.getCatAnswer());
 				c.setCatId(i.getCatId());
@@ -107,7 +109,7 @@ public class ProductDAOImpl implements ProductDAO{
 	 */
 	@Override
 	public List<Product> getAllSellerProducts(int sellerId){
-		System.out.println(sellerId);
+		logger.info(sellerId);
 		return jdbcTemplate.query(ProductQueries.ALL_PRODUCTS,new Object[] { sellerId }, new ProductMapper());
 	}
 
@@ -141,11 +143,7 @@ public class ProductDAOImpl implements ProductDAO{
 		return productImageIds;
 	}
 
-	@Override
-	public List<Product> updateProduct(Product product) {
-		//TODO
-return null;
-	}
+	
 
 	@Override
 	public int deleteProduct(int productId) {
@@ -156,24 +154,24 @@ return null;
 		
 		if(qtyList!=null&&qtyList.size()==1) {
 			int qty=qtyList.get(0);
-			System.out.println(productId);
+			logger.info(productId);
 			List<Integer> total=jdbcTemplate.query(ProductQueries.GET_QTY_OF_PRODUCT_SOLD,new Object[] {
 					productId
 			},new IdMapper());
 			int soldQty=total.get(0);
-			System.out.println("Sold qty="+soldQty);
+			logger.info("Sold qty="+soldQty);
 			if(soldQty!=0&&soldQty<qty*0.3) {
-				System.out.println("Deleting");
+				logger.info("Deleting");
 				jdbcTemplate.update(ProductQueries.PRODUCT_SOFT_DELETE, productId);
 				return productId;
 			}
 			else {
 
-				System.out.println("Mailing");
+				logger.info("Mailing");
 				Product product=getProductById(productId);
 				int sellerId=getSellerIdByProductId(productId);
 				Seller seller=getSellerDataFromSelleId(sellerId);
-				System.out.println("Mailing started");
+				logger.info("Mailing started");
 				mailservice.sendDeleteWarning(seller, product, qty, soldQty);
 				return 0;
 //				jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_SPECIFICATION_BY_ID,productId);
@@ -183,17 +181,13 @@ return null;
 			
 		}
 		else {
-			System.out.println("Something wrong");
+			logger.info("Something wrong");
 		}
 		return -1;
 		
 	}
 
-	@Override
-	public List<CategoryAnswer> getProductAttributes(int productId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	/**
 	 * Gets the product images by product Id.
@@ -230,18 +224,14 @@ return null;
 			return true;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.info(e);
 			return false;
 		}
 		
 		
 	}
 
-	@Override
-	public List<ProductImage> saveProductImages(int productId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	@Override
 	public List<CategoryQuestion> getAllProductAttributes(String categoryname) {
 		
@@ -259,7 +249,7 @@ return null;
                 preparedStatement.setInt(1, CatId);
             }
         },new CategoryQuestionMapper());
-        System.out.println(categoryQueslist.get(0).getCatQuestion());
+        logger.info(categoryQueslist.get(0).getCatQuestion());
 		return categoryQueslist;
 	}
 
@@ -267,7 +257,7 @@ return null;
 	public int updateProductData(Product product) {
 
 
-		System.out.println("start");
+		logger.info("start");
 		try {
 			jdbcTemplate.update(ProductQueries.UPDATE_PRODUCT_TABLE,product.getDecription(),product.getQuantity(),product.getPrice(),product.getProductId());
 			List<CategoryQuestion> categoryQueslist = jdbcTemplate.query(CategoryQuestionsQueries.GET_CATEGORY_FIELDS,new PreparedStatementSetter() {
@@ -276,17 +266,17 @@ return null;
 	            }
 	        },new CategoryQuestionMapper());
 			
-			System.out.println(categoryQueslist.size()+","+product.getCategory());
+			logger.info(categoryQueslist.size()+","+product.getCategory());
 			Map<Integer,CategoryAnswer> quetionIdCategory=new HashMap<>();
-			categoryQueslist.forEach((cq)->{
-				System.out.println(cq.getCatId()+","+cq.getCatQuestion()+","+cq.getCatqId());
+			categoryQueslist.forEach( cq -> {
+				logger.info(cq.getCatId()+","+cq.getCatQuestion()+","+cq.getCatqId());
 				quetionIdCategory.put(cq.getCatqId(), product.getQuestionAnswers().get(cq.getCatQuestion()));
 				
 			});
-			System.out.println(insertUpdatedCategoryAnswer(quetionIdCategory, product));
+			logger.info(insertUpdatedCategoryAnswer(quetionIdCategory, product));
 			return 1;
 		}catch (Exception e) {
-			System.out.println(e.toString());
+			logger.info(e.toString());
 		}
 		return 0;
 		
@@ -296,7 +286,7 @@ return null;
 		try {
 			for(Map.Entry<Integer, CategoryAnswer> entry:updatedAnswers.entrySet()) {
 				CategoryAnswer categoryAnswer=entry.getValue();
-				System.out.println(categoryAnswer.getCatId()+","+categoryAnswer.getCatAnswer()+","+product.getProductId()+","+entry.getKey());
+				logger.info(categoryAnswer.getCatId()+","+categoryAnswer.getCatAnswer()+","+product.getProductId()+","+entry.getKey());
 				jdbcTemplate.update(
 						CategoryAnswerQueries.UPDATE_PRODUCT_ANSWER,					
 						categoryAnswer.getCatAnswer(),
@@ -309,15 +299,14 @@ return null;
 			return true;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.info(e);
 			return false;
 		}
 	}
 
 	@Override
 	public String chechStatus(int sellerId) {
-		String response = jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_Status,new Object[] { sellerId }, String.class);
-		return response;
+		return jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_Status,new Object[] { sellerId }, String.class);
 	}
 
 	@Override
@@ -339,7 +328,7 @@ return null;
 		}, new IdMapper());
 	}
 	public Seller getSellerDataFromSelleId(int sellerId) {
-		System.out.println(sellerId);
+		logger.info(sellerId);
 		return jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_DATA_FROM_SELLER_ID, new Object[] {
 				sellerId
 		}, new SellerMapper());
@@ -359,7 +348,7 @@ return null;
 						, new IdMapper());
 			}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.info(e);
 			return -1;
 		}
 	
@@ -379,7 +368,7 @@ return null;
 			response = true;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.info(e);
 			response = false;
 		}
 		

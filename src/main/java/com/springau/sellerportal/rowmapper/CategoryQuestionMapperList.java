@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.springau.sellerportal.model.CategoryQuestion;
+
 
 public class CategoryQuestionMapperList implements RowMapper<String> {
 

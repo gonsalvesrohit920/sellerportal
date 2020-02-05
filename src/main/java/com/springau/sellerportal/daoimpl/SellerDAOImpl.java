@@ -20,7 +20,6 @@ import com.springau.sellerportal.queries.CategoryQuestionsQueries;
 import com.springau.sellerportal.queries.DocumentQueries;
 import com.springau.sellerportal.queries.SellerQueries;
 import com.springau.sellerportal.rowmapper.CategoryID;
-import com.springau.sellerportal.rowmapper.CategoryQuestionMapperList;
 import com.springau.sellerportal.rowmapper.DocumentRowMapper;
 import com.springau.sellerportal.rowmapper.PendingSellerDetail;
 import com.springau.sellerportal.rowmapper.SellerLoginMapper;
@@ -93,14 +92,14 @@ public class SellerDAOImpl implements SellerDAO {
 				"Pending"
 		);
 		
-		int s_id = this.getSellerIdFromEmail(seller.getEmail());
+		int sellerId = this.getSellerIdFromEmail(seller.getEmail());
 		
 		for(String s:seller.getCategory()) {
-			int c_id =  jdbcTemplate.queryForObject(CategoryQueries.GET_CATEGORY_ID,new Object[] { s },Integer.class);
-			jdbcTemplate.update(SellerQueries.SAVE_CATEGORY, s_id,c_id);
+			int categoryId =  jdbcTemplate.queryForObject(CategoryQueries.GET_CATEGORY_ID,new Object[] { s },Integer.class);
+			jdbcTemplate.update(SellerQueries.SAVE_CATEGORY, sellerId,categoryId);
 		}
-		//List<Integer> c_idlist = jdbcTemplate.query(CategoryQueries.GET_CATEGORY_ID,)
-		return s_id;
+		//List<Integer> categoryIdlist = jdbcTemplate.query(CategoryQueries.GET_CATEGORY_ID,)
+		return sellerId;
 	}
 
 	/**
@@ -127,11 +126,7 @@ public class SellerDAOImpl implements SellerDAO {
 		return seller;
 	}
 
-	@Override
-	public Seller updateSeller(int sellerId, Seller seller) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	/**
 	 * Save seller documents.
@@ -211,12 +206,12 @@ public class SellerDAOImpl implements SellerDAO {
 	@Override
 	public Documents getPanImage(int sellerId) {
 		
-		Documents documents = jdbcTemplate.queryForObject(
+		return jdbcTemplate.queryForObject(
 				DocumentQueries.GET_DOCUMENTS,
 				new Object[] { sellerId }, new DocumentRowMapper()
 				);
 		
-		return documents;
+		
 	}
 
 	

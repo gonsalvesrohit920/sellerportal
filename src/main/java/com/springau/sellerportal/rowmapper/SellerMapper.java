@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import com.springau.sellerportal.model.Contact;
 import com.springau.sellerportal.model.Seller;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SellerMapper.
  *

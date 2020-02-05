@@ -46,7 +46,7 @@ public class MailService {
 		String body = "Dear " + seller.getName() + "," +
 						" Your request to delete the product " + product.getName() +
 						" has been rejected because the sold quantity (" + soldQuantity + 
-						") exceeds half of the remaining quantity (" + ")";
+						") exceeds half of the remaining quantity (" + quantity + ")";
 		
 		sendEmail(seller.getEmail(), subject, body);
 		

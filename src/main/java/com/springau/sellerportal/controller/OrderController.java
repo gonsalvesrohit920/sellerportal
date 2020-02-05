@@ -34,8 +34,8 @@ public class OrderController {
 	}
 	
 	@PutMapping(path="SubmitRating/{o_id}")
-	public int submitRating(@PathVariable("o_id") int o_id, @RequestBody int rating) {
-		return orderService.submitRating(o_id, rating);
+	public int submitRating(@PathVariable("o_id") int orderId, @RequestBody int rating) {
+		return orderService.submitRating(orderId, rating);
 	}
 
 }

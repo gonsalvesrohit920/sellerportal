@@ -3,6 +3,7 @@ package com.springau.sellerportal.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +32,15 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	@Autowired
+	Logger logger;
+	
 	@PostMapping("/login")
 	public Seller validateAdmin(@RequestBody LoginData data){
 		
 		data.setPassword(PasswordHash.getMd5Hash(data.getPassword()));
 		Seller admin = adminService.validateAdmin(data);
-		System.out.println(admin.isValid());
+		logger.info(admin.isValid());
 		return admin;
 		
 	}

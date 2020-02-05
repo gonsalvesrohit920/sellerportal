@@ -14,7 +14,6 @@ public interface SellerDAO {
 	Seller getSellerByEmail(String email);
 	int saveSeller(Seller seller);
 	Seller getSellerDetailsByEmail(String email);
-	Seller updateSeller(int sellerId, Seller seller);
 	Documents saveSellerDocuments(Documents documents);
 	List<Seller> getPendingSellerDetails();
 	List<String> getCategory(int sid);

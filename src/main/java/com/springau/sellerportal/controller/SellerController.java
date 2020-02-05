@@ -7,10 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +36,9 @@ import com.springau.sellerportal.utility.PasswordHash;
 @RestController
 @RequestMapping("/seller")
 public class SellerController {
+	
+	@Autowired
+	Logger logger;
 	
 	/** The Constant PAN_IMAGE. */
 	private static final String PAN_IMAGE = "panImage";
@@ -69,7 +71,7 @@ public class SellerController {
 	@PostMapping("/upload")
 	public String getFile(MultipartHttpServletRequest httpServletRequest ) {
 		
-		System.out.println(httpServletRequest.toString());
+		logger.info(httpServletRequest.toString());
 		Iterator<String>  itr = httpServletRequest.getFileNames();
 		
 		while(itr.hasNext())
@@ -93,7 +95,7 @@ public class SellerController {
 	@PostMapping(path = "/login")
 	public Seller loginSeller(@RequestBody LoginData loginData) {
 		
-		System.out.println("Login: " + loginData.toString());
+		logger.info("Login: " + loginData.toString());
 		if(!loginData.isValidate())
 			{
 					loginData.setPassword(PasswordHash.getMd5Hash(loginData.getPassword()));
@@ -104,7 +106,7 @@ public class SellerController {
 	
 	@PostMapping(path = "/validate_session")
 	public Seller validateSellerSession(@RequestBody LoginData loginData) {
-		System.out.println(loginData.toString());
+		logger.info(loginData.toString());
 		return sellerService.validateLogin(loginData);
 	}
 	
@@ -126,15 +128,15 @@ public class SellerController {
 	
 	
 	@PostMapping(path = "/products/AddProduct")
-	public List<Integer> AddProduct(@RequestBody Product product) {
+	public List<Integer> addProduct(@RequestBody Product product) {
 		
 		return productService.addProduct(product);
 	}
 	@GetMapping(path="/products/GetProducts/{sellerId}")
 	public List<Product> getSellerProductList(@PathVariable("sellerId") int sellerId) {
 		System.out.print("Hit: " + sellerId);
-		List<Product> productList=productService.getSellerProductList(sellerId);
-		return productList;
+		return productService.getSellerProductList(sellerId);
+		
 	}
 	
 	@PostMapping(path = "/product/addProductImages")
@@ -160,7 +162,7 @@ public class SellerController {
 	
 	@PostMapping(path="/product/UpdateProduct")
 	public int updateProductData(@RequestBody Product product) {
-		System.out.println(product);
+		logger.info(product);
 		return productService.updateProductData(product);
 	}
 	@DeleteMapping(path="/product/DeleteProduct/{productId}")
@@ -173,10 +175,10 @@ public class SellerController {
 		return productService.checkStatus(sellerId);
 	}
    @PostMapping(path="/product/checkstatus/adminUpdate")
-   public void adminUpdateStatus(@RequestBody  String sellerId) {
-	   int SellerId = Integer.parseInt(sellerId); 
-	   System.out.println(SellerId);
-	   productService.updateStatus(SellerId);
+   public void adminUpdateStatus(@RequestBody  String sellerIdstr) {
+	   int sellerId = Integer.parseInt(sellerIdstr); 
+	   logger.info(sellerId);
+	   productService.updateStatus(sellerId);
    }
     
 	
@@ -202,12 +204,7 @@ public class SellerController {
 	public Seller saveSellerImages(MultipartHttpServletRequest servletRequest,
 			@PathVariable("id") int sellerId) throws IOException {
 		
-		Iterator<String> itr = servletRequest.getFileNames();
 		
-		while(itr.hasNext())
-		{
-			System.out.println(itr.next() +  servletRequest.getFile(GST_IMAGE).getSize());
-		}
 		
 		sellerService.savePanImage(sellerId, servletRequest.getFile(PAN_IMAGE).getBytes());
 		sellerService.saveGstinImage(sellerId, servletRequest.getFile(GST_IMAGE).getBytes());

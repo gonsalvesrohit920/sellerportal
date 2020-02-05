@@ -3,6 +3,8 @@ package com.springau.sellerportal.config;
 import javax.servlet.annotation.MultipartConfig;
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -62,6 +64,11 @@ public class AppConfig {
 	 *	Database Server Configuration
 	 * @return the data source
 	 */
+	
+	@Bean
+	Logger getLogger() {
+		return LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+	}
 	@Bean
 	DataSource dataSource() {
 		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();

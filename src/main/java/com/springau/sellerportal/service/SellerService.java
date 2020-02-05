@@ -63,7 +63,6 @@ public class SellerService {
 
 
 	public List<String> getCategory(int sid) {
-		// TODO Auto-generated method stub
 		return dao.getCategory(sid);
 	}
 	

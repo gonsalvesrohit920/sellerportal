@@ -4,12 +4,18 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * The Class PasswordHash.
  *
  * @author Rohit Gonsalves
  */
 public class PasswordHash {
+	
+	
 
 	/**
 	 * Private Constructor to disable instantiation.
@@ -25,7 +31,7 @@ public class PasswordHash {
 	 * @return the MD5 hash
 	 */
 	public static String getMd5Hash(String data) {
-
+		Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
 		if (data != null) {
 			try {
 
@@ -49,7 +55,7 @@ public class PasswordHash {
 
 			// For specifying wrong message digest algorithms
 			catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
+				logger.info(e);
 				return "";
 			}
 

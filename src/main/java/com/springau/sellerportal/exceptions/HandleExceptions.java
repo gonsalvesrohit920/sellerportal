@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class HandleExceptions {
@@ -17,6 +15,6 @@ public class HandleExceptions {
 	public void handle(HttpServletResponse response) throws IOException {
 		System.out.println("handling");
 		response.sendError(HttpStatus.NOT_ACCEPTABLE.value(), "Send prorper data");
-		//return "hey";
+		
 	}
 }

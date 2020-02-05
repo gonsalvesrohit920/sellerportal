@@ -9,13 +9,13 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springau.sellerportal.dao.OrderDAO;
 import com.springau.sellerportal.model.Order;
 import com.springau.sellerportal.model.OrderData;
@@ -31,6 +31,11 @@ import com.springau.sellerportal.rowmapper.ProductMapper;
 public class OrderDAOImpl implements OrderDAO {
 	
 	JdbcTemplate jdbcTemplate;
+	
+	
+	@Autowired
+	Logger logger;
+	
 	@Autowired
 	public OrderDAOImpl(DataSource dataSource) {
 
@@ -44,7 +49,7 @@ public class OrderDAOImpl implements OrderDAO {
 				order.getProductId(),
 				order.getSellerId()
 		}, new IdMapper());
-		System.out.println(qtyList.size());
+		logger.info(qtyList.size());
 		List<Integer> total=jdbcTemplate.query(OrderQueries.GET_QTY_OF_PRODUCT_SOLD,new PreparedStatementSetter() {
 
 			@Override
@@ -63,9 +68,9 @@ public class OrderDAOImpl implements OrderDAO {
 		});
 		if(qtyList.size()==1&&total.size()==1) {
 			int currentQuantity = qtyList.get(0) - total.get(0);
-			System.out.println("sum="+total.get(0)+"  cq="+currentQuantity);
+			logger.info("sum="+total.get(0)+"  cq="+currentQuantity);
 			if(currentQuantity >= order.getQuantity() && currentQuantity != 0) {
-				int orderId=jdbcTemplate.queryForObject(OrderQueries.INSERT_ORDER_DATA,new Object[] {
+				jdbcTemplate.queryForObject(OrderQueries.INSERT_ORDER_DATA,new Object[] {
 						order.getCustomerId(),
 						order.getSellerId(),
 						order.getProductId(),
@@ -83,24 +88,24 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public int submitRating(int o_id, int rating) {
-		int rowsAffected=jdbcTemplate.update(OrderQueries.UPDATE_RATING_IN_ORDER, rating, o_id);
+	public int submitRating(int orderId, int rating) {
+		int rowsAffected=jdbcTemplate.update(OrderQueries.UPDATE_RATING_IN_ORDER, rating, orderId);
 		if(rowsAffected==0) {
 			return 0;
 		}
 		else {
-			List<Integer> productIds=jdbcTemplate.query(OrderQueries.GET_PRODUCT_ID_FROM_ORDER_ID,new Object[] {o_id}, new IdMapper());
-			int p_id=productIds.get(0);
-			List<List<Integer>> countAndSum=jdbcTemplate.query(OrderQueries.GET_COUNT_AND_SUM_OF_RATING,new Object[] {p_id},new OrderCountAndSumRowMapper());
+			List<Integer> productIds=jdbcTemplate.query(OrderQueries.GET_PRODUCT_ID_FROM_ORDER_ID,new Object[] {orderId}, new IdMapper());
+			int productId=productIds.get(0);
+			List<List<Integer>> countAndSum=jdbcTemplate.query(OrderQueries.GET_COUNT_AND_SUM_OF_RATING,new Object[] {productId},new OrderCountAndSumRowMapper());
 			int count=countAndSum.get(0).get(0);
 			int sum=countAndSum.get(0).get(1);
 			int avgRating=sum/count;
-			int updatedAvgRatingCount=jdbcTemplate.update(OrderQueries.UPDATE_AVERAGE_RATING_IN_PRODUCT, count,avgRating, p_id);
-			System.out.println(p_id);
-			System.out.println(count);
-			System.out.println(sum);
-			System.out.println(avgRating);
-			System.out.println(updatedAvgRatingCount);
+			int updatedAvgRatingCount=jdbcTemplate.update(OrderQueries.UPDATE_AVERAGE_RATING_IN_PRODUCT, count,avgRating, productId);
+			logger.info(productId);
+			logger.info(count);
+			logger.info(sum);
+			logger.info(avgRating);
+			logger.info(updatedAvgRatingCount);
 			return 1;
 		}
 	}
@@ -112,7 +117,7 @@ public class OrderDAOImpl implements OrderDAO {
 				sellerId
 		},new OrderMapper());
 	
-		orderDataList.forEach((orderData)->{
+		orderDataList.forEach( orderData -> {
 			int productId=orderData.getProductId();
 			Product product=jdbcTemplate.queryForObject(ProductQueries.PRODUCT_BY_ID, new Object[] {
 					productId

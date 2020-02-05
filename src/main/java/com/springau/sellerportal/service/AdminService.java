@@ -1,6 +1,7 @@
 package com.springau.sellerportal.service;
 
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -21,6 +22,9 @@ public class AdminService {
 	@Autowired
 	Environment environment;
 	
+	@Autowired
+	Logger logger;
+	
 	public Seller validateAdmin(LoginData data) {
 		Seller seller = new Seller();
 		
@@ -28,8 +32,8 @@ public class AdminService {
 		String password = this.environment.getProperty(ADMIN_PASSWORD);
 		
 		password = PasswordHash.getMd5Hash(password);
-		System.out.println(password);
-		System.out.println(data.getPassword());
+		logger.info(password);
+		logger.info(data.getPassword());
 		
 		if(!data.getUsername().equals(username) || !data.getPassword().equals(password)) {
 			

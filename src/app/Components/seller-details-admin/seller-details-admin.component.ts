@@ -64,8 +64,9 @@ export class SellerDetailsAdminComponent implements OnInit {
 
   onAccepted(sellerid){
     this.sellerService.updateStatus(sellerid).subscribe((details)=>{
-      console.log(details)
+      console.log(details);
+      this.ngOnInit()
     })
-     this.ngOnInit()
+     
   }
 }

@@ -88,7 +88,7 @@ export class SellerServiceService {
       this.loginUsername(username,
         password,
         isAdmin ?
-        this.defaultAdminPostUrl :
+        this.defaultAdminSessionValidationURL :
         this.defaultSessionValidationURL,
         ).subscribe( data => {
 

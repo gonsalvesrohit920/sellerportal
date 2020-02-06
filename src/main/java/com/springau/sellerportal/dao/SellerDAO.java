@@ -20,4 +20,5 @@ public interface SellerDAO {
 	Documents getPanImage(int sellerId);
 	boolean saveGstinImage(int sellerId, byte[] gstinImage);
 	boolean savePanImage(int sellerId, byte[] panImage);
+	void deleteSeller(int sid);
 }

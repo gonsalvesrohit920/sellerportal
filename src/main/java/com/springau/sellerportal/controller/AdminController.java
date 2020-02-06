@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.service.AdminService;
+import com.springau.sellerportal.service.MailService;
 import com.springau.sellerportal.utility.PasswordHash;
 
 import com.springau.sellerportal.service.SellerService;
@@ -30,7 +31,8 @@ public class AdminController {
 	private SellerService sellerService;
 	@Autowired
 	private AdminService adminService;
-	
+	@Autowired
+	private MailService mailservice;
 
 	
 	@PostMapping("/login")
@@ -53,5 +55,15 @@ public class AdminController {
 	public List<Seller> getPendingSellerDetails() {
 		return sellerService.getPendingSellerDetails();
 	}
-
+     
+	@PostMapping("/reject")
+	public int sendRejectMessage(@RequestBody Seller seller) {
+		System.out.println(seller.getPassword());
+		System.out.println("Seller id="+seller.getId());
+		int sid = seller.getId();
+		mailservice.sendRejectedEmail(seller.getEmail(), seller.getPassword());
+		adminService.deleteSeller(sid);
+		return 0;
+		
+	}
 }

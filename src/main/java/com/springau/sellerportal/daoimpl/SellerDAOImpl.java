@@ -214,6 +214,21 @@ public class SellerDAOImpl implements SellerDAO {
 		
 	}
 
+	@Override
+	public void deleteSeller(int sid) {
+		try {
+			System.out.println("Seller id="+sid);
+			jdbcTemplate.update(SellerQueries.DELETE_SELLER_FROM_DOCUMENTS,sid);
+			jdbcTemplate.update(SellerQueries.DELETE_SELLER_FROM_CATEGORY,sid);
+			jdbcTemplate.update(SellerQueries.DELETE_SELLER,sid);
+			System.out.println("Done deleting");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 
 }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import com.springau.sellerportal.dao.SellerDAO;
 import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.utility.PasswordHash;
@@ -20,6 +21,9 @@ public class AdminService {
 	
 	@Autowired
 	Environment environment;
+	
+	@Autowired
+	SellerDAO dao;
 	
 	
 	public Seller validateAdmin(LoginData data) {
@@ -41,5 +45,8 @@ public class AdminService {
 		
 		return seller;
 	}
-
+	public void deleteSeller(int sid) {
+		// TODO Auto-generated method stub
+		dao.deleteSeller(sid);
+	}
 }

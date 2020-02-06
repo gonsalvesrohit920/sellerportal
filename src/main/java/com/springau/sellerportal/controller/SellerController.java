@@ -85,7 +85,7 @@ public class SellerController {
 		if(!loginData.isValidate())
 			{
 					loginData.setPassword(PasswordHash.getMd5Hash(loginData.getPassword()));
-			}
+			}                              
 		return sellerService.validateLogin(loginData);
 	}
 	

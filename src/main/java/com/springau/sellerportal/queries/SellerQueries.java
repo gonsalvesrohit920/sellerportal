@@ -39,6 +39,11 @@ public class SellerQueries {
 	public static final String SAVE_CATEGORY = "INSERT INTO public.\"Seller_category\"(" + 
 			 "	s_id, c_id)" + 
 			 "	VALUES (?, ?);";
+public static final String DELETE_SELLER="delete from \"Seller\" where s_id=?;";
+	
+	public static final String DELETE_SELLER_FROM_DOCUMENTS="delete from \"Documents\" where s_id=?;";
+	
+	public static final String DELETE_SELLER_FROM_CATEGORY="delete from \"Seller_category\" where s_id=?;";
 	private SellerQueries() {
 		
 	}

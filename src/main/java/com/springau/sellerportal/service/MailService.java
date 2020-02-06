@@ -5,6 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.springau.sellerportal.dao.SellerDAO;
 import com.springau.sellerportal.model.Product;
 import com.springau.sellerportal.model.Seller;
 
@@ -26,7 +27,9 @@ public class MailService {
 	
 	@Autowired
 	private SellerService sellerService;
- 
+  
+	@Autowired
+	SellerDAO dao;
 	/**
 	 * Send the Mail.
 	 *
@@ -63,7 +66,11 @@ public class MailService {
 		
 		String subject = "Rejection Email|" + seller.getName();
 		
-		sendEmail(seller.getEmail(), subject, body);
+		sendEmail(emailId, subject, body);
+	}
+	public void deleteSeller(int sid) {
+		// TODO Auto-generated method stub
+		dao.deleteSeller(sid);
 	}
 
 }

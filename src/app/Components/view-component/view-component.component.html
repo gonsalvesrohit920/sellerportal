@@ -26,7 +26,8 @@
         <label>{{d.pages}}</label>
     </div> -->
     <!-- </div> -->
-<div *ngIf="data && forms" >
+
+<!-- <div *ngIf="data && forms" >
 <div  *ngFor="let f of forms; let counter = index" id="div1" class="container" style="text-align: center;">
 <p></p>
 <form [formGroup]="f" >
@@ -62,4 +63,57 @@
 </form>
 
 </div>
-</div>
+</div> -->
+<div *ngIf="data && forms" >
+    <div *ngFor="let f of forms; let counter = index" id="div1" class="container" style="text-align: center;">
+    <p></p>
+    <form [formGroup]="f" >
+    <label style="padding-left: 2px;">Name : </label>
+    <mat-form-field class="example-full-width">
+    <input type="text" matInput readonly #name formControlName="name" value={{f.value.name}}/>
+    </mat-form-field>&nbsp;&nbsp;
+    <label>Total Quantity : </label>
+    <mat-form-field class="example-full-width"><input type="text" readonly matInput #qty formControlName="quantity" value={{f.value.quantity}}/>
+    </mat-form-field>&nbsp;&nbsp;
+    <label>Price : </label> <mat-form-field class="example-full-width"><input type="text" matInput #price formControlName="price" value={{f.value.price}}/></mat-form-field>&nbsp;&nbsp;
+    <button (click)="edit(name,qty, price, details,f,counter)" mat-raised-button color="primary">Edit</button>&nbsp;&nbsp;
+    <button (click)="delete(f)" mat-raised-button color="warn">Delete</button>&nbsp;&nbsp;
+    <div style="text-align:center" #details [hidden]=true>
+    <hr>
+    <div *ngFor="let k of f.value| keyvalue; trackBy:trackByFn; " >
+    <div *ngIf="k.key!='name' && k.key!='quantity' && k.key!='price'&& k.key!='attributes'&& k.key!='images' && k.key!='addQuantity' && k.key!='sellerId' && k.key!='productId' && k.key!='category' &&k.key!='rating' ">
+    <div id="myGrid" class="container1">
+    <label id="label1">{{k.key}} : </label>
+    <mat-form-field class="" >
+    <input id="input1" matInput type="text" formControlName={{k.key}} value={{k.value}}><br/>
+    </mat-form-field>
+    </div>
+    </div>
+    <div *ngIf="k.key=='addQuantity'">
+    <div id="myGrid" class="container1">
+    <label id="label1">{{k.key}} : </label>
+    <mat-form-field class="" >
+    <input id="input1" matInput type="number" formControlName={{k.key}} value={{k.value}}><br/>
+    </mat-form-field>
+    </div>
+    </div>
+    <div *ngIf="k.key=='sellerId' ||k.key=='category' ||k.key=='productId' ||k.key=='rating'">
+    <div id="myGrid" class="container1">
+    <label id="label1">{{k.key}} : </label>
+    <mat-form-field class="" >
+    <input id="input1" matInput readonly formControlName={{k.key}} value={{k.value}}><br/>
+    </mat-form-field>
+    </div>
+    </div>
+    
+    </div>
+    <div *ngFor="let image of data[counter]['images']" class="table-row" >
+        <img [src] = "image"  height="250" width="250"  >
+    </div>
+    <button (click)="update(f)" mat-raised-button color="primary" style="margin-bottom: 3%;">Update</button>
+    </div>
+    
+    </form>
+    
+    </div>
+    </div>

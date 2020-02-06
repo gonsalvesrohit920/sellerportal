@@ -153,7 +153,7 @@ export class AddProductsComponent implements OnInit {
           this.snackBar.open("Product added succesfully", "Ok",{
             duration: 2000,
           });
-          window.location.reload();   
+          window.location.reload();
         }
       },(error:HttpErrorResponse)=>{
         if(error.status==406){

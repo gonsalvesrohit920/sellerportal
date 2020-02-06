@@ -5,26 +5,26 @@
             <div class="container">    
                 <form [formGroup] = "basicDetailsForm" (ngSubmit)="onSignUp()" id="contact" >
                     <fieldset>
-                        <input type="text" placeholder="Name" formControlName="name"><br>
+                        <input type="text" required placeholder="Name" formControlName="name"><br>
                     </fieldset>
                     <br>
                     <fieldset>
-                        <input type="email" placeholder="Email"formControlName="email"><br>
+                        <input type="email" required placeholder="Email"formControlName="email"><br>
                     </fieldset>
                     <br>
                     <fieldset>
-                        <input type="password" placeholder="Password" formControlName="password"><br>
+                        <input type="password" required placeholder="Password" formControlName="password"><br>
                     </fieldset>
                     <br>
                     <fieldset>
-                        <input type="password" placeholder="Confirm Password" formControlName="confirmPassword"><br>
+                        <input type="password" required placeholder="Confirm Password" formControlName="confirmPassword"><br>
                     </fieldset>
                     <br>
-                    <fieldset id="field">Select Category :
-                      <mat-checkbox *ngFor="let type of types" [value]="type.value" (change)="GetType( type.viewValue,$event)">
+                    <fieldset id="field" >Select Category :
+                      <mat-checkbox  *ngFor="let type of types" [value]="type.value" (change)="GetType( type.viewValue,$event)">
                          <span></span> {{ type.viewValue }}
                       </mat-checkbox>
-              </fieldset>                
+                    </fieldset>
                 </form>
             </div>    
             </mat-tab>
@@ -32,20 +32,20 @@
                 <div class="container"> 
                 <form [formGroup] = "contactDetailsForm" id="contact" >
                     <fieldset>
-                      <input type="text" placeholder="Street" formControlName="street"><br>
+                      <input type="text" required placeholder="Street" formControlName="street"><br>
                     </fieldset>
                     <br>
                     <fieldset>
-                        <input type="text" placeholder="City" formControlName="city"><br>
+                        <input type="text" required placeholder="City" formControlName="city"><br>
                     </fieldset>
                     <br>
                     <fieldset>
-                        <input type="text" placeholder="Pincode" formControlName="pincode"><br>
+                        <input type="text" required placeholder="Pincode" formControlName="pincode"><br>
                     </fieldset>
                     <br>
                     <fieldset>
-                        <input type="text" placeholder="Phone Number" formControlName="phoneNo"><br>
-                    </fieldset>                
+                        <input type="text"  required placeholder="Phone Number" formControlName="phoneNo"><br>
+                    </fieldset>           
                 </form>
                 </div>
             </mat-tab>
@@ -54,22 +54,29 @@
                 <div class="container"> 
                 <form [formGroup] = "documentsForm" (ngSubmit)="onSignUp()" id="contact" >
                     <fieldset>
-                        <input type="text" placeholder="PAN Number" formControlName="panNo"><br>
+                        <input type="text" required placeholder="PAN Number" formControlName="panNo"><br>
                     </fieldset>
                     <br> 
                     <fieldset>
-                        <input type="text" placeholder="GSTIN Number" formControlName="gstInNo"><br>
+                        <input type="text" required placeholder="GSTIN Number" formControlName="gstInNo"><br>
                     </fieldset>
                     <br>
                     <form [formGroup] = "uploadForm" enctype="multipart/form-data"  (ngSubmit)="onSubmit()">
                     <fieldset>
-                        <input type="file" accept="image/" (change)="onPANSelected($event)"><br>
+                        <input type="file" required accept="image/" (change)="onPANSelected($event)"><br>
                     </fieldset>
                     <br>
                     <fieldset>
-                        <input type="file" accept="image/" (change)="onGSTINSelected($event)"><br>
+                        <input type="file" required accept="image/" (change)="onGSTINSelected($event)"><br>
                     </fieldset>
+                    
                 </form>
+                    <p *ngIf="formInvalid">
+                        Enter all details properly
+                    </p>
+                    <p *ngIf="userExists">
+                        User already exists
+                    </p>
                     <br>
                     <button style="margin-top: 3%;" type="submit" class="button" [disabled]="basicDetailsForm.invalid && contactDetailsForm.invalid && documentsForm.invalid" id="contact-submit">SignUp</button> 
                 </form> 

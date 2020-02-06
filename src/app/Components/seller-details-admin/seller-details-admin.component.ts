@@ -109,7 +109,6 @@ sendmsg(){
     }
     this.service.sendmail(sendobj).subscribe((response)=>{
       console.log(response)
-      this.ngOnInit()
     })   
 }
 }

@@ -37,7 +37,6 @@ import lombok.Setter;
  * @param panImage the pan image
  * @param gstInImage the gst in image
  */
-@AllArgsConstructor
 
 /**
  * Instantiates a new documents.

@@ -8,6 +8,6 @@ import com.springau.sellerportal.model.Product;
 public interface OrderDAO {
 	
 	public int placeOrder(Order order);
-	public int submitRating(int o_id, int rating);
+	public int submitRating(int orderId, int rating);
 	public Map<Integer,Product> getOrdersOfSeller(int sellerId);
 }

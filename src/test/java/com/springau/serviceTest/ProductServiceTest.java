@@ -1,5 +1,8 @@
 package com.springau.serviceTest;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -13,16 +16,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.springau.sellerportal.dao.ProductDAO;
-import com.springau.sellerportal.daoimpl.ProductDAOImpl;
 import com.springau.sellerportal.model.CategoryAnswer;
+import com.springau.sellerportal.model.CategoryQuestion;
 import com.springau.sellerportal.model.Product;
 import com.springau.sellerportal.model.ProductImage;
 import com.springau.sellerportal.service.ProductService;
@@ -38,7 +35,13 @@ public class ProductServiceTest {
 	List<CategoryAnswer> caList = new ArrayList<>();
 	Map<String, CategoryAnswer> questionAnswers = new HashMap<>();
 	List<Product> productList = new ArrayList<>();
+	List<CategoryQuestion> categoryQuestionList = new ArrayList<>();
 	Product p1 = new Product();
+	List<Integer> integerList = new ArrayList<>();
+	
+	List<String> imagelist = new ArrayList<String>();
+	
+	
 	
 	@InjectMocks
 	ProductService productService;
@@ -48,6 +51,12 @@ public class ProductServiceTest {
 	
 	@Before
 	public void init() {
+		
+		ProductImage image = new ProductImage();
+		image.setImageType("png");
+		image.setProductImageData(new byte[] {});
+		
+		
 		System.out.println("Hello");
 		productImageP1.setImageId(1);
 		productImageP1.setImageType("jpeg");
@@ -80,28 +89,44 @@ public class ProductServiceTest {
 	
 	@Test
 	public void testGetAllProducts() {
-		
-		when(productService.getAllProducts()).thenReturn(productList);
-		
-		System.out.println("Hello");
-		
+		when(dao.getAllProducts()).thenReturn(productList);
 		Assert.assertEquals(productService.getAllProducts(), productList);
-		//Assert.assertEquals(productService.getAllProducts(), new ArrayList<Product>());
-		
+	}
+	
+	@Test
+	public void testGetAllProductAttributes() {
+		when(dao.getAllProductAttributes(anyString())).thenReturn(categoryQuestionList);
+		Assert.assertEquals(productService.getAllProductAttributes("Shoes"), categoryQuestionList);
+	}
+	
+	@Test
+	public void testGetSellerProductList() {
+		when(dao.getSellerProductList(anyInt())).thenReturn(productList);
+		Assert.assertEquals(productService.getSellerProductList(56), productList);
 	}
 	
 	@Test
 	public void testAddProduct() {
-		productList.add(p1);
-		//Assert.assertEquals("Adding product to the List", 2, productList.size());
-		
-		Assert.assertEquals("Adding product to the List", 2, productList.size());
+		when(dao.saveProduct(any(Product.class))).thenReturn(integerList);
+		Assert.assertEquals(productService.addProduct(p1), integerList);
+	}
+	
+	@Test
+	public void testUpdateProductData() {
+		when(dao.updateProductData(any(Product.class))).thenReturn(100);
+		Assert.assertEquals(productService.updateProductData(p1), 100);
+	}
+	
+	@Test
+	public void testDeleteProduct() {
+		when(dao.deleteProduct(anyInt())).thenReturn(100);
+		Assert.assertEquals(productService.deleteProduct(100), 100);
 	}
 	
 	@Test
 	public void testCheckStatus() {
-		when(dao.chechStatus(anyInt())).thenReturn("Pending");
-		Assert.assertEquals("Pending", productService.checkStatus(1)); 
+		when(dao.chechStatus(anyInt())).thenReturn("Pending State");
+		Assert.assertEquals(productService.checkStatus(100), "Pending State");
 	}
 	
 }

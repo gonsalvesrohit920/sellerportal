@@ -2,7 +2,6 @@ package com.springau.sellerportal.dao;
 
 import java.util.List;
 
-import com.springau.sellerportal.model.CategoryAnswer;
 import com.springau.sellerportal.model.CategoryQuestion;
 import com.springau.sellerportal.model.Product;
 import com.springau.sellerportal.model.ProductImage;

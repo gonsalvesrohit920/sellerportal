@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -33,8 +32,7 @@ public class OrderDAOImpl implements OrderDAO {
 	JdbcTemplate jdbcTemplate;
 	
 	
-	@Autowired
-	Logger logger;
+	
 	
 	@Autowired
 	public OrderDAOImpl(DataSource dataSource) {
@@ -49,7 +47,7 @@ public class OrderDAOImpl implements OrderDAO {
 				order.getProductId(),
 				order.getSellerId()
 		}, new IdMapper());
-		logger.info(qtyList.size());
+		
 		List<Integer> total=jdbcTemplate.query(OrderQueries.GET_QTY_OF_PRODUCT_SOLD,new PreparedStatementSetter() {
 
 			@Override
@@ -68,7 +66,7 @@ public class OrderDAOImpl implements OrderDAO {
 		});
 		if(qtyList.size()==1&&total.size()==1) {
 			int currentQuantity = qtyList.get(0) - total.get(0);
-			logger.info("sum="+total.get(0)+"  cq="+currentQuantity);
+			
 			if(currentQuantity >= order.getQuantity() && currentQuantity != 0) {
 				jdbcTemplate.queryForObject(OrderQueries.INSERT_ORDER_DATA,new Object[] {
 						order.getCustomerId(),
@@ -100,12 +98,12 @@ public class OrderDAOImpl implements OrderDAO {
 			int count=countAndSum.get(0).get(0);
 			int sum=countAndSum.get(0).get(1);
 			int avgRating=sum/count;
-			int updatedAvgRatingCount=jdbcTemplate.update(OrderQueries.UPDATE_AVERAGE_RATING_IN_PRODUCT, count,avgRating, productId);
-			logger.info(productId);
-			logger.info(count);
-			logger.info(sum);
-			logger.info(avgRating);
-			logger.info(updatedAvgRatingCount);
+			jdbcTemplate.update(OrderQueries.UPDATE_AVERAGE_RATING_IN_PRODUCT, count,avgRating, productId);
+			
+			
+			
+			
+			
 			return 1;
 		}
 	}

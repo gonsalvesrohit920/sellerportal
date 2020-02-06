@@ -23,6 +23,9 @@ public class MailService {
 	/** The mail message template Injected. */
 	@Autowired
 	private SimpleMailMessage mailMessage;
+	
+	@Autowired
+	private SellerService sellerService;
  
 	/**
 	 * Send the Mail.
@@ -50,6 +53,17 @@ public class MailService {
 		
 		sendEmail(seller.getEmail(), subject, body);
 		
+	}
+	
+	public void sendRejectedEmail(String emailId, String reason) {
+		
+		Seller seller = sellerService.getSellerByEmail(emailId);
+		String body = "Dear " + seller.getName() + "," +
+				" Your request to Register on the platform has been rejected. \n Please Sign up again\n Reason: \n" + reason; 
+		
+		String subject = "Rejection Email|" + seller.getName();
+		
+		sendEmail(seller.getEmail(), subject, body);
 	}
 
 }

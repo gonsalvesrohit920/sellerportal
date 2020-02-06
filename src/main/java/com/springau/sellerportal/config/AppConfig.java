@@ -41,7 +41,7 @@ public class AppConfig {
 	private static final String DRIVER = "driver";
 	
 	/** The Constant PASSWORD. */
-	private static final String PASSWORD = "dbpassword";
+	private static final String PASS = "dbpassword";
 	
 	/** The Constant MAIL_HOST. */
 	private static final String MAIL_HOST = "mail.host";
@@ -74,7 +74,7 @@ public class AppConfig {
 		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 		driverManagerDataSource.setUrl(environment.getProperty(URL));
 		driverManagerDataSource.setUsername(environment.getProperty(USER));
-		driverManagerDataSource.setPassword(environment.getProperty(PASSWORD));
+		driverManagerDataSource.setPassword(environment.getProperty(PASS));
 		driverManagerDataSource.setDriverClassName(environment.getProperty(DRIVER));
 		return driverManagerDataSource;
 	}

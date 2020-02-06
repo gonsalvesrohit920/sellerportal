@@ -48,11 +48,16 @@ public class SellerService {
 	 * @return the seller
 	 */
 	public Seller saveSeller(Seller seller) {
-		
+		try {
 		int sellerId = dao.saveSeller(seller);
 		seller.setId(sellerId);
 		seller.getDocuments().setSellerId(sellerId);
 		dao.saveSellerDocuments(seller.getDocuments());
+		seller.setExists(false);
+		}
+		catch (Exception e) {
+			seller.setExists(true);
+	}
 		return seller;
 		
 	}
@@ -87,23 +92,43 @@ public boolean savePanImage(int sellerId, byte[] panImage) {
 	
 
 	public String getPanImage(int sellerId) {
-
+		
 		String panImage;
 		Documents documents = dao.getPanImage(sellerId);
-		
-		panImage = Base64.getEncoder().withoutPadding().encodeToString(documents.getPanImage());
-
+		try {
+			panImage = Base64.getEncoder().withoutPadding().encodeToString(documents.getPanImage());
+			
 		return panImage;
+		}
+		catch (Exception e) {
+			return "";
+		}
 	}
 
 
 	public String getGstinImage(int sellerId) {
 		String panImage;
+		
 		Documents documents = dao.getPanImage(sellerId);
 		
-		panImage = Base64.getEncoder().withoutPadding().encodeToString(documents.getGstInImage());
+		try {
+			panImage = Base64.getEncoder().withoutPadding().encodeToString(documents.getGstInImage());
 
-		return panImage;
+			return panImage;
+		}
+		catch (Exception e) {
+			return "";
+		}
+	}
+	
+	
+	public Seller getSellerByEmail(String email) {
+		try {
+			return dao.getSellerByEmail(email);
+		}
+		catch (Exception e) {
+			return new Seller();
+		}
 	}
 
 

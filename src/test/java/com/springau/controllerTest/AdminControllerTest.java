@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -22,9 +23,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.springau.sellerportal.controller.AdminController;
 import com.springau.sellerportal.model.Contact;
 import com.springau.sellerportal.model.Documents;
+import com.springau.sellerportal.model.LoginData;
 import com.springau.sellerportal.model.Seller;
 import com.springau.sellerportal.service.AdminService;
 import com.springau.sellerportal.service.SellerService;
+import com.springau.sellerportal.utility.PasswordHash;
+
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -38,10 +42,61 @@ public class AdminControllerTest {
 	@Mock
 	private SellerService sellerService;
 	
+	@Mock
+	private AdminService adminService;
+	
+	
+	LoginData loginData,loginDataMD5;
+	Seller s1;
+	Contact c1;
+	
+	Contact c2;
+	
+	Seller s2;
+	
+	Documents d1;
 	
 	@Before
 	public void setUp() throws Exception {
 		mockMvc = MockMvcBuilders.standaloneSetup(adminController).build();
+		
+		s1 = new Seller();
+		s1.setId(1);
+		s1.setName("abc");
+		s1.setEmail("abc@gmail.com");
+		s1.setPassword("xyz");
+		s1.setValid(true);
+		s1.setApplicationStatus("Accepted");
+		s1.setExists(true);
+		
+		c1 = new Contact();
+		c1.setStreet("xyz");
+		c1.setCity("def");
+		c1.setPhoneNo("4503874234");
+		c1.setPincode(876387);
+		
+		
+		d1 = new Documents();
+		d1.setSellerId(1);
+		d1.setPanNo("GHQWE4567D");
+		d1.setGstInNo("28GHQWE4567D1CS");
+		d1.setGstInImageType(".jpeg");
+		d1.setPanNo(".jpeg");
+		d1.setGstInImage(null);
+		d1.setPanImageType(null);
+		
+		loginData = new LoginData();
+		loginData.setUsername(s1.getEmail());
+		loginData.setPassword("xyz");
+		
+		
+		loginDataMD5 = new LoginData();
+		loginDataMD5.setUsername(s1.getEmail());
+		loginDataMD5.setPassword(PasswordHash.getMd5Hash(s1.getPassword()));
+		
+		s2 = new Seller();
+		s2.setPassword(PasswordHash.getMd5Hash(s1.getPassword()));
+		
 	}
 	
 	@Test
@@ -70,8 +125,7 @@ public class AdminControllerTest {
 		s1.setValid(true);
 		s1.setApplicationStatus("Accepted");
 		s1.setExists(true);
-		s1.setDocuments(d1);
-		s1.setContact(c1);
+		
 		
 		Documents d2 = new Documents();
 		d1.setSellerId(1);
@@ -92,7 +146,7 @@ public class AdminControllerTest {
 		s1.setId(1);
 		s1.setName("abc");
 		s1.setEmail("abc@gmail.com");
-		s1.setPassword("xyz");
+		s2.setPassword(PasswordHash.getMd5Hash(s1.getPassword()));
 		s1.setValid(true);
 		s1.setApplicationStatus("Accepted");
 		s1.setExists(true);
@@ -106,8 +160,23 @@ public class AdminControllerTest {
 		
 		when(sellerService.getPendingSellerDetails()).thenReturn(list);
 		
-		Assert.assertEquals(sellerService.getPendingSellerDetails(), s1);
+		Assert.assertEquals(sellerService.getPendingSellerDetails(), list);
 		
+	}
+	
+	
+	@Test
+	public void testAdminLogin() {
+		when(sellerService.validateLogin(loginData)).thenReturn(this.s1);
+		Assert.assertEquals(adminController.validateAdmin(loginData).getPassword(),
+				PasswordHash.getMd5Hash(s1.getPassword()));
+	}
+	
+	@Test
+	public void testAdminLoginSession(){
+		when(sellerService.validateLogin(loginDataMD5)).thenReturn(s2);
+		
+		Assert.assertEquals(PasswordHash.getMd5Hash(s1.getPassword()), loginDataMD5.getPassword());
 	}
 	
 	

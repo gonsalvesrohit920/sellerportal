@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -45,8 +44,6 @@ import com.springau.sellerportal.service.MailService;
 @Repository
 public class ProductDAOImpl implements ProductDAO{
 	
-	@Autowired
-	Logger logger;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -78,7 +75,7 @@ public class ProductDAOImpl implements ProductDAO{
             }
 
         }, new ProductMapper());
-		productList.forEach((p)->{
+		productList.forEach( p -> {
 		
 			List<QuestionAnswer> qa=jdbcTemplate.query(CategoryAnswerQueries.GET_PRODUCT_ANSWERS, new PreparedStatementSetter() {
 
@@ -109,7 +106,6 @@ public class ProductDAOImpl implements ProductDAO{
 	 */
 	@Override
 	public List<Product> getAllSellerProducts(int sellerId){
-		logger.info(sellerId);
 		return jdbcTemplate.query(ProductQueries.ALL_PRODUCTS,new Object[] { sellerId }, new ProductMapper());
 	}
 
@@ -154,34 +150,31 @@ public class ProductDAOImpl implements ProductDAO{
 		
 		if(qtyList!=null&&qtyList.size()==1) {
 			int qty=qtyList.get(0);
-			logger.info(productId);
+			
 			List<Integer> total=jdbcTemplate.query(ProductQueries.GET_QTY_OF_PRODUCT_SOLD,new Object[] {
 					productId
 			},new IdMapper());
 			int soldQty=total.get(0);
-			logger.info("Sold qty="+soldQty);
+			
 			if(soldQty!=0&&soldQty<qty*0.3) {
-				logger.info("Deleting");
+				
 				jdbcTemplate.update(ProductQueries.PRODUCT_SOFT_DELETE, productId);
 				return productId;
 			}
 			else {
 
-				logger.info("Mailing");
+				
 				Product product=getProductById(productId);
 				int sellerId=getSellerIdByProductId(productId);
 				Seller seller=getSellerDataFromSelleId(sellerId);
-				logger.info("Mailing started");
+				
 				mailservice.sendDeleteWarning(seller, product, qty, soldQty);
 				return 0;
-//				jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_SPECIFICATION_BY_ID,productId);
-//				jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_IMAGES_BY_ID,productId);
-//				jdbcTemplate.update(ProductQueries.DELETE_PRODUCT_BY_ID,productId);
 			}
 			
 		}
 		else {
-			logger.info("Something wrong");
+			
 		}
 		return -1;
 		
@@ -224,7 +217,7 @@ public class ProductDAOImpl implements ProductDAO{
 			return true;
 		}
 		catch (Exception e) {
-			logger.info(e);
+			
 			return false;
 		}
 		
@@ -243,21 +236,21 @@ public class ProductDAOImpl implements ProductDAO{
 
         },new CategoryMapper());
 		
-        int CatId = catid.get(0);
-        List<CategoryQuestion> categoryQueslist = jdbcTemplate.query(CategoryQuestionsQueries.GET_CATEGORY_FIELDS,new PreparedStatementSetter() {
+        int catId = catid.get(0);
+        return jdbcTemplate.query(CategoryQuestionsQueries.GET_CATEGORY_FIELDS,new PreparedStatementSetter() {
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
-                preparedStatement.setInt(1, CatId);
+                preparedStatement.setInt(1, catId);
             }
         },new CategoryQuestionMapper());
-        logger.info(categoryQueslist.get(0).getCatQuestion());
-		return categoryQueslist;
+        
+		
 	}
 
 	@Override
 	public int updateProductData(Product product) {
 
 
-		logger.info("start");
+		
 		try {
 			jdbcTemplate.update(ProductQueries.UPDATE_PRODUCT_TABLE,product.getDecription(),product.getQuantity(),product.getPrice(),product.getProductId());
 			List<CategoryQuestion> categoryQueslist = jdbcTemplate.query(CategoryQuestionsQueries.GET_CATEGORY_FIELDS,new PreparedStatementSetter() {
@@ -266,17 +259,17 @@ public class ProductDAOImpl implements ProductDAO{
 	            }
 	        },new CategoryQuestionMapper());
 			
-			logger.info(categoryQueslist.size()+","+product.getCategory());
+			
 			Map<Integer,CategoryAnswer> quetionIdCategory=new HashMap<>();
 			categoryQueslist.forEach( cq -> {
-				logger.info(cq.getCatId()+","+cq.getCatQuestion()+","+cq.getCatqId());
+				
 				quetionIdCategory.put(cq.getCatqId(), product.getQuestionAnswers().get(cq.getCatQuestion()));
 				
 			});
-			logger.info(insertUpdatedCategoryAnswer(quetionIdCategory, product));
+			
 			return 1;
 		}catch (Exception e) {
-			logger.info(e.toString());
+			
 		}
 		return 0;
 		
@@ -286,7 +279,7 @@ public class ProductDAOImpl implements ProductDAO{
 		try {
 			for(Map.Entry<Integer, CategoryAnswer> entry:updatedAnswers.entrySet()) {
 				CategoryAnswer categoryAnswer=entry.getValue();
-				logger.info(categoryAnswer.getCatId()+","+categoryAnswer.getCatAnswer()+","+product.getProductId()+","+entry.getKey());
+				
 				jdbcTemplate.update(
 						CategoryAnswerQueries.UPDATE_PRODUCT_ANSWER,					
 						categoryAnswer.getCatAnswer(),
@@ -299,7 +292,7 @@ public class ProductDAOImpl implements ProductDAO{
 			return true;
 		}
 		catch (Exception e) {
-			logger.info(e);
+			
 			return false;
 		}
 	}
@@ -328,7 +321,7 @@ public class ProductDAOImpl implements ProductDAO{
 		}, new IdMapper());
 	}
 	public Seller getSellerDataFromSelleId(int sellerId) {
-		logger.info(sellerId);
+		
 		return jdbcTemplate.queryForObject(SellerQueries.GET_SELLER_DATA_FROM_SELLER_ID, new Object[] {
 				sellerId
 		}, new SellerMapper());
@@ -348,7 +341,7 @@ public class ProductDAOImpl implements ProductDAO{
 						, new IdMapper());
 			}
 		catch (Exception e) {
-			logger.info(e);
+			
 			return -1;
 		}
 	
@@ -368,7 +361,7 @@ public class ProductDAOImpl implements ProductDAO{
 			response = true;
 		}
 		catch (Exception e) {
-			logger.info(e);
+			
 			response = false;
 		}
 		

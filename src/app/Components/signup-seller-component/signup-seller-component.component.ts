@@ -94,7 +94,7 @@ export class SignupSellerComponentComponent implements OnInit {
      this.service.uploadSignupImageService(details.id,
      this.uploadForm.get('panImage').value,
      this.uploadForm.get('gstinImage').value).subscribe((res: Uint8Array) => {
-       console.log(res);
+       console.log("Signed Up Images:" + res);
        this.router.navigate(['/']);
 
      });

@@ -116,7 +116,8 @@ export class AddProductsComponent implements OnInit {
       senddata['quantity'] = this.ProductForm.get('Quantity').value
       senddata['price'] = this.ProductForm.get('Price').value
       senddata['category'] = this.data[0].catId
-      senddata['sellerId']=1
+      senddata['sellerId']= this.cookieservice.get('id');
+      senddata['images'] = this.constructImageMetaData();
       console.log(senddata)
       let answers=[];
       this.data.forEach(element => {

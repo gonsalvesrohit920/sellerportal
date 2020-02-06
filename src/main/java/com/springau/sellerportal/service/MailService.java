@@ -58,7 +58,7 @@ public class MailService {
 		
 	}
 	
-	public void sendRejectedEmail(String emailId, String reason) {
+	public void  sendRejectedEmail(String emailId, String reason) {
 		
 		Seller seller = sellerService.getSellerByEmail(emailId);
 		String body = "Dear " + seller.getName() + "," +
@@ -66,7 +66,8 @@ public class MailService {
 		
 		String subject = "Rejection Email|" + seller.getName();
 		
-		sendEmail(emailId, subject, body);
+		 sendEmail(emailId, subject, body);
+		
 	}
 	public void deleteSeller(int sid) {
 		// TODO Auto-generated method stub

@@ -57,13 +57,12 @@ public class AdminController {
 	}
      
 	@PostMapping("/reject")
-	public int sendRejectMessage(@RequestBody Seller seller) {
+	public void sendRejectMessage(@RequestBody Seller seller) {
 		System.out.println(seller.getPassword());
 		System.out.println("Seller id="+seller.getId());
 		int sid = seller.getId();
-		mailservice.sendRejectedEmail(seller.getEmail(), seller.getPassword());
+	    mailservice.sendRejectedEmail(seller.getEmail(), seller.getPassword());
 		adminService.deleteSeller(sid);
-		return 0;
 		
 	}
 }

@@ -1,17 +1,16 @@
-<div *ngIf="orderHistory">
-    
-    <table>
-        <tr>
-            <th>Product ID</th>
-            <th>Product Name</th>
-            <th>Product quantity sold</th>
-            <th>Product rating</th>
-        </tr>
-        <tr *ngFor="let order of orderHistory | keyvalue">
-            <td>{{order.key}}</td>
-            <td>{{order.value.name}}</td>
-            <td>{{order.value.quantity}}</td>
-            <td>{{order.value.rating}}</td>
-        </tr>
-    </table>
+<div class="container" *ngIf="orderHistory">
+    <ul class="responsive-table">
+        <li class="table-header">
+            <div class="col">Product ID</div>
+            <div class="col">Product Name</div>
+            <div class="col">Product quantity sold</div>
+            <div class="col">Product rating</div>
+        </li>
+        <li class="table-row" *ngFor="let order of orderHistory | keyvalue">
+            <div class="col" >{{order.key}}</div>
+            <div class="col" >{{order.value.name}}</div>
+            <div class="col" >{{order.value.quantity}}</div>
+            <div class="col" >{{order.value.rating}}</div>
+        </li>    
+    </ul>    
 </div>

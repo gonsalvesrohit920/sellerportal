@@ -28,13 +28,26 @@
          <div class="col" > {{item.contact.phoneNo}}</div>
          <div class="col" >{{item.documents.panNo}}</div>
          <div class="col" >{{item.documents.gstInNo}}</div>
-         <div class="col"><button id="viewPan" (click)="getPanImage(item.id)" mat-raised-button color="primary">View PAN</button></div>
-         <div class="col"><button id="viewGstin" (click)="getGstinImage(item.id)" mat-raised-button color="primary">View GSTIN</button></div>
+         <div class="col"><button id="viewPan" (click)="getPanImage(item.id,im)" mat-raised-button color="primary">View PAN</button></div>
+         <div class="col"><button id="viewGstin" (click)="getGstinImage(item.id,im)" mat-raised-button color="primary">View GSTIN</button></div>
          <div class="col" ><button type="submit" (click) = "onAccepted(item.id)"  mat-raised-button color="primary">Accept</button></div>
-         <div class="col" ><button type="submit"  mat-raised-button color="warn">Reject</button></div>
+         <div class="col" ><button type="submit"  mat-raised-button color="warn" (click)="onReject(item.id,detail,item.email)">Reject</button></div>
        </li>
+       <li class="table-row" >
+         <div class="col"  #detail [hidden]=true >
+            <h4> Reason For Rejection</h4>  
+            <div class="md-form amber-textarea active-amber-textarea-2">
+               <i class="fas fa-pencil-alt prefix"></i>
+               <textarea id="form24" class="md-textarea form-control" rows="3" [(ngModel)] = "str"></textarea>
+             </div>
+            <button type="submit"  mat-raised-button color="primary" (click)="sendmsg()">Send Mail</button>
+         </div>
+          </li>
+          
+            <img [src]="image" width="500" height="500" style="padding-left: 400px;" #im [hidden]=true > 
+          
        </ul>
-       <img [src]="image"> 
+      
 </div>
 
 <!-- 

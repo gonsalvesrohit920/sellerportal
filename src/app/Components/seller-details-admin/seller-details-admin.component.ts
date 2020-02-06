@@ -13,6 +13,9 @@ import { FileDownloadService } from '../../providers/file-download-service/file-
 export class SellerDetailsAdminComponent implements OnInit {
 
   details : any;
+  str:string
+  email:string
+  sellerId:string
 
   private image : any;
   private readonly imageType : string = 'data:image/JPG;base64,';
@@ -42,8 +45,8 @@ export class SellerDetailsAdminComponent implements OnInit {
   }
   }
 
-  async getPanImage(id){
-
+  async getPanImage(id,im){
+    
     const session = await this.sellerService.checkSession(true);
     console.log('Session:' +  session);
     if (!session) {
@@ -53,14 +56,14 @@ export class SellerDetailsAdminComponent implements OnInit {
     this.fileDownloadService.getImage('/sellerportal/seller/getPanImage/' + id).subscribe((data) => {
       this.image = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data['content']);
       this.displayimage = true;
+      im.hidden =!im.hidden
     }); }
 
 
 
   }
 
-  async getGstinImage(id){
-
+  async getGstinImage(id,im){
     const session = await this.sellerService.checkSession(true);
     console.log('Session:' +  session);
     if (!session) {
@@ -70,6 +73,7 @@ export class SellerDetailsAdminComponent implements OnInit {
     this.fileDownloadService.getImage('/sellerportal/seller/getGstinImage/' + id).subscribe((data) => {
       this.image = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data['content']);
       this.displayimage = true;
+      im.hidden = !im.hidden
     }); }
   }
 
@@ -87,4 +91,25 @@ export class SellerDetailsAdminComponent implements OnInit {
     });
      
   } }
+
+  onReject(sellerId,detail,email){
+    this.email = email
+    this.sellerId = sellerId
+    detail.hidden = !detail.hidden
+    this.sendmsg()
+}
+sendmsg(){
+  console.log(this.email)
+  console.log(this.str)
+  
+    let sendobj= {
+      'email' : this.email,
+      'password'  : this.str,
+      'id':this.sellerId
+    }
+    this.service.sendmail(sendobj).subscribe((response)=>{
+      console.log(response)
+      this.ngOnInit()
+    })   
+}
 }

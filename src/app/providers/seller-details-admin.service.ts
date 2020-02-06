@@ -11,4 +11,7 @@ export class SellerDetailsAdminService {
   getSellerDetails(){
     return this.http.get("sellerportal/admin");
   }
+  sendmail(sendobj){
+    return this.http.post('sellerportal/admin/reject',sendobj)
+  }
 }

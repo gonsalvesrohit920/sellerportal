@@ -185,7 +185,7 @@ export class AddProductsComponent implements OnInit {
   imageUpload(){
     let f=1;
     for (let i = 0; i < this.uploader.queue.length ; i++) {
-        if(i<=0){
+        if(i<=5){
         let fileItem = this.uploader.queue[i]._file;
         console.log(fileItem.type)
         if(fileItem.type!="jpg"){

@@ -52,8 +52,8 @@
                 </div>
             </div>  
         </div>
-        <div *ngFor="let image of data[counter]['images']">
-            <img [src] = "image" >
+        <div *ngFor="let image of data[counter]['images']" class="table-row" >
+            <img [src] = "image"  height="250" width="250"  >
         </div>
         <button (click)="update(f)"  mat-raised-button color="primary" style="margin-bottom: 3%;">Update</button>
         <button (click)="delete(f)" mat-raised-button color="primary" style="margin-bottom: 3%;">Delete</button>

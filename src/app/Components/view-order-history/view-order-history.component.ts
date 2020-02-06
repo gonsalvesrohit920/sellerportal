@@ -8,13 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./view-order-history.component.css']
 })
 export class ViewOrderHistoryComponent implements OnInit {
-  orderHistory = {}
+  orderHistory = {};
   constructor(
     private cookieservice: CookieService,
     private sellerService: SellerServiceService,
-    private router: Router) { 
+    private router: Router) {
       this.orderHistory = null;
-    sellerService.getOrdersOfSeller(this.cookieservice.get('id')).subscribe((response: {}) => {
+      sellerService.getOrdersOfSeller(this.cookieservice.get('id')).subscribe((response: {}) => {
       console.log(response);
       this.orderHistory = response;
     });

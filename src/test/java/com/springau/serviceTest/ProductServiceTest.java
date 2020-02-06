@@ -26,6 +26,7 @@ import com.springau.sellerportal.service.ProductService;
 
 import junit.framework.Assert;
 
+@SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceTest {
 	

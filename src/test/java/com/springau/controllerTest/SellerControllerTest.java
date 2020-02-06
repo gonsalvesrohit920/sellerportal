@@ -33,6 +33,7 @@ import com.springau.sellerportal.utility.PasswordHash;
 
 import junit.framework.Assert;
 
+@SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class SellerControllerTest {
 	

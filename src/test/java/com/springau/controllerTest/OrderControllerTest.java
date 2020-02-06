@@ -20,6 +20,7 @@ import com.springau.sellerportal.service.OrderService;
 
 import junit.framework.Assert;
 
+@SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class OrderControllerTest {
 	

@@ -70,7 +70,6 @@ public class MailService {
 		
 	}
 	public void deleteSeller(int sid) {
-		// TODO Auto-generated method stub
 		dao.deleteSeller(sid);
 	}
 

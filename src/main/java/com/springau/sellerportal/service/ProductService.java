@@ -54,7 +54,7 @@ public class ProductService {
 	public List<String> getProductImages(int productId){
 		Map<String, String> jsonMap = new HashMap<>();
 		
-		List<String> imagesd = new ArrayList<String>();
+		List<String> imagesd = new ArrayList<>();
 		
 		List<ProductImage> images = dao.getProductImages(productId);
 		

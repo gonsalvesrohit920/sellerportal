@@ -30,7 +30,6 @@ public class ProductImageMapper implements RowMapper<ProductImage>{
 		
 		image.setImageId(rs.getInt(ProductImageColumns.IMAGE_ID));
 		image.setImageType(rs.getString(ProductImageColumns.IMAGE_TYPE));
-		//image.setProductId(rs.getInt(ProductImageColumns.PRODUCT_ID));
 		image.setProductImageData(rs.getBytes(ProductImageColumns.IMAGE_DATA));
 		
 		

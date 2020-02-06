@@ -81,8 +81,6 @@ public boolean savePanImage(int sellerId, byte[] panImage) {
 	}
 	
 	public boolean saveGstinImage(int sellerId, byte[] gstinImage) {
-		
-		System.out.println(gstinImage.length);
 		dao.saveGstinImage(sellerId, gstinImage);
 		
 		return true;

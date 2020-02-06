@@ -146,7 +146,6 @@ public class SellerController {
 		return true;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 	}

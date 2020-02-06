@@ -1,24 +1,17 @@
 package com.springau.controllerTest;
 
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.parameters.P;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.springau.sellerportal.controller.AdminController;
 import com.springau.sellerportal.model.Contact;
@@ -29,12 +22,8 @@ import com.springau.sellerportal.service.AdminService;
 import com.springau.sellerportal.service.SellerService;
 import com.springau.sellerportal.utility.PasswordHash;
 
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 public class AdminControllerTest {
-	
-	private MockMvc mockMvc;
 	
 	@InjectMocks
 	private AdminController adminController;
@@ -58,7 +47,6 @@ public class AdminControllerTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		mockMvc = MockMvcBuilders.standaloneSetup(adminController).build();
 		
 		s1 = new Seller();
 		s1.setId(1);

@@ -164,14 +164,12 @@ public class SellerDAOImpl implements SellerDAO {
 	 */
 	@Override
 	public List<Seller> getPendingSellerDetails() {
-		List<Seller> pendingSellers = jdbcTemplate.query(SellerQueries.GET_PENDING_DATA_ALL_SELLERS,new PendingSellerDetail());
-		System.out.println(pendingSellers);
-		return pendingSellers;
+		return jdbcTemplate.query(SellerQueries.GET_PENDING_DATA_ALL_SELLERS,new PendingSellerDetail());
 	}
 
 	@Override
 	public List<String> getCategory(int sid) {
-	    List<String> category = new ArrayList<String>();
+	    List<String> category = new ArrayList<>();
 		List<Integer> categorylist = jdbcTemplate.query(CategoryQuestionsQueries.GET_CATEGORY_ID,new PreparedStatementSetter() {
             public void setValues(PreparedStatement preparedStatement) throws SQLException {
                 preparedStatement.setInt(1, sid);
@@ -196,8 +194,6 @@ public class SellerDAOImpl implements SellerDAO {
 	@Override
 	public boolean saveGstinImage(int sellerId, byte[] gstinImage) {
 		
-		System.out.println(gstinImage.length);
-		
 		jdbcTemplate.update(DocumentQueries.SAVE_GSTIN_IMAGE, gstinImage, sellerId);
 		
 		return true;
@@ -217,11 +213,9 @@ public class SellerDAOImpl implements SellerDAO {
 	@Override
 	public void deleteSeller(int sid) {
 		try {
-			System.out.println("Seller id="+sid);
 			jdbcTemplate.update(SellerQueries.DELETE_SELLER_FROM_DOCUMENTS,sid);
 			jdbcTemplate.update(SellerQueries.DELETE_SELLER_FROM_CATEGORY,sid);
 			jdbcTemplate.update(SellerQueries.DELETE_SELLER,sid);
-			System.out.println("Done deleting");
 		}
 		catch (Exception e) {
 			e.printStackTrace();

@@ -7,6 +7,8 @@ import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 
 public class PojoTestUtils {
+	
+	private PojoTestUtils() {}
 	 
     private static final Validator ACCESSOR_VALIDATOR = ValidatorBuilder.create()
                                                     .with(new GetterTester())

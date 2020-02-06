@@ -1,5 +1,10 @@
 package com.springau.serviceTest;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,15 +17,7 @@ import com.springau.sellerportal.service.OrderService;
 
 import junit.framework.Assert;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-
+@SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
 	
@@ -41,7 +38,7 @@ public class OrderServiceTest {
 	@Test
 	public void testSubmitRating() {
 		when(orderDao.submitRating(anyInt(), anyInt())).thenReturn(100);
-		assertEquals(orderService.submitRating(23, 89), 100);
+		Assert.assertEquals(orderService.submitRating(23, 89), 100);
 	}	
 
 }

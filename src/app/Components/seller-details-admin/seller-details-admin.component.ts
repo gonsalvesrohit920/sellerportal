@@ -42,31 +42,49 @@ export class SellerDetailsAdminComponent implements OnInit {
   }
   }
 
-  getPanImage(id){
+  async getPanImage(id){
+
+    const session = await this.sellerService.checkSession(true);
+    console.log('Session:' +  session);
+    if (!session) {
+      this.router.navigate(['/admin/login']);
+    } else {
 
     this.fileDownloadService.getImage('/sellerportal/seller/getPanImage/' + id).subscribe((data) => {
       this.image = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data['content']);
       this.displayimage = true;
-    });
+    }); }
 
-  
+
 
   }
 
-  getGstinImage(id){
+  async getGstinImage(id){
+
+    const session = await this.sellerService.checkSession(true);
+    console.log('Session:' +  session);
+    if (!session) {
+      this.router.navigate(['/admin/login']);
+    } else {
 
     this.fileDownloadService.getImage('/sellerportal/seller/getGstinImage/' + id).subscribe((data) => {
       this.image = this.sanitizer.bypassSecurityTrustUrl(this.imageType + data['content']);
       this.displayimage = true;
-    });
+    }); }
   }
 
 
-  onAccepted(sellerid){
+  async onAccepted(sellerid){
+
+    const session = await this.sellerService.checkSession(true);
+    console.log('Session:' +  session);
+    if (!session) {
+      this.router.navigate(['/admin/login']);
+    } else {
     this.sellerService.updateStatus(sellerid).subscribe((details)=>{
       console.log(details);
       this.ngOnInit()
-    })
+    });
      
-  }
+  } }
 }

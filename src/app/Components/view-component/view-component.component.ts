@@ -22,7 +22,8 @@ export class ViewComponentComponent implements OnInit {
   public data:any;
 
   hidden=true;
-  edit(name, qty, price,details,f,counter){
+  async edit(name, qty, price,details,f,counter){
+    await this.ngOnInit();
     console.log(name.value, qty.value, price.value)
     details.hidden=!details.hidden
     let productId = f.get('productId').value;
@@ -30,9 +31,13 @@ export class ViewComponentComponent implements OnInit {
  
     this.fetchProductimages(productId, count);
   }
+
+
   trackByFn(index: any, item: any) {
       return index;
   }
+
+  
   constructor(private sellerService:SellerServiceService, 
               private router: Router,
               private snackBar: MatSnackBar,
@@ -42,8 +47,8 @@ export class ViewComponentComponent implements OnInit {
     console.log("con")
     this.fun();
   }
-  delete(form){
-    this.ngOnInit()
+  async delete(form){
+    await this.ngOnInit();
     this.sellerService.deleteProduct(form.get('productId').value).subscribe((response)=>{
       console.log(response);
       if(response==0){

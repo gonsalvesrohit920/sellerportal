@@ -44,24 +44,29 @@ export class ProductComponentComponent implements OnInit {
     console.log('Session:' +  session);
     if (!session) {
       this.router.navigate(['/']);
-    }     
+    } else {
     this.sellerDataService.currentData.subscribe(sellerdata => this.sellerData = sellerdata);
-    this.keepCheckStatus(this.sellerId)
+    this.keepCheckStatus(this.sellerId);
   }
+  }
+
+
     private keepCheckStatus(sellerId) {
       this.sellerService.checkStatus(sellerId).subscribe((respose)=>{
         this.applicationStatus1 = respose;
-        if(this.applicationStatus1==="Accepted"){
+        if (this.applicationStatus1==="Accepted"){
           this.value = "Accpeted"
-          this.disable=true
+          this.disable = true;
         }
-        console.log( this.applicationStatus1)
+        console.log( this.applicationStatus1);
      });
-     } 
+     }
+
       onLogout() {
         this.cookieservice.deleteAll();
         this.router.navigate(['']);
       }
+
       Check(){
         this.sellerService.subjectRefresh.subscribe(()=>{
           this.keepCheckStatus(this.sellerId)

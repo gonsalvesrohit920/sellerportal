@@ -42,15 +42,19 @@ export class AddProductsComponent implements OnInit {
     //                 {value:'Laptops',viewValue:'Laptops'},
     //                 {value:'Shoes',viewValue:'Shoes'}      ];
 
-    this.sellerService.getCategroy(this.cookieservice.get('id')).subscribe((data) => {
-      this.seletedCategory = data;
-    });
-    console.log(this.seletedCategory);
+    
+    
 
     const session = await this.sellerService.checkSession();
     console.log('Session:' +  session);
     if (!session) {
       this.router.navigate(['/']);
+    } else {
+       this.sellerService.getCategroy(this.cookieservice.get('id')).subscribe((data) => {
+        this.seletedCategory = data;
+        console.log(this.seletedCategory);
+      });
+
     }
   }
 
@@ -90,8 +94,16 @@ export class AddProductsComponent implements OnInit {
     return images;
   }
 
-  onSubmit() {
-    if(this.ProductForm.valid){
+  async onSubmit() {
+
+    const session = await this.sellerService.checkSession();
+    console.log('Session:' +  session);
+    if (!session) {
+      this.router.navigate(['/']);
+    } else {
+
+
+    if (this.ProductForm.valid){
       this.snackBar.open("Adding Product to database","",{
         duration: 2000,
       });
@@ -158,9 +170,16 @@ export class AddProductsComponent implements OnInit {
         duration: 2000,
       });
     }
+ 
+ 
   }
+ 
+  }
+
+
   onupload(){
-  this.imageUpload(); }
+  this.imageUpload(); 
+  }
 
   imageUpload(){
     let f=1;
